@@ -1,0 +1,57 @@
+/* Two-column layout for NBSTUP Membership Account page */
+
+.pmpro-nbstup-account-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.pmpro-nbstup-account-sidebar {
+    flex: 0 0 260px;
+    max-width: 260px;
+    background: #f7f7f7;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.pmpro-nbstup-account-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pmpro-nbstup-account-nav li + li {
+    margin-top: 8px;
+}
+
+.pmpro-nbstup-account-nav a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.pmpro-nbstup-account-nav a:hover,
+.pmpro-nbstup-account-nav a:focus {
+    background-color: #e1ecff;
+    color: #111;
+}
+
+.pmpro-nbstup-account-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .pmpro-nbstup-account-layout {
+        flex-direction: column;
+    }
+
+    .pmpro-nbstup-account-sidebar {
+        max-width: 100%;
+    }
+}
+

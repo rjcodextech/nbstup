@@ -1,0 +1,23 @@
+{
+  "name": "pmpro-nbstup",
+  "version": "0.1.0",
+  "description": "Build tooling (Gulp, SCSS, JS) for the PMPro NBSTUP addon.",
+  "private": true,
+  "scripts": {
+    "dev": "gulp watch",
+    "build": "gulp build"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.79.4",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-postcss": "^9.0.1",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^6.1.2",
+    "gulp-uglify": "^3.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^2.0.0"
+  }
+}
+

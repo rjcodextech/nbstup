@@ -1,0 +1,507 @@
+{
+    "version": "0.4",
+    "title": "Faq",
+    "type": "page",
+    "metadata": {
+        "template_type": "single-page",
+        "include_in_zip": "1",
+        "elementor_pro_required": null,
+        "wp_page_template": "elementor_header_footer"
+    },
+    "content": [
+        {
+            "id": "687a748b",
+            "settings": {
+                "content_width": {
+                    "unit": "px",
+                    "size": 1200,
+                    "sizes": []
+                },
+                "height": "min-height",
+                "background_background": "classic",
+                "background_image": {
+                    "url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comyoung-diverse-people-having-fun-outdoor-laughing-t-YGWZ4GU-1.jpg",
+                    "id": 1919,
+                    "alt": "",
+                    "source": "library"
+                },
+                "background_size": "cover",
+                "background_overlay_background": "classic",
+                "background_overlay_opacity": {
+                    "unit": "px",
+                    "size": 0.5500000000000000444089209850062616169452667236328125,
+                    "sizes": []
+                },
+                "__globals__": {
+                    "background_overlay_color": "globals\/colors?id=secondary"
+                },
+                "background_position": "center center"
+            },
+            "elements": [
+                {
+                    "id": "10adc142",
+                    "settings": {
+                        "_column_size": 100,
+                        "_inline_size": null
+                    },
+                    "elements": [
+                        {
+                            "id": "14d32840",
+                            "settings": {
+                                "title": "Read FAQ\u2019s",
+                                "align": "center",
+                                "__globals__": {
+                                    "title_color": "globals\/colors?id=df680a5",
+                                    "typography_typography": "globals\/typography?id=2000ccb"
+                                }
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "heading",
+                            "elType": "widget"
+                        },
+                        {
+                            "id": "53bb0bd6",
+                            "settings": {
+                                "view": "inline",
+                                "icon_list": [
+                                    {
+                                        "text": "HOME",
+                                        "selected_icon": {
+                                            "value": "",
+                                            "library": ""
+                                        },
+                                        "_id": "d47867a"
+                                    },
+                                    {
+                                        "text": "FAQ\u2019S",
+                                        "selected_icon": {
+                                            "value": "icon icon-right-arrow",
+                                            "library": "ekiticons"
+                                        },
+                                        "_id": "b4745b2"
+                                    }
+                                ],
+                                "icon_align": "center",
+                                "text_indent": {
+                                    "unit": "px",
+                                    "size": 10,
+                                    "sizes": []
+                                },
+                                "__globals__": {
+                                    "icon_color": "globals\/colors?id=df680a5",
+                                    "text_color": "globals\/colors?id=df680a5"
+                                }
+                            },
+                            "elements": [],
+                            "isInner": false,
+                            "widgetType": "icon-list",
+                            "elType": "widget"
+                        }
+                    ],
+                    "isInner": false,
+                    "elType": "column"
+                }
+            ],
+            "isInner": false,
+            "elType": "section"
+        },
+        {
+            "id": "4a4526cb",
+            "settings": {
+                "content_width": {
+                    "unit": "px",
+                    "size": 1200,
+                    "sizes": []
+                },
+                "padding": {
+                    "unit": "px",
+                    "top": "0120",
+                    "right": "0",
+                    "bottom": "120",
+                    "left": "0",
+                    "isLinked": false
+                }
+            },
+            "elements": [
+                {
+                    "id": "687463ad",
+                    "settings": {
+                        "_column_size": 100,
+                        "_inline_size": null,
+                        "box_shadow_box_shadow_type": "yes",
+                        "box_shadow_box_shadow": {
+                            "horizontal": 6,
+                            "vertical": 5,
+                            "blur": 24,
+                            "spread": 0,
+                            "color": "rgba(0, 0, 0, 0.058823529411764705)"
+                        },
+                        "padding": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "0",
+                            "bottom": "0",
+                            "left": "0",
+                            "isLinked": false
+                        },
+                        "margin": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "0",
+                            "bottom": "0",
+                            "left": "0",
+                            "isLinked": false
+                        },
+                        "_inline_size_tablet": 100,
+                        "margin_tablet": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "15",
+                            "bottom": "30",
+                            "left": "15",
+                            "isLinked": false
+                        },
+                        "padding_mobile": {
+                            "unit": "px",
+                            "top": "0",
+                            "right": "0",
+                            "bottom": "0",
+                            "left": "0",
+                            "isLinked": false
+                        }
+                    },
+                    "elements": [
+                        {
+                            "id": "67c49366",
+                            "settings": {
+                                "margin": {
+                                    "unit": "px",
+                                    "top": "50",
+                                    "right": 0,
+                                    "bottom": "0",
+                                    "left": 0,
+                                    "isLinked": false
+                                },
+                                "padding": {
+                                    "unit": "px",
+                                    "top": "0",
+                                    "right": "0",
+                                    "bottom": "0",
+                                    "left": "0",
+                                    "isLinked": false
+                                },
+                                "content_width": {
+                                    "unit": "px",
+                                    "size": 1200,
+                                    "sizes": []
+                                },
+                                "structure": "20"
+                            },
+                            "elements": [
+                                {
+                                    "id": "64f0444a",
+                                    "settings": {
+                                        "_column_size": 50,
+                                        "_inline_size": null,
+                                        "margin": {
+                                            "unit": "px",
+                                            "top": "0",
+                                            "right": "15",
+                                            "bottom": "0",
+                                            "left": "0",
+                                            "isLinked": false
+                                        },
+                                        "_inline_size_tablet": 100,
+                                        "margin_mobile": {
+                                            "unit": "px",
+                                            "top": "0",
+                                            "right": "0",
+                                            "bottom": "0",
+                                            "left": "0",
+                                            "isLinked": false
+                                        }
+                                    },
+                                    "elements": [
+                                        {
+                                            "id": "5390835a",
+                                            "settings": {
+                                                "ekit_accordion_items": [
+                                                    {
+                                                        "acc_title": "How will my donation be used?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "yes",
+                                                        "_id": "ee99d0c"
+                                                    },
+                                                    {
+                                                        "acc_title": "How much of my donation is going directly to people in need?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "1f43008"
+                                                    },
+                                                    {
+                                                        "acc_title": "Is my donation tax-deductible?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "2497e90"
+                                                    },
+                                                    {
+                                                        "acc_title": "I don't have much money. Can I help?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "4ab9d4e"
+                                                    },
+                                                    {
+                                                        "acc_title": "When does LoveIcon grant funds it  has collected to charities?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "24b4589"
+                                                    },
+                                                    {
+                                                        "acc_title": "Can I make a donation by check?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "f62c169"
+                                                    }
+                                                ],
+                                                "ekit_accordion_background_background": "classic",
+                                                "ekit_accordion_background_color": "#02010100",
+                                                "ekit_accordion_border_radious_curve_shape_open": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_background_close_background": "classic",
+                                                "ekit_accordion_background_close_color": "#02010100",
+                                                "ekit_accordion_title_padding": {
+                                                    "unit": "px",
+                                                    "top": "40",
+                                                    "right": "50",
+                                                    "bottom": "20",
+                                                    "left": "50",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_border_radious": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_padding": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "50",
+                                                    "bottom": "40",
+                                                    "left": "50",
+                                                    "isLinked": false
+                                                },
+                                                "__globals__": {
+                                                    "ekit_accordion_title_typography_typography": "globals\/typography?id=5b53a3e",
+                                                    "ekit_accordion_content_typography_typography": "globals\/typography?id=text",
+                                                    "ekit_accordion_content_color": "globals\/colors?id=text",
+                                                    "ekit_accordion_icon_color": "globals\/colors?id=primary"
+                                                },
+                                                "ekit_accordion_right_icons": {
+                                                    "value": "far fa-eye",
+                                                    "library": "fa-regular"
+                                                },
+                                                "ekit_accordion_right_icon_actives": {
+                                                    "value": "fas fa-eye-slash",
+                                                    "library": "fa-solid"
+                                                },
+                                                "_margin": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_color": "#555555",
+                                                "ekit_accordion_content_typography_typography": "custom",
+                                                "ekit_accordion_content_typography_font_family": "Inter",
+                                                "ekit_accordion_content_typography_font_size": {
+                                                    "unit": "px",
+                                                    "size": 17,
+                                                    "sizes": []
+                                                },
+                                                "ekit_accordion_content_typography_font_weight": "400",
+                                                "ekit_accordion_content_typography_line_height": {
+                                                    "unit": "px",
+                                                    "size": 28,
+                                                    "sizes": []
+                                                },
+                                                "ekit_accordion_icon_color": "#D53F34",
+                                                "ekit_accordion_title_margin_bottom": {
+                                                    "unit": "px",
+                                                    "size": 9,
+                                                    "sizes": []
+                                                }
+                                            },
+                                            "elements": [],
+                                            "isInner": false,
+                                            "widgetType": "elementskit-accordion",
+                                            "elType": "widget"
+                                        }
+                                    ],
+                                    "isInner": true,
+                                    "elType": "column"
+                                },
+                                {
+                                    "id": "6cc40d34",
+                                    "settings": {
+                                        "_column_size": 50,
+                                        "_inline_size": null,
+                                        "margin": {
+                                            "unit": "px",
+                                            "top": "0",
+                                            "right": "0",
+                                            "bottom": "0",
+                                            "left": "15",
+                                            "isLinked": false
+                                        },
+                                        "_inline_size_tablet": 100
+                                    },
+                                    "elements": [
+                                        {
+                                            "id": "59ae4d16",
+                                            "settings": {
+                                                "ekit_accordion_items": [
+                                                    {
+                                                        "acc_title": "Can I dedicate my donations?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "ee99d0c"
+                                                    },
+                                                    {
+                                                        "acc_title": "Can I make a donation on the phone if  I don't want to donate online?                                         ",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "1f43008"
+                                                    },
+                                                    {
+                                                        "acc_title": "Can I make a donation by check?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "2497e90"
+                                                    },
+                                                    {
+                                                        "acc_title": "How does LoveIcon conduct research  and what are its findings?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "",
+                                                        "_id": "4ab9d4e"
+                                                    },
+                                                    {
+                                                        "acc_title": "How can I apply for a job with you?",
+                                                        "acc_content": "<p>Nostrud aliquips exercitation laboris nisiut temp sed duise Lorem ipsum dolor sit amet consectetur adipisicing elit atd eiusmod tempor incididunt labore dolore.<\/p>",
+                                                        "ekit_acc_is_active": "yes",
+                                                        "_id": "24b4589"
+                                                    }
+                                                ],
+                                                "ekit_accordion_background_background": "classic",
+                                                "ekit_accordion_background_color": "#02010100",
+                                                "ekit_accordion_border_radious_curve_shape_open": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_background_close_background": "classic",
+                                                "ekit_accordion_background_close_color": "#02010100",
+                                                "ekit_accordion_title_padding": {
+                                                    "unit": "px",
+                                                    "top": "40",
+                                                    "right": "50",
+                                                    "bottom": "20",
+                                                    "left": "50",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_border_radious": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_padding": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "50",
+                                                    "bottom": "40",
+                                                    "left": "50",
+                                                    "isLinked": false
+                                                },
+                                                "__globals__": {
+                                                    "ekit_accordion_title_typography_typography": "globals\/typography?id=5b53a3e",
+                                                    "ekit_accordion_content_typography_typography": "globals\/typography?id=text",
+                                                    "ekit_accordion_content_color": "globals\/colors?id=text",
+                                                    "ekit_accordion_icon_color": "globals\/colors?id=primary"
+                                                },
+                                                "ekit_accordion_right_icons": {
+                                                    "value": "far fa-eye",
+                                                    "library": "fa-regular"
+                                                },
+                                                "ekit_accordion_right_icon_actives": {
+                                                    "value": "fas fa-eye-slash",
+                                                    "library": "fa-solid"
+                                                },
+                                                "_margin": {
+                                                    "unit": "px",
+                                                    "top": "0",
+                                                    "right": "0",
+                                                    "bottom": "0",
+                                                    "left": "0",
+                                                    "isLinked": false
+                                                },
+                                                "ekit_accordion_content_color": "#555555",
+                                                "ekit_accordion_content_typography_typography": "custom",
+                                                "ekit_accordion_content_typography_font_family": "Inter",
+                                                "ekit_accordion_content_typography_font_size": {
+                                                    "unit": "px",
+                                                    "size": 17,
+                                                    "sizes": []
+                                                },
+                                                "ekit_accordion_content_typography_font_weight": "400",
+                                                "ekit_accordion_content_typography_line_height": {
+                                                    "unit": "px",
+                                                    "size": 28,
+                                                    "sizes": []
+                                                },
+                                                "ekit_accordion_icon_color": "#D53F34",
+                                                "ekit_accordion_title_margin_bottom": {
+                                                    "unit": "px",
+                                                    "size": 9,
+                                                    "sizes": []
+                                                }
+                                            },
+                                            "elements": [],
+                                            "isInner": false,
+                                            "widgetType": "elementskit-accordion",
+                                            "elType": "widget"
+                                        }
+                                    ],
+                                    "isInner": true,
+                                    "elType": "column"
+                                }
+                            ],
+                            "isInner": true,
+                            "elType": "section"
+                        }
+                    ],
+                    "isInner": false,
+                    "elType": "column"
+                }
+            ],
+            "isInner": false,
+            "elType": "section"
+        }
+    ]
+}

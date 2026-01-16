@@ -1,0 +1,2191 @@
+{
+    "manifest_version": "1.0.21",
+    "title": "Lovelcon",
+    "page_builder": "elementor",
+    "kit_version": "1.0.0",
+    "templates": [
+        {
+            "name": "Global Kit Styles",
+            "screenshot": "screenshots\/global-kit-styles.jpg",
+            "source": "templates\/global.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "global-styles",
+                "include_in_zip": "1",
+                "elementor_pro_required": null,
+                "additional_template_information": [
+                    "These are the global theme styles configured through the Elementor Theme Styles area."
+                ]
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Loveicon - Contact Form",
+            "screenshot": "screenshots\/loveicon-contact-form.jpg",
+            "source": "templates\/loveicon-contact-form.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/loveicon-contact-form\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Home 3",
+            "screenshot": "screenshots\/home-3.jpg",
+            "source": "templates\/home-3.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/home-3\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Footer",
+            "screenshot": "screenshots\/footer.png",
+            "source": "templates\/footer.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/footer\/",
+            "type": "section",
+            "category": "section",
+            "metadata": {
+                "template_type": "section-footer",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Header",
+            "screenshot": "screenshots\/header.png",
+            "source": "templates\/header.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/header\/",
+            "type": "section",
+            "category": "section",
+            "metadata": {
+                "template_type": "section-header",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Contact",
+            "screenshot": "screenshots\/contact.jpg",
+            "source": "templates\/contact.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/contact\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "404",
+            "screenshot": "screenshots\/404.jpg",
+            "source": "templates\/404.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/404\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Faq",
+            "screenshot": "screenshots\/faq.jpg",
+            "source": "templates\/faq.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/faq\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Testimonials",
+            "screenshot": "screenshots\/testimonials.jpg",
+            "source": "templates\/testimonials.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/testimonials\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Team Page",
+            "screenshot": "screenshots\/team-page.jpg",
+            "source": "templates\/team-page.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/team-page\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Event Details",
+            "screenshot": "screenshots\/event-details.jpg",
+            "source": "templates\/event-details.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/event-details\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Upcoming Events",
+            "screenshot": "screenshots\/upcoming-events.jpg",
+            "source": "templates\/upcoming-events.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/upcoming-events\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "About",
+            "screenshot": "screenshots\/about.jpg",
+            "source": "templates\/about.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/about\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Home 2",
+            "screenshot": "screenshots\/home-2.jpg",
+            "source": "templates\/home-2.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/home-2\/",
+            "type": "page",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-page",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        },
+        {
+            "name": "Home",
+            "screenshot": "screenshots\/home.jpg",
+            "source": "templates\/home.json",
+            "preview_url": "https:\/\/html.tonatheme.com\/elementor\/loveicon\/template-kit\/home\/",
+            "type": "section",
+            "category": "page",
+            "metadata": {
+                "template_type": "single-home",
+                "include_in_zip": "1",
+                "elementor_pro_required": null
+            },
+            "elementor_pro_required": false
+        }
+    ],
+    "required_plugins": [
+        {
+            "name": "Elementor",
+            "version": "3.8.1",
+            "file": "elementor\/elementor.php",
+            "author": "Elementor.com"
+        },
+        {
+            "name": "ElementsKit Lite",
+            "version": "2.7.5",
+            "file": "elementskit-lite\/elementskit-lite.php",
+            "author": "Wpmet"
+        },
+        {
+            "name": "Elementor Header & Footer Builder",
+            "version": "1.6.13",
+            "file": "header-footer-elementor\/header-footer-elementor.php",
+            "author": "Brainstorm Force, Nikhil Chavan"
+        },
+        {
+            "name": "MetForm",
+            "version": "3.1.0",
+            "file": "metform\/metform.php",
+            "author": "Wpmet"
+        }
+    ],
+    "images": [
+        {
+            "filename": "slide-hand-shape.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/slide-hand-shape.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 54707,
+            "dimensions": [
+                650,
+                858
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comlow-angle-view-of-beautiful-happy-african-american-YEP53QX-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comlow-angle-view-of-beautiful-happy-african-american-YEP53QX-1-800x570.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 70007,
+            "dimensions": [
+                940,
+                670
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-YEP53QX"
+        },
+        {
+            "filename": "feature-v2-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v2-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 2975,
+            "dimensions": [
+                102,
+                99
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v2-2.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v2-2.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 4332,
+            "dimensions": [
+                87,
+                99
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v2-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v2-3.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 3781,
+            "dimensions": [
+                81,
+                99
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v2-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v2-4.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 4843,
+            "dimensions": [
+                99,
+                99
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "world.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/world.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                }
+            ],
+            "filesize": 6698,
+            "dimensions": [
+                85,
+                80
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "doller.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/doller.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                }
+            ],
+            "filesize": 5206,
+            "dimensions": [
+                84,
+                80
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comkids-in-green-forest-at-summer-daytime-together-UPYZ6ZN-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comkids-in-green-forest-at-summer-daytime-together-UPYZ6ZN-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                }
+            ],
+            "filesize": 73439,
+            "dimensions": [
+                485,
+                531
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-UPYZ6ZN"
+        },
+        {
+            "filename": "cause-style3-area-bg.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cause-style3-area-bg-800x442.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 148518,
+            "dimensions": [
+                1920,
+                1060
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "loveicon.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/loveicon.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 7647,
+            "dimensions": [
+                325,
+                67
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comkids-are-wearing-facemasks-learning-in-class-L6U24YC.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comkids-are-wearing-facemasks-learning-in-class-L6U24YC.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 28127,
+            "dimensions": [
+                380,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-L6U24YC"
+        },
+        {
+            "filename": "httpselements.envato.comadorable-african-boy-pointing-at-false-teeth-held-B5YTAYP.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comadorable-african-boy-pointing-at-false-teeth-held-B5YTAYP.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 30144,
+            "dimensions": [
+                380,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-B5YTAYP"
+        },
+        {
+            "filename": "httpselements.envato.comhands-of-young-homeless-african-man-begging-for-fo-YV2MGN4-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comhands-of-young-homeless-african-man-begging-for-fo-YV2MGN4-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 20372,
+            "dimensions": [
+                380,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-YV2MGN4"
+        },
+        {
+            "filename": "brand-logo-v2-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/brand-logo-v2-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 4061,
+            "dimensions": [
+                250,
+                130
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "brand-logo-v2-2-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/brand-logo-v2-2-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 4699,
+            "dimensions": [
+                250,
+                130
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "brand-logo-v2-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/brand-logo-v2-3.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 4401,
+            "dimensions": [
+                250,
+                130
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "brand-logo-v2-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/brand-logo-v2-4.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 3947,
+            "dimensions": [
+                250,
+                130
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "mission-vision-area_bg.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/mission-vision-area_bg-800x325.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 35283,
+            "dimensions": [
+                1920,
+                780
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.combusinesswoman-librarian-psychologist-teacher-with-BANH337-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.combusinesswoman-librarian-psychologist-teacher-with-BANH337-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 35976,
+            "dimensions": [
+                403,
+                439
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-BANH337"
+        },
+        {
+            "filename": "httpselements.envato.combusinessman-holding-the-world-in-his-hands-PFGRW6K.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.combusinessman-holding-the-world-in-his-hands-PFGRW6K.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 37939,
+            "dimensions": [
+                577,
+                451
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-PFGRW6K"
+        },
+        {
+            "filename": "httpselements.envato.comchild-are-wondering-a-4-5-year-old-asian-girl-is-l-XRMMJ86-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comchild-are-wondering-a-4-5-year-old-asian-girl-is-l-XRMMJ86-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 33882,
+            "dimensions": [
+                577,
+                451
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-XRMMJ86"
+        },
+        {
+            "filename": "httpselements.envato.comlittle-smiling-boy-lying-on-floor-at-hos-room-and-M4AAX6A.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comlittle-smiling-boy-lying-on-floor-at-hos-room-and-M4AAX6A.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 49710,
+            "dimensions": [
+                577,
+                451
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-M4AAX6A"
+        },
+        {
+            "filename": "httpselements.envato.comportrait-of-happy-african-american-man-in-kitchen-8P54KAT.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comportrait-of-happy-african-american-man-in-kitchen-8P54KAT.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 121740,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-8P54KAT"
+        },
+        {
+            "filename": "thm-shape-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-shape-4.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 2762,
+            "dimensions": [
+                46,
+                46
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comportrait-of-attractive-black-skin-young-woman-char-GERQPHL.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comportrait-of-attractive-black-skin-young-woman-char-GERQPHL.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 127220,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-GERQPHL"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-boy-with-headphones-outdoors-NZ442A6.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-boy-with-headphones-outdoors-NZ442A6.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 123319,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-NZ442A6"
+        },
+        {
+            "filename": "httpselements.envato.comportrait-of-smiling-afro-american-woman-USYN2X7.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comportrait-of-smiling-afro-american-woman-USYN2X7.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 94962,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-USYN2X7"
+        },
+        {
+            "filename": "httpselements.envato.comcute-little-playful-girl-child-learning-to-walk-an-4AGXR6Q-2.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comcute-little-playful-girl-child-learning-to-walk-an-4AGXR6Q-2-800x272.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 77099,
+            "dimensions": [
+                1920,
+                652
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-4AGXR6Q"
+        },
+        {
+            "filename": "hand-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/hand-4.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 9263,
+            "dimensions": [
+                230,
+                239
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "hand-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/hand-3.png",
+            "templates": [
+                {
+                    "source": "templates\/home-3.json",
+                    "name": "Home 3"
+                }
+            ],
+            "filesize": 8416,
+            "dimensions": [
+                207,
+                222
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "footer-logo.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/footer-logo.png",
+            "templates": [
+                {
+                    "source": "templates\/footer.json",
+                    "name": "Footer"
+                }
+            ],
+            "filesize": 5573,
+            "dimensions": [
+                208,
+                56
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "logo.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/logo.png",
+            "templates": [
+                {
+                    "source": "templates\/header.json",
+                    "name": "Header"
+                }
+            ],
+            "filesize": 5509,
+            "dimensions": [
+                208,
+                54
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comyoung-diverse-people-having-fun-outdoor-laughing-t-YGWZ4GU-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comyoung-diverse-people-having-fun-outdoor-laughing-t-YGWZ4GU-1-800x146.jpg",
+            "templates": [
+                {
+                    "source": "templates\/contact.json",
+                    "name": "Contact"
+                },
+                {
+                    "source": "templates\/404.json",
+                    "name": "404"
+                },
+                {
+                    "source": "templates\/faq.json",
+                    "name": "Faq"
+                },
+                {
+                    "source": "templates\/testimonials.json",
+                    "name": "Testimonials"
+                },
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                },
+                {
+                    "source": "templates\/upcoming-events.json",
+                    "name": "Upcoming Events"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                }
+            ],
+            "filesize": 118856,
+            "dimensions": [
+                1920,
+                350
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-YGWZ4GU"
+        },
+        {
+            "filename": "httpselements.envato.comafricans-R4GSQ3F.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafricans-R4GSQ3F.jpg",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 26805,
+            "dimensions": [
+                360,
+                320
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-R4GSQ3F"
+        },
+        {
+            "filename": "httpselements.envato.comattractive-young-african-young-student-girl-walkin-BM7F3F2.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comattractive-young-african-young-student-girl-walkin-BM7F3F2.jpg",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 26176,
+            "dimensions": [
+                360,
+                320
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-BM7F3F2"
+        },
+        {
+            "filename": "httpselements.envato.comsmiling-mature-black-woman-with-african-headscarf-UKCEEFE-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comsmiling-mature-black-woman-with-african-headscarf-UKCEEFE-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 21032,
+            "dimensions": [
+                360,
+                320
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-UKCEEFE"
+        },
+        {
+            "filename": "httpselements.envato.commixed-race-baby-girl-in-car-seat-with-fastened-bel-T4TSW9R-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.commixed-race-baby-girl-in-car-seat-with-fastened-bel-T4TSW9R-1-800x323.jpg",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 148490,
+            "dimensions": [
+                1920,
+                775
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-T4TSW9R"
+        },
+        {
+            "filename": "thm-shape-5.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-shape-5.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 2145,
+            "dimensions": [
+                65,
+                35
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "fact-counter-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/fact-counter-1.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 3994,
+            "dimensions": [
+                63,
+                81
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "fact-counter-2.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/fact-counter-2.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 4700,
+            "dimensions": [
+                85,
+                80
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "fact-counter-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/fact-counter-3.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 3597,
+            "dimensions": [
+                64,
+                81
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "volunteer.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/volunteer.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 3799,
+            "dimensions": [
+                83,
+                80
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comafrican-woman-in-blue-blouse-3L4536J.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-woman-in-blue-blouse-3L4536J.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                },
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 132651,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-3L4536J"
+        },
+        {
+            "filename": "httpselements.envato.comyoung-african-businessman-talking-to-colleague-on-CYJL9NF.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comyoung-african-businessman-talking-to-colleague-on-CYJL9NF.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 93776,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-CYJL9NF"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-businessman-FU7NLDE.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-businessman-FU7NLDE.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 94041,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-FU7NLDE"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-man-in-a-stylish-blue-suit-MZUXD5F.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-man-in-a-stylish-blue-suit-MZUXD5F.png",
+            "templates": [
+                {
+                    "source": "templates\/team-page.json",
+                    "name": "Team Page"
+                }
+            ],
+            "filesize": 89687,
+            "dimensions": [
+                263,
+                263
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-MZUXD5F"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-kids-6UCY9BJ-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-kids-6UCY9BJ-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 49797,
+            "dimensions": [
+                740,
+                456
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-6UCY9BJ"
+        },
+        {
+            "filename": "date-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/date-1.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 1563,
+            "dimensions": [
+                53,
+                61
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "map-marker-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/map-marker-1.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 2139,
+            "dimensions": [
+                45,
+                61
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "cost-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cost-1.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 1635,
+            "dimensions": [
+                68,
+                45
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "cause-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cause-1.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 2208,
+            "dimensions": [
+                61,
+                59
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "cause-2.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cause-2.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 3022,
+            "dimensions": [
+                56,
+                63
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "cause-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cause-3.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 2579,
+            "dimensions": [
+                50,
+                60
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "cause-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/cause-4.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 3171,
+            "dimensions": [
+                62,
+                62
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comhappy-african-family-dad-hugging-embracing-his-lov-3DNQ7M6-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comhappy-african-family-dad-hugging-embracing-his-lov-3DNQ7M6-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 19625,
+            "dimensions": [
+                340,
+                300
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-3DNQ7M6"
+        },
+        {
+            "filename": "httpselements.envato.comeco-friendly-concept-world-environment-day-DUDP7AH-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comeco-friendly-concept-world-environment-day-DUDP7AH-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 17976,
+            "dimensions": [
+                320,
+                430
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-DUDP7AH"
+        },
+        {
+            "filename": "thm-logo1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-logo1.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 5408,
+            "dimensions": [
+                95,
+                95
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "hand.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/hand.png",
+            "templates": [
+                {
+                    "source": "templates\/event-details.json",
+                    "name": "Event Details"
+                }
+            ],
+            "filesize": 5217,
+            "dimensions": [
+                136,
+                129
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v1-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v1-1.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 7766,
+            "dimensions": [
+                110,
+                106
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v1-2.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v1-2.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 4518,
+            "dimensions": [
+                104,
+                107
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "feature-v1-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/feature-v1-3.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 7834,
+            "dimensions": [
+                146,
+                107
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comwoman-volunteer-working-in-community-charity-donat-VL8NWJW.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comwoman-volunteer-working-in-community-charity-donat-VL8NWJW.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 37032,
+            "dimensions": [
+                140,
+                140
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-VL8NWJW"
+        },
+        {
+            "filename": "httpselements.envato.comvolunteer-working-with-food-and-clothes-in-communi-T8U9V59.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comvolunteer-working-with-food-and-clothes-in-communi-T8U9V59.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 37450,
+            "dimensions": [
+                140,
+                140
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-T8U9V59"
+        },
+        {
+            "filename": "httpselements.envato.comhappy-handsome-volunteers-pointing-at-signs-on-t-s-AACZ3P4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comhappy-handsome-volunteers-pointing-at-signs-on-t-s-AACZ3P4.png",
+            "templates": [
+                {
+                    "source": "templates\/about.json",
+                    "name": "About"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 26622,
+            "dimensions": [
+                140,
+                140
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-AACZ3P4"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-family-in-traditional-clothes-8XL98GZ.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-family-in-traditional-clothes-8XL98GZ-800x304.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 271909,
+            "dimensions": [
+                1920,
+                730
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-8XL98GZ"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-kids-peeking-through-the-window-of-their-s-N267ZTN-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-kids-peeking-through-the-window-of-their-s-N267ZTN-1-800x304.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 189585,
+            "dimensions": [
+                1920,
+                730
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-N267ZTN"
+        },
+        {
+            "filename": "httpselements.envato.comgroup-of-children-blowing-party-horns-P4KM5NU.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comgroup-of-children-blowing-party-horns-P4KM5NU-800x304.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 227487,
+            "dimensions": [
+                1920,
+                730
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-P4KM5NU"
+        },
+        {
+            "filename": "about-style1_content-box-map.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/about-style1_content-box-map.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 50861,
+            "dimensions": [
+                645,
+                646
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "map-marker-1-bg.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/map-marker-1-bg.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 1924,
+            "dimensions": [
+                95,
+                70
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comhappy-young-african-man-and-his-biracial-son-carry-VYMG56D-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comhappy-young-african-man-and-his-biracial-son-carry-VYMG56D-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 38633,
+            "dimensions": [
+                380,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-VYMG56D"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-youngsters-making-baskets-out-of-bicycle-t-9BZGWRN.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-youngsters-making-baskets-out-of-bicycle-t-9BZGWRN.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 28564,
+            "dimensions": [
+                300,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-9BZGWRN"
+        },
+        {
+            "filename": "ongoing-project-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 5052,
+            "dimensions": [
+                117,
+                91
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-2.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-2.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 8095,
+            "dimensions": [
+                105,
+                98
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-3.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-3.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 6697,
+            "dimensions": [
+                101,
+                100
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-4.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 5047,
+            "dimensions": [
+                112,
+                90
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-5.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-5.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 5424,
+            "dimensions": [
+                101,
+                95
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-6.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-6.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 3906,
+            "dimensions": [
+                103,
+                92
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "ongoing-project-7.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/ongoing-project-7.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 7073,
+            "dimensions": [
+                102,
+                100
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comfather-and-son-repairing-drone-GG43EXR.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comfather-and-son-repairing-drone-GG43EXR-800x260.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 91652,
+            "dimensions": [
+                1140,
+                370
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-GG43EXR"
+        },
+        {
+            "filename": "thm-pattern-4.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-pattern-4-800x177.png",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                }
+            ],
+            "filesize": 48306,
+            "dimensions": [
+                1920,
+                425
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comhappy-young-volunteers-standing-by-containers-with-VZH2Q7Q-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comhappy-young-volunteers-standing-by-containers-with-VZH2Q7Q-1-800x667.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home-2.json",
+                    "name": "Home 2"
+                },
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 92795,
+            "dimensions": [
+                900,
+                750
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-VZH2Q7Q"
+        },
+        {
+            "filename": "httpselements.envato.comcheerful-female-volunteer-packing-clothes-for-dona-XEJQSRP-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comcheerful-female-volunteer-packing-clothes-for-dona-XEJQSRP-1-800x290.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 125460,
+            "dimensions": [
+                1920,
+                695
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-XEJQSRP"
+        },
+        {
+            "filename": "httpselements.envato.compaper-bag-with-clothes-donation-9NM5E27-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.compaper-bag-with-clothes-donation-9NM5E27-1-800x290.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 105458,
+            "dimensions": [
+                1920,
+                695
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-9NM5E27"
+        },
+        {
+            "filename": "httpselements.envato.comvolunteers-working-in-a-donations-distribution-cen-LEFHZB6-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comvolunteers-working-in-a-donations-distribution-cen-LEFHZB6-1-800x290.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 96816,
+            "dimensions": [
+                1920,
+                695
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-LEFHZB6"
+        },
+        {
+            "filename": "thm-pattern-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-pattern-1-800x297.png",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 213312,
+            "dimensions": [
+                1920,
+                712
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comlittle-african-boy-streetchild-greeting-africa-tra-KBEHUW4-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comlittle-african-boy-streetchild-greeting-africa-tra-KBEHUW4-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 32194,
+            "dimensions": [
+                430,
+                430
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-KBEHUW4"
+        },
+        {
+            "filename": "httpselements.envato.comportrait-of-a-child-girl-with-sad-expression-hopef-M4B7V4Q.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comportrait-of-a-child-girl-with-sad-expression-hopef-M4B7V4Q.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 12517,
+            "dimensions": [
+                200,
+                200
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-M4B7V4Q"
+        },
+        {
+            "filename": "httpselements.envato.compoor-sad-small-boy-with-cut-eyebrow-standing-indoo-T48EP7S.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.compoor-sad-small-boy-with-cut-eyebrow-standing-indoo-T48EP7S.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 6361,
+            "dimensions": [
+                80,
+                80
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-T48EP7S"
+        },
+        {
+            "filename": "httpselements.envato.comafrican-kids-6UCY9BJ.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comafrican-kids-6UCY9BJ.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 7014,
+            "dimensions": [
+                120,
+                120
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-6UCY9BJ"
+        },
+        {
+            "filename": "thm-shape-7.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/thm-shape-7.png",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 1726,
+            "dimensions": [
+                58,
+                43
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "httpselements.envato.comcute-little-african-boy-at-a-resort-X976DNL-1.jpg",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/httpselements.envato.comcute-little-african-boy-at-a-resort-X976DNL-1.jpg",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 47733,
+            "dimensions": [
+                585,
+                575
+            ],
+            "image_source": "envato_elements",
+            "person_or_place": "yes",
+            "image_urls": "https:\/\/elements.envato.com\/image-X976DNL"
+        },
+        {
+            "filename": "home-insurance-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/home-insurance-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 2267,
+            "dimensions": [
+                64,
+                64
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "water-bottle-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/water-bottle-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 1660,
+            "dimensions": [
+                64,
+                64
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        },
+        {
+            "filename": "planet-earth-1.png",
+            "thumbnail_url": "http:\/\/html.tonatheme.com\/elementor\/loveicon\/wp-content\/uploads\/2022\/08\/planet-earth-1.png",
+            "templates": [
+                {
+                    "source": "templates\/home.json",
+                    "name": "Home"
+                }
+            ],
+            "filesize": 2896,
+            "dimensions": [
+                64,
+                64
+            ],
+            "image_source": "self_created",
+            "person_or_place": "no",
+            "image_urls": ""
+        }
+    ]
+}
