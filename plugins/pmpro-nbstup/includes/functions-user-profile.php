@@ -22,8 +22,13 @@ function pmpronbstup_user_profile_fields($user)
         return;
     }
 
-    $deceased       = get_user_meta($user->ID, 'pmpronbstup_deceased', true);
-    $deceased_date  = get_user_meta($user->ID, 'pmpronbstup_deceased_date', true);
+    $deceased           = get_user_meta($user->ID, 'pmpronbstup_deceased', true);
+    $deceased_date      = get_user_meta($user->ID, 'pmpronbstup_deceased_date', true);
+    $active             = get_user_meta($user->ID, 'pmpronbstup_active', true);
+    $renewal_status     = get_user_meta($user->ID, 'pmpronbstup_renewal_status', true);
+    $membership_start   = get_user_meta($user->ID, 'pmpronbstup_membership_start_date', true);
+    $membership_expiry  = get_user_meta($user->ID, 'pmpronbstup_membership_expiry_date', true);
+    $last_renewal       = get_user_meta($user->ID, 'pmpronbstup_last_renewal_date', true);
 ?>
     <h2><?php esc_html_e('NBSTUP Membership Flags', 'pmpro-nbstup'); ?></h2>
     <table class="form-table" role="presentation">
@@ -42,6 +47,40 @@ function pmpronbstup_user_profile_fields($user)
             </th>
             <td>
                 <input type="date" name="pmpronbstup_deceased_date" id="pmpronbstup_deceased_date" value="<?php echo esc_attr($deceased_date); ?>" />
+            </td>
+        </tr>
+    </table>
+
+    <h2><?php esc_html_e('Membership Status', 'pmpro-nbstup'); ?></h2>
+    <table class="form-table" role="presentation">
+        <tr>
+            <th scope="row"><?php esc_html_e('Active Status', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><strong><?php echo esc_html($active ? __('Active', 'pmpro-nbstup') : __('Inactive', 'pmpro-nbstup')); ?></strong></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e('Renewal Status', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><strong><?php echo esc_html(ucfirst($renewal_status ?: 'none')); ?></strong></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e('Membership Start Date', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><?php echo esc_html($membership_start ?: __('Not set', 'pmpro-nbstup')); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e('Membership Expiry Date', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><?php echo esc_html($membership_expiry ?: __('Not set', 'pmpro-nbstup')); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e('Last Renewal Date', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><?php echo esc_html($last_renewal ?: __('Not set', 'pmpro-nbstup')); ?></p>
             </td>
         </tr>
     </table>

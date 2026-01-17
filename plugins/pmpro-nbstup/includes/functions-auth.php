@@ -12,7 +12,7 @@ if (! defined('ABSPATH')) {
 }
 
 /**
- * Prevent login for inactive subscriber users.
+ * Prevent login for inactive subscriber users or those with expired memberships.
  *
  * @param WP_User|WP_Error $user User object or error
  * @param string           $username Username
@@ -22,10 +22,29 @@ if (! defined('ABSPATH')) {
 function pmpronbstup_authenticate($user, $username, $password)
 {
     if ($user instanceof WP_User) {
+        if (! in_array('subscriber', (array) $user->roles, true)) {
+            return $user;
+        }
+
+        // Check if user is active
         if (! pmpronbstup_is_user_active($user->ID)) {
+            // Provide specific error message based on why they're inactive
+            $deceased = get_user_meta($user->ID, 'pmpronbstup_deceased', true);
+            if ((int) $deceased === 1) {
+                $error_msg = __('<strong>Error</strong>: This account has been marked as deceased and cannot access the system.', 'pmpro-nbstup');
+            } else {
+                // Check if membership expired
+                $expiry_date = get_user_meta($user->ID, 'pmpronbstup_membership_expiry_date', true);
+                if ($expiry_date && strtotime($expiry_date) < time()) {
+                    $error_msg = __('<strong>Error</strong>: Your membership has expired. Please renew your membership to regain access.', 'pmpro-nbstup');
+                } else {
+                    $error_msg = __('<strong>Error</strong>: Your account is not active. Please contact support or renew your membership.', 'pmpro-nbstup');
+                }
+            }
+
             return new WP_Error(
                 'pmpronbstup_inactive',
-                __('<strong>Error</strong>: Your account is not active. Please contact support.', 'pmpro-nbstup')
+                $error_msg
             );
         }
     }

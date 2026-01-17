@@ -46,9 +46,10 @@ add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
 
 /**
  * Check if a user (subscriber) is active according to our addon rules.
+ * Includes checking membership expiration dates for yearly recurring subscriptions.
  *
  * @param int $user_id User ID to check
- * @return bool True if user is active, false otherwise
+ * @return bool True if user is active and membership is valid, false otherwise
  */
 function pmpronbstup_is_user_active($user_id)
 {
@@ -70,8 +71,23 @@ function pmpronbstup_is_user_active($user_id)
 
     // Default is inactive unless explicitly marked active.
     $active = get_user_meta($user_id, 'pmpronbstup_active', true);
+    if ((int) $active !== 1 && $active !== '1' && $active !== true) {
+        return false;
+    }
 
-    return (int) $active === 1 || $active === '1' || $active === true;
+    // CHECK IF MEMBERSHIP HAS EXPIRED (yearly recurring)
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if ($expiry_date) {
+        $expiry_timestamp = strtotime($expiry_date);
+        if ($expiry_timestamp < time()) {
+            // Membership expired - auto deactivate
+            pmpronbstup_deactivate_user($user_id);
+            update_user_meta($user_id, 'pmpronbstup_renewal_status', 'expired');
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /**
@@ -110,6 +126,165 @@ function pmpronbstup_activate_user($user_id)
 function pmpronbstup_deactivate_user($user_id)
 {
     return update_user_meta($user_id, 'pmpronbstup_active', 0);
+}
+
+/**
+ * Check if a user's membership has expired and auto-deactivate if needed.
+ * This is called daily via scheduled event.
+ *
+ * @param int $user_id User ID to check
+ * @return string 'active', 'expired', 'pending_renewal', or null if no membership
+ */
+function pmpronbstup_check_membership_expiry($user_id)
+{
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if (! $expiry_date) {
+        return null;
+    }
+
+    $expiry_timestamp = strtotime($expiry_date);
+    $current_timestamp = time();
+
+    if ($expiry_timestamp < $current_timestamp) {
+        // Membership has expired
+        update_user_meta($user_id, 'pmpronbstup_renewal_status', 'expired');
+        pmpronbstup_deactivate_user($user_id);
+
+        // Send renewal reminder email (only if not already sent)
+        if (! get_user_meta($user_id, 'pmpronbstup_expiry_email_sent_' . date('Y-m'), true)) {
+            pmpronbstup_send_renewal_required_email($user_id);
+            update_user_meta($user_id, 'pmpronbstup_expiry_email_sent_' . date('Y-m'), 1);
+        }
+
+        return 'expired';
+    }
+
+    // Days until expiry
+    $days_until_expiry = ceil(($expiry_timestamp - $current_timestamp) / 86400);
+
+    // Send reminder if expiring soon (within 30 days)
+    if ($days_until_expiry <= 30 && $days_until_expiry > 0) {
+        if (! get_user_meta($user_id, 'pmpronbstup_expiry_reminder_sent', true)) {
+            pmpronbstup_send_expiry_reminder_email($user_id, $days_until_expiry);
+            update_user_meta($user_id, 'pmpronbstup_expiry_reminder_sent', 1);
+        }
+    }
+
+    return 'active';
+}
+
+/**
+ * Check all user memberships for expiry daily (scheduled event)
+ * Should be called via wp_scheduled_event
+ */
+function pmpronbstup_check_all_expired_memberships()
+{
+    $users = get_users(array(
+        'role'       => 'subscriber',
+        'meta_key'   => 'pmpronbstup_active',
+        'meta_value' => '1',
+    ));
+
+    foreach ($users as $user) {
+        pmpronbstup_check_membership_expiry($user->ID);
+    }
+}
+
+/**
+ * Send expiry reminder email to user (30 days before expiry)
+ *
+ * @param int $user_id User ID
+ * @param int $days_until_expiry Days remaining until expiry
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_expiry_reminder_email($user_id, $days_until_expiry)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    $subject = sprintf(
+        __('[%s] Your Membership Expires in %d Days', 'pmpro-nbstup'),
+        $blogname,
+        $days_until_expiry
+    );
+
+    $message = sprintf(
+        __("Hello %s,\n\nYour membership will expire on %s.\n\nTo renew your membership and maintain access, please visit:\n%s\n\nThank you for your continued membership.\n\nBest regards,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        $expiry_date,
+        pmpro_url('checkout'),
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send renewal required email to user (membership expired)
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_renewal_required_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    $subject = sprintf(
+        __('[%s] Your Membership Has Expired', 'pmpro-nbstup'),
+        $blogname
+    );
+
+    $message = sprintf(
+        __("Hello %s,\n\nYour membership expired on %s.\n\nYour account access has been suspended. To renew your membership and regain access, please visit:\n%s\n\nThank you,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        $expiry_date,
+        pmpro_url('checkout'),
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send renewal confirmation email to user (renewal payment verified)
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_renewal_confirmation_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    $subject = sprintf(
+        __('[%s] Your Membership Has Been Renewed', 'pmpro-nbstup'),
+        $blogname
+    );
+
+    $message = sprintf(
+        __("Hello %s,\n\nYour membership renewal has been verified and confirmed.\n\nYour membership is now valid until %s.\n\nThank you for your continued membership.\n\nBest regards,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        $expiry_date,
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
 }
 
 /**
@@ -253,3 +428,30 @@ function pmpronbstup_render_deceased_members_list()
 }
 
 add_shortcode('pmpro_account_nbstup', 'pmpronbstup_account_two_column_shortcode');
+
+/**
+ * Migrate existing active users to have membership expiry dates
+ * Run this on plugin activation to set expiry dates for current active users
+ */
+function pmpronbstup_migrate_existing_users()
+{
+    $users = get_users(array(
+        'role'     => 'subscriber',
+        'meta_key' => 'pmpronbstup_active',
+        'meta_value' => '1'
+    ));
+
+    foreach ($users as $user) {
+        $expiry = get_user_meta($user->ID, 'pmpronbstup_membership_expiry_date', true);
+        if (!$expiry) {
+            // Set expiry to 1 year from today for existing active users
+            update_user_meta($user->ID, 'pmpronbstup_membership_expiry_date',
+                date('Y-m-d', strtotime('+1 year')));
+            update_user_meta($user->ID, 'pmpronbstup_membership_start_date', date('Y-m-d'));
+            update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'active');
+        }
+    }
+}
+
+// Hook the daily expiry check
+add_action('wp_scheduled_event_pmpronbstup_check_expiry', 'pmpronbstup_check_all_expired_memberships');
