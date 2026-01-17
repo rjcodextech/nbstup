@@ -55,7 +55,7 @@ function pmpronbstup_render_admin_page()
                     <td>
                         <input type="file" name="pmpronbstup_csv_file" id="pmpronbstup_csv_file" accept=".csv" required />
                         <p class="description">
-                            <?php esc_html_e('Upload bank statement CSV. It must contain transaction ID and amount columns. Only rows with amount = 51 INR will be used.', 'pmpro-nbstup'); ?>
+                            <?php esc_html_e('Upload bank statement CSV. It must contain transaction ID columns.', 'pmpro-nbstup'); ?>
                         </p>
                     </td>
                 </tr>

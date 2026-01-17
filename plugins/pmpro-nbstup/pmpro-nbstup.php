@@ -49,5 +49,9 @@ function pmpronbstup_load_files()
 
     // User profile fields
     require_once $includes_dir . 'functions-user-profile.php';
+
+    // Payment info fields
+    require_once $includes_dir . 'payment-info-fields.php';
 }
 add_action('plugins_loaded', 'pmpronbstup_load_files');
+
