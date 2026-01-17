@@ -61,6 +61,7 @@ function pmpronbstup_save_user_profile_fields($user_id)
         return;
     }
 
+    $current_deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
     $deceased = isset($_POST['pmpronbstup_deceased']) ? 1 : 0;
     update_user_meta($user_id, 'pmpronbstup_deceased', $deceased);
 
@@ -75,6 +76,31 @@ function pmpronbstup_save_user_profile_fields($user_id)
     if ($deceased) {
         pmpronbstup_deactivate_user($user_id);
     }
+
+    // Send notification if deceased status changed from not deceased to deceased
+    if ($current_deceased != '1' && $deceased == 1) {
+        pmpronbstup_send_deceased_notification($user_id);
+    }
 }
+
+/**
+ * Send notification email when a member is marked as deceased
+ *
+ * @param int $user_id User ID
+ */
+function pmpronbstup_send_deceased_notification($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return;
+    }
+
+    $admin_email = get_option('admin_email');
+    $subject = __('Member Marked as Deceased', 'pmpro-nbstup');
+    $message = sprintf(__('Member %s has been marked as deceased.', 'pmpro-nbstup'), $user->display_name);
+
+    wp_mail($admin_email, $subject, $message);
+}
+
 add_action('personal_options_update', 'pmpronbstup_save_user_profile_fields');
 add_action('edit_user_profile_update', 'pmpronbstup_save_user_profile_fields');
