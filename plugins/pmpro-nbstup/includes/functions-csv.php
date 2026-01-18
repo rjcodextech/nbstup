@@ -114,6 +114,13 @@ function pmpronbstup_handle_csv_upload()
         // Determine if this is a RENEWAL or INITIAL ACTIVATION
         $existing_expiry = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
         $is_renewal = (! empty($existing_expiry));
+        $was_already_active = pmpronbstup_is_user_active($user_id);
+
+        // Skip if already active (already processed) - only if not a renewal
+        if (! $is_renewal && $was_already_active) {
+            $skipped++;
+            continue;
+        }
 
         // Calculate expiry date (1 year from today)
         $new_expiry_date = date('Y-m-d', strtotime('+1 year'));
@@ -136,12 +143,6 @@ function pmpronbstup_handle_csv_upload()
             update_user_meta($user_id, 'pmpronbstup_membership_expiry_date', $new_expiry_date);
             update_user_meta($user_id, 'pmpronbstup_renewal_status', 'active');
             update_user_meta($user_id, 'pmpronbstup_active', 1);
-
-            // Only skip if already had an active membership
-            if (pmpronbstup_is_user_active($user_id)) {
-                $skipped++;
-                continue;
-            }
 
             $activated++;
             pmpronbstup_send_activation_email($user_id);

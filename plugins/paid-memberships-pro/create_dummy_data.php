@@ -16,9 +16,11 @@
  * Note: Assumes membership level 1 exists. Adjust as needed.
  */
 
-// Prevent direct access
+// Allow direct access for execution
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+    define( 'ABSPATH', dirname(__FILE__) . '/../../../' );
+    define( 'PMPRO_DIR', dirname(__FILE__) . '/' );
+    require_once ABSPATH . 'wp-load.php';
 }
 
 // Include PMPro functions if not already loaded
@@ -77,6 +79,10 @@ for ($i = 1; $i <= 10; $i++) {
         $order->billing->phone = '555-1234';
         $order->gateway = 'check';
         $order->status = 'success';
+        $order->saveOrder();
+
+        // Set bank transaction ID for check payments
+        $order->payment_transaction_id = 'BANK' . strtoupper(substr(md5($order->id), 0, 8));
         $order->saveOrder();
 
         $created_users[] = [

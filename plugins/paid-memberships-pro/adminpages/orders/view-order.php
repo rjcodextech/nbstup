@@ -82,6 +82,14 @@ $subscription = $order->get_subscription();
 							);
 						}
 
+						// Bank Transaction ID for check payments.
+						if ( $order->gateway === 'check' ) {
+							$pmpro_order_single_meta['bank_transaction_id'] = array(
+								'label' => __( 'Bank Transaction ID', 'paid-memberships-pro' ),
+								'value' => empty( $order->payment_transaction_id ) ? __( '&#8212;', 'paid-memberships-pro' ) : '<code>' . esc_html( $order->payment_transaction_id ) . '</code>',
+							);
+						}
+
 						// Pay to.
 						$business_address = get_option( 'pmpro_business_address' );
 						if ( ! empty( $business_address['name'] ) ) {

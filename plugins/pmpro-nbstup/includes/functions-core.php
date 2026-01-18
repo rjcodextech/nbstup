@@ -320,7 +320,7 @@ function pmpronbstup_account_two_column_shortcode()
                     <li><a href="#pmpro_account-profile"><?php esc_html_e('Account Overview', 'pmpro-nbstup'); ?></a></li>
                     <li><a href="#pmpro_account-membership"><?php esc_html_e('My Memberships', 'pmpro-nbstup'); ?></a></li>
                     <li><a href="#pmpro_account-orders"><?php esc_html_e('Order / Invoice History', 'pmpro-nbstup'); ?></a></li>
-                    <li><a href="#pmpro_account-links"><?php esc_html_e('Member Links', 'pmpro-nbstup'); ?></a></li>
+                    <!-- <li><a href="#pmpro_account-links"><?php //esc_html_e('Member Links', 'pmpro-nbstup'); ?></a></li> -->
                     <li><a href="?view=contribution"><?php esc_html_e('Contribution', 'pmpro-nbstup'); ?></a></li>
                 </ul>
             </nav>
@@ -372,7 +372,7 @@ function pmpronbstup_render_deceased_members_list()
 
     ob_start();
     ?>
-    <h2><?php esc_html_e('Deceased Members - Pay Contribution', 'pmpro-nbstup'); ?></h2>
+    <strong><?php esc_html_e('Deceased Members - Pay Contribution', 'pmpro-nbstup'); ?></strong>
     <?php if (empty($users)) : ?>
         <p><?php esc_html_e('No deceased members found.', 'pmpro-nbstup'); ?></p>
     <?php else : ?>
