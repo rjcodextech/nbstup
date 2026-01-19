@@ -167,6 +167,133 @@ function pmpronbstup_handle_csv_upload()
 add_action('admin_init', 'pmpronbstup_handle_csv_upload');
 
 /**
+ * Handle contribution CSV upload and processing
+ */
+function pmpronbstup_handle_contribution_csv_upload()
+{
+    if (! is_admin()) {
+        return;
+    }
+
+    if (empty($_POST['pmpronbstup_contribution_csv_nonce']) || ! wp_verify_nonce($_POST['pmpronbstup_contribution_csv_nonce'], 'pmpronbstup_contribution_csv_import')) {
+        return;
+    }
+
+    if (! current_user_can('manage_options')) {
+        return;
+    }
+
+    if (empty($_FILES['pmpronbstup_contribution_csv_file']['tmp_name'])) {
+        add_settings_error('pmpro-nbstup', 'no_contribution_file', __('No CSV file uploaded.', 'pmpro-nbstup'), 'error');
+        return;
+    }
+
+    $file = $_FILES['pmpronbstup_contribution_csv_file']['tmp_name'];
+
+    $handle = fopen($file, 'r');
+    if (! $handle) {
+        add_settings_error('pmpro-nbstup', 'cannot_open_contribution', __('Unable to open uploaded file.', 'pmpro-nbstup'), 'error');
+        return;
+    }
+
+    $row        = 0;
+    $verified   = 0;
+    $skipped    = 0;
+    $not_found  = 0;
+    $header_map = array();
+
+    while (($data = fgetcsv($handle, 0, ',')) !== false) {
+        $row++;
+
+        // Assume first row is header
+        if (1 === $row) {
+            $header_map = array();
+            foreach ($data as $index => $col) {
+                $key                 = strtolower(trim($col));
+                $header_map[$key]  = $index;
+            }
+            continue;
+        }
+
+        // Find transaction ID column
+        $transaction_id_col = null;
+
+        foreach ($header_map as $name => $index) {
+            if (null === $transaction_id_col && false !== strpos($name, 'transaction')) {
+                $transaction_id_col = $index;
+            }
+        }
+
+        if (null === $transaction_id_col) {
+            $skipped++;
+            continue;
+        }
+
+        $csv_transaction_id = trim($data[$transaction_id_col]);
+
+        if ('' === $csv_transaction_id) {
+            $skipped++;
+            continue;
+        }
+
+        // Find user by contribution_transaction_id user meta
+        global $wpdb;
+
+        $user_meta = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+                'bank_transaction_id',
+                $csv_transaction_id
+            )
+        );
+
+        if (! $user_meta) {
+            $not_found++;
+            continue;
+        }
+
+        $user_id = (int) $user_meta->user_id;
+        $user    = get_userdata($user_id);
+        if (! $user || ! in_array('subscriber', (array) $user->roles, true)) {
+            $skipped++;
+            continue;
+        }
+
+        // Check if user has contribution requirement
+        $contribution_required = get_user_meta($user_id, 'pmpronbstup_contribution_required', true);
+        if ((int) $contribution_required !== 1) {
+            $skipped++;
+            continue;
+        }
+
+        // Mark contribution as paid
+        update_user_meta($user_id, 'pmpronbstup_contribution_paid', 1);
+        update_user_meta($user_id, 'pmpronbstup_contribution_transaction_id', $csv_transaction_id);
+
+        // Send confirmation email
+        pmpronbstup_send_contribution_confirmation_email($user_id);
+
+        $verified++;
+    }
+
+    fclose($handle);
+
+    add_settings_error(
+        'pmpro-nbstup',
+        'contribution_import_result',
+        sprintf(
+            /* translators: 1: verified count, 2: skipped count, 3: not found count */
+            __('Contribution verification finished. Verified: %1$d, Skipped: %2$d, No matching transaction: %3$d.', 'pmpro-nbstup'),
+            $verified,
+            $skipped,
+            $not_found
+        ),
+        'updated'
+    );
+}
+add_action('admin_init', 'pmpronbstup_handle_contribution_csv_upload');
+
+/**
  * Send activation email to user (initial membership)
  *
  * @param int $user_id User ID

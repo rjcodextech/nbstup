@@ -1,181 +1,489 @@
-// SCSS source for NBSTUP Membership Account layout.
-// Run `npm install` then `npm run dev` or `npm run build` from the plugin folder
-// to compile into `assets/css/frontend.css`.
+// ============================================================================
+// SCSS Source for PMPro NBSTUP Membership Account Layout
+// ============================================================================
+// Build: Run `npm run build` from the plugin folder to compile into CSS
+// Development: Run `npm run dev` for watch mode with live compilation
+// Output: assets/css/frontend.css and assets/css/frontend.css.map
+// ============================================================================
 
-/* Two-column layout for NBSTUP Membership Account page */
+// Color Palette
+$color-primary: #3b82f6;
+$color-primary-dark: #2563eb;
+$color-primary-light: #dbeafe;
+$color-gray-900: #111827;
+$color-gray-700: #374151;
+$color-gray-600: #4b5563;
+$color-gray-500: #6b7280;
+$color-gray-400: #d1d5db;
+$color-gray-300: #e1e5e9;
+$color-gray-200: #e5e7eb;
+$color-gray-100: #f3f4f6;
+$color-gray-50: #f9fafb;
+$color-white: #ffffff;
+$color-border: #e1e5e9;
+$color-success: #10b981;
+$color-warning: #f59e0b;
+$color-danger: #ef4444;
 
-.pmpro-nbstup-account-layout {
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-2xl: 24px;
+$spacing-3xl: 32px;
+
+// Border Radius
+$radius-sm: 6px;
+$radius-md: 8px;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+// Transitions
+$transition-fast: all 0.2s ease;
+$transition-smooth: all 0.3s ease;
+
+// Breakpoints
+$breakpoint-lg: 1024px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 480px;
+
+// ============================================================================
+// Mixins
+// ============================================================================
+
+@mixin flex-center {
   display: flex;
-  gap: 32px;
-  align-items: flex-start;
-  margin: 20px 0;
+  align-items: center;
+  justify-content: center;
 }
 
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin button-base {
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-sm;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  transition: $transition-fast;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: inherit;
+  line-height: inherit;
+
+  &:active,
+  &:focus {
+    outline: 2px solid rgba($color-primary, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+@mixin button-primary {
+  background-color: $color-primary;
+  color: $color-white;
+  border-color: $color-primary;
+
+  &:hover {
+    background-color: $color-primary-dark;
+    border-color: $color-primary-dark;
+  }
+}
+
+@mixin button-secondary {
+  background-color: $color-gray-500;
+  color: $color-white;
+  border-color: $color-gray-500;
+
+  &:hover {
+    background-color: $color-gray-600;
+    border-color: $color-gray-600;
+  }
+}
+
+@mixin card {
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+}
+
+// ============================================================================
+// Main Layout Styles
+// ============================================================================
+
+/* Two-column layout for NBSTUP Membership Account page */
+.pmpro-nbstup-account-layout {
+  display: flex;
+  gap: $spacing-3xl;
+  align-items: flex-start;
+  margin: $spacing-xl 0;
+}
+
+// Sidebar Navigation
 .pmpro-nbstup-account-sidebar {
   flex: 0 0 280px;
   max-width: 280px;
-  background: #ffffff;
-  border: 1px solid #e1e5e9;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: $spacing-2xl;
   position: sticky;
-  top: 20px;
-}
+  top: $spacing-xl;
 
-.pmpro-nbstup-account-nav {
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+  @include card;
 
-  li + li {
-    margin-top: 4px;
-  }
-
-  a {
-    display: block;
-    padding: 12px 16px;
-    border-radius: 6px;
-    color: #374151;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
-
-    &:hover,
-    &:focus {
-      background-color: #f3f4f6;
-      color: #111827;
-      border-color: #d1d5db;
+  // Navigation list
+  .pmpro-nbstup-account-nav {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
-    &.active {
-      background-color: #3b82f6;
-      color: #ffffff;
-      border-color: #3b82f6;
+    li + li {
+      margin-top: $spacing-xs;
+    }
+
+    a {
+      display: block;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-sm;
+      color: $color-gray-700;
+      text-decoration: none;
+      font-weight: 500;
+      transition: $transition-fast;
+      border: 1px solid transparent;
+
+      &:hover,
+      &:focus {
+        background-color: $color-gray-100;
+        color: $color-gray-900;
+        border-color: $color-gray-400;
+      }
+
+      &.active {
+        @include button-primary;
+      }
     }
   }
 }
 
+// Main content area
 .pmpro-nbstup-account-content {
   flex: 1 1 auto;
   min-width: 0;
-  background: #ffffff;
-  border: 1px solid #e1e5e9;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: $spacing-2xl;
+
+  @include card;
+
+  // Headings within content
+  h2,
+  h3 {
+    color: $color-gray-900;
+    margin-top: $spacing-2xl;
+    margin-bottom: $spacing-lg;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  // Paragraphs and text
+  p {
+    color: $color-gray-700;
+    line-height: 1.6;
+    margin-bottom: $spacing-md;
+  }
 }
+
+// ============================================================================
+// Table Styles
+// ============================================================================
 
 /* Deceased Members Table Styles */
 .pmpro-nbstup-deceased-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin: $spacing-xl 0;
+  font-size: 0.95rem;
 
   th,
   td {
-    padding: 12px 16px;
+    padding: $spacing-md $spacing-lg;
     text-align: left;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid $color-gray-200;
   }
 
   th {
-    background-color: #f9fafb;
+    background-color: $color-gray-50;
     font-weight: 600;
-    color: #374151;
-    border-bottom: 2px solid #d1d5db;
+    color: $color-gray-700;
+    border-bottom: 2px solid $color-gray-400;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
   }
 
-  tbody tr:hover {
-    background-color: #f9fafb;
-  }
+  tbody {
+    tr:hover {
+      background-color: $color-gray-50;
 
-  .button {
-    background-color: #3b82f6;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    display: inline-block;
-    transition: background-color 0.2s ease;
+      .button {
+        opacity: 1;
+      }
+    }
 
-    &:hover {
-      background-color: #2563eb;
+    tr:last-child {
+      td {
+        border-bottom: 1px solid $color-gray-400;
+      }
     }
   }
+
+  // Avatar styles in table
+  .member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  // Button in table
+  .button {
+    @include button-base;
+    @include button-primary;
+    opacity: 0.9;
+    transition: $transition-smooth;
+  }
 }
+
+// ============================================================================
+// Pagination Styles
+// ============================================================================
 
 /* Pagination Styles */
 .pmpro-nbstup-pagination {
-  display: flex;
+  @include flex-center;
+  gap: $spacing-lg;
+  margin-top: $spacing-2xl;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 16px;
-  margin-top: 24px;
 
   .button {
-    background-color: #6b7280;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #4b5563;
-    }
+    @include button-base;
+    @include button-secondary;
   }
 
   span {
-    color: #6b7280;
+    color: $color-gray-500;
     font-weight: 500;
+  }
+
+  // Disabled state
+  .button:disabled,
+  .button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: $color-gray-500;
+      border-color: $color-gray-500;
+    }
   }
 }
 
-@media (max-width: 1024px) {
+// ============================================================================
+// Status Badges and Alerts
+// ============================================================================
+
+.pmpro-nbstup-badge {
+  display: inline-block;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.badge-success {
+    background-color: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+
+  &.badge-warning {
+    background-color: rgba($color-warning, 0.1);
+    color: $color-warning;
+  }
+
+  &.badge-danger {
+    background-color: rgba($color-danger, 0.1);
+    color: $color-danger;
+  }
+
+  &.badge-info {
+    background-color: rgba($color-primary, 0.1);
+    color: $color-primary;
+  }
+}
+
+// ============================================================================
+// Responsive Design
+// ============================================================================
+
+/* Tablet Breakpoint (1024px) */
+@media (max-width: $breakpoint-lg) {
   .pmpro-nbstup-account-layout {
-    gap: 24px;
+    gap: $spacing-2xl;
   }
 
   .pmpro-nbstup-account-sidebar {
     flex: 0 0 240px;
     max-width: 240px;
-    padding: 20px;
+    padding: $spacing-xl;
   }
 }
 
-@media (max-width: 768px) {
+/* Mobile Breakpoint (768px) */
+@media (max-width: $breakpoint-md) {
   .pmpro-nbstup-account-layout {
     flex-direction: column;
-    gap: 20px;
-    margin: 10px 0;
+    gap: $spacing-xl;
+    margin: $spacing-md 0;
   }
 
   .pmpro-nbstup-account-sidebar {
+    flex: 0 0 auto;
     max-width: 100%;
     position: static;
-    padding: 16px;
-  }
+    padding: $spacing-lg;
 
-  .pmpro-nbstup-account-nav {
-    a {
-      padding: 10px 12px;
+    .pmpro-nbstup-account-nav {
+      a {
+        padding: $spacing-md $spacing-md;
+      }
     }
   }
 
   .pmpro-nbstup-account-content {
-    padding: 16px;
+    padding: $spacing-lg;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+    }
+  }
+
+  .pmpro-nbstup-deceased-table {
+    margin: $spacing-lg 0;
+
+    th,
+    td {
+      padding: $spacing-sm $spacing-md;
+      font-size: 0.9rem;
+    }
+
+    th {
+      font-size: 0.8rem;
+    }
+
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+    }
+
+    .button {
+      padding: $spacing-xs $spacing-md;
+      font-size: 0.85rem;
+    }
+  }
+
+  .pmpro-nbstup-pagination {
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+
+    .button {
+      padding: $spacing-sm $spacing-md;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Small Mobile Breakpoint (480px) */
+@media (max-width: $breakpoint-sm) {
+  .pmpro-nbstup-account-layout {
+    gap: $spacing-lg;
+    margin: $spacing-md 0;
+  }
+
+  .pmpro-nbstup-account-sidebar {
+    padding: $spacing-md;
+  }
+
+  .pmpro-nbstup-account-content {
+    padding: $spacing-md;
+
+    h2 {
+      font-size: 1.125rem;
+      margin-bottom: $spacing-md;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+    }
   }
 
   .pmpro-nbstup-deceased-table {
     th,
     td {
-      padding: 8px 12px;
+      padding: $spacing-xs;
+    }
+  }
+}
+
+// ============================================================================
+// Print Styles
+// ============================================================================
+
+@media print {
+  .pmpro-nbstup-account-sidebar,
+  .pmpro-nbstup-pagination,
+  .button {
+    display: none;
+  }
+
+  .pmpro-nbstup-account-layout {
+    gap: 0;
+  }
+
+  .pmpro-nbstup-account-content {
+    box-shadow: none;
+    border: none;
+  }
+
+  .pmpro-nbstup-deceased-table {
+    border: 1px solid #000;
+
+    th,
+    td {
+      border: 1px solid #000;
     }
   }
 }

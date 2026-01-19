@@ -455,3 +455,193 @@ function pmpronbstup_migrate_existing_users()
 
 // Hook the daily expiry check
 add_action('wp_scheduled_event_pmpronbstup_check_expiry', 'pmpronbstup_check_all_expired_memberships');
+
+/**
+ * Mark all active users as requiring contribution payment
+ * Called when a user is marked as deceased
+ *
+ * @param int $deceased_user_id User ID of the deceased member
+ * @return int Number of users marked to pay contribution
+ */
+function pmpronbstup_mark_contribution_required($deceased_user_id)
+{
+    $users = get_users(array(
+        'role'       => 'subscriber',
+        'meta_key'   => 'pmpronbstup_active',
+        'meta_value' => '1',
+    ));
+
+    $count = 0;
+    $contribution_deadline = date('Y-m-d', strtotime('+1 month'));
+
+    foreach ($users as $user) {
+        // Skip the deceased user
+        if ($user->ID === $deceased_user_id) {
+            continue;
+        }
+
+        // Check if already marked as requiring contribution
+        $already_required = get_user_meta($user->ID, 'pmpronbstup_contribution_required', true);
+        if ((int) $already_required === 1) {
+            continue;
+        }
+
+        update_user_meta($user->ID, 'pmpronbstup_contribution_required', 1);
+        update_user_meta($user->ID, 'pmpronbstup_contribution_deadline', $contribution_deadline);
+        update_user_meta($user->ID, 'pmpronbstup_contribution_paid', 0);
+
+        // Send notification email
+        pmpronbstup_send_contribution_required_email($user->ID, $contribution_deadline);
+
+        $count++;
+    }
+
+    return $count;
+}
+
+/**
+ * Send email notifying user that they need to pay contribution
+ *
+ * @param int    $user_id User ID
+ * @param string $deadline Deadline date (Y-m-d format)
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_required_email($user_id, $deadline)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    $subject  = sprintf(__('[%s] Contribution Payment Required', 'pmpro-nbstup'), $blogname);
+    $message  = sprintf(
+        __("Hello %s,\n\nA member of our community has passed away. In their memory, all active members are requested to pay a contribution.\n\nContribution Deadline: %s\n\nPlease visit the following link to make your contribution:\n%s\n\nThank you for your support.\n\nBest regards,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        date_i18n(get_option('date_format'), strtotime($deadline)),
+        pmpro_url('checkout'),
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Check all users for overdue contribution payments and deactivate if needed
+ * Should be called via wp_scheduled_event
+ */
+function pmpronbstup_check_contribution_deadlines()
+{
+    $users = get_users(array(
+        'meta_key'   => 'pmpronbstup_contribution_required',
+        'meta_value' => '1',
+    ));
+
+    foreach ($users as $user) {
+        // Skip if contribution already paid
+        $paid = get_user_meta($user->ID, 'pmpronbstup_contribution_paid', true);
+        if ((int) $paid === 1) {
+            continue;
+        }
+
+        // Check deadline
+        $deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deadline', true);
+        if (! $deadline) {
+            continue;
+        }
+
+        $deadline_timestamp = strtotime($deadline);
+        $current_timestamp  = time();
+
+        if ($deadline_timestamp < $current_timestamp) {
+            // Deadline passed, deactivate user
+            pmpronbstup_deactivate_user($user->ID);
+            update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'contribution_overdue');
+
+            // Send overdue notification email
+            pmpronbstup_send_contribution_overdue_email($user->ID);
+        }
+    }
+}
+
+/**
+ * Send email when contribution payment is overdue
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_overdue_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    $subject  = sprintf(__('[%s] Your Contribution Payment is Overdue', 'pmpro-nbstup'), $blogname);
+    $message  = sprintf(
+        __("Hello %s,\n\nYour contribution payment deadline has passed.\n\nYour account has been deactivated. To reactivate your account and continue your membership, please pay the contribution.\n\nVisit: %s\n\nThank you,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        pmpro_url('checkout'),
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send confirmation email when contribution is verified as paid
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_confirmation_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    $subject  = sprintf(__('[%s] Your Contribution Has Been Verified', 'pmpro-nbstup'), $blogname);
+    $message  = sprintf(
+        __("Hello %s,\n\nThank you! Your contribution payment has been verified and recorded.\n\nYour account remains active. Thank you for your support.\n\nBest regards,\n%s", 'pmpro-nbstup'),
+        $user->display_name,
+        $blogname
+    );
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Check if user is active (including contribution status)
+ * Updated to also check contribution requirements
+ *
+ * @param int $user_id User ID to check
+ * @return bool True if user is active and all requirements met, false otherwise
+ */
+function pmpronbstup_is_user_active_with_contribution($user_id)
+{
+    // First check basic active status
+    if (! pmpronbstup_is_user_active($user_id)) {
+        return false;
+    }
+
+    // Check if contribution is required
+    $contribution_required = get_user_meta($user_id, 'pmpronbstup_contribution_required', true);
+    if ((int) $contribution_required === 1) {
+        // Check if contribution is paid
+        $contribution_paid = get_user_meta($user_id, 'pmpronbstup_contribution_paid', true);
+        if ((int) $contribution_paid !== 1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Hook the daily contribution deadline check
+add_action('wp_scheduled_event_pmpronbstup_check_contribution', 'pmpronbstup_check_contribution_deadlines');

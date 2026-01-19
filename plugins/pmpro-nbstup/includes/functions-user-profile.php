@@ -84,6 +84,38 @@ function pmpronbstup_user_profile_fields($user)
             </td>
         </tr>
     </table>
+
+    <h2><?php esc_html_e('Contribution Payment Status', 'pmpro-nbstup'); ?></h2>
+    <table class="form-table" role="presentation">
+        <?php
+        $contribution_required = get_user_meta($user->ID, 'pmpronbstup_contribution_required', true);
+        $contribution_paid     = get_user_meta($user->ID, 'pmpronbstup_contribution_paid', true);
+        $contribution_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deadline', true);
+        ?>
+        <tr>
+            <th scope="row"><?php esc_html_e('Contribution Required', 'pmpro-nbstup'); ?></th>
+            <td>
+                <p><strong><?php echo esc_html((int) $contribution_required === 1 ? __('Yes', 'pmpro-nbstup') : __('No', 'pmpro-nbstup')); ?></strong></p>
+            </td>
+        </tr>
+        <?php if ((int) $contribution_required === 1) : ?>
+            <tr>
+                <th scope="row"><?php esc_html_e('Contribution Paid', 'pmpro-nbstup'); ?></th>
+                <td>
+                    <label>
+                        <input type="checkbox" name="pmpronbstup_contribution_paid" value="1" <?php checked((int) $contribution_paid, 1); ?> />
+                        <?php esc_html_e('Mark contribution as paid', 'pmpro-nbstup'); ?>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php esc_html_e('Contribution Deadline', 'pmpro-nbstup'); ?></th>
+                <td>
+                    <p><?php echo esc_html($contribution_deadline ?: __('Not set', 'pmpro-nbstup')); ?></p>
+                </td>
+            </tr>
+        <?php endif; ?>
+    </table>
 <?php
 }
 add_action('show_user_profile', 'pmpronbstup_user_profile_fields');
@@ -114,6 +146,16 @@ function pmpronbstup_save_user_profile_fields($user_id)
     // If user is marked deceased, also ensure they are not active
     if ($deceased) {
         pmpronbstup_deactivate_user($user_id);
+        
+        // Mark all other active users to pay contribution
+        pmpronbstup_mark_contribution_required($user_id);
+    }
+
+    // Save contribution paid status if contribution is required
+    $contribution_required = get_user_meta($user_id, 'pmpronbstup_contribution_required', true);
+    if ((int) $contribution_required === 1) {
+        $contribution_paid = isset($_POST['pmpronbstup_contribution_paid']) ? 1 : 0;
+        update_user_meta($user_id, 'pmpronbstup_contribution_paid', $contribution_paid);
     }
 
     // Send notification if deceased status changed from not deceased to deceased

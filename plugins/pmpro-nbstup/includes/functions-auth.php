@@ -13,6 +13,7 @@ if (! defined('ABSPATH')) {
 
 /**
  * Prevent login for inactive subscriber users or those with expired memberships.
+ * Also checks if contribution is required and paid.
  *
  * @param WP_User|WP_Error $user User object or error
  * @param string           $username Username
@@ -46,6 +47,24 @@ function pmpronbstup_authenticate($user, $username, $password)
                 'pmpronbstup_inactive',
                 $error_msg
             );
+        }
+
+        // Check if contribution is required but not paid
+        $contribution_required = get_user_meta($user->ID, 'pmpronbstup_contribution_required', true);
+        if ((int) $contribution_required === 1) {
+            $contribution_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_paid', true);
+            if ((int) $contribution_paid !== 1) {
+                $deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deadline', true);
+                $error_msg = sprintf(
+                    __('<strong>Error</strong>: Your contribution payment is required by %s. Please pay the contribution to access your account.', 'pmpro-nbstup'),
+                    $deadline ? date_i18n(get_option('date_format'), strtotime($deadline)) : 'the deadline'
+                );
+
+                return new WP_Error(
+                    'pmpronbstup_contribution_required',
+                    $error_msg
+                );
+            }
         }
     }
 
