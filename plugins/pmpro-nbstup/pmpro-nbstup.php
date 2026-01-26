@@ -21,9 +21,11 @@
  * - CSV-based user activation via bank transfer verification
  * - Yearly membership renewal with automatic expiration
  * - Deceased member management
- * - Contribution payment system when members pass away
+ * - Daughter wedding contribution system
+ * - Contribution payment system when members pass away or have daughter weddings
  * - Automated email notifications
  * - Checkout fields for transaction ID and payment receipt collection
+ * - User listing shortcode with search and pagination
  *
  * @package PMProNBSTUP
  * @version 0.1.0
@@ -59,16 +61,24 @@ if (!defined('PMPRO_VERSION')) {
  *   - pmpronbstup_active: 0/1 flag for user account access
  *   - pmpronbstup_deceased: 0/1 flag for deceased members
  *   - pmpronbstup_deceased_date: Y-m-d format date of death
+ *   - pmpronbstup_daughter_wedding: 0/1 flag for daughter wedding
+ *   - pmpronbstup_wedding_date: Y-m-d format wedding date
  *   - pmpronbstup_membership_start_date: Y-m-d when membership started
  *   - pmpronbstup_membership_expiry_date: Y-m-d when membership expires
  *   - pmpronbstup_renewal_status: active|renewal|expired|contribution_overdue
  *   - pmpronbstup_last_renewal_date: Y-m-d date of last renewal
  *
- *   Contribution:
- *   - pmpronbstup_contribution_required: 0/1 whether member must pay
- *   - pmpronbstup_contribution_deadline: Y-m-d payment deadline
- *   - pmpronbstup_contribution_paid: 0/1 whether payment verified
- *   - pmpronbstup_contribution_transaction_id: Payment transaction ID
+ *   Deceased Contribution:
+ *   - pmpronbstup_contribution_deceased_required: 0/1 whether member must pay
+ *   - pmpronbstup_contribution_deceased_deadline: Y-m-d payment deadline
+ *   - pmpronbstup_contribution_deceased_paid: 0/1 whether payment verified
+ *   - pmpronbstup_contribution_deceased_transaction_id: Payment transaction ID
+ *
+ *   Wedding Contribution:
+ *   - pmpronbstup_contribution_wedding_required: 0/1 whether member must pay
+ *   - pmpronbstup_contribution_wedding_deadline: Y-m-d payment deadline
+ *   - pmpronbstup_contribution_wedding_paid: 0/1 whether payment verified
+ *   - pmpronbstup_contribution_wedding_transaction_id: Payment transaction ID
  *
  * @return void
  */
@@ -136,6 +146,12 @@ function pmpronbstup_load_files()
 
     // Checkout form fields for transaction ID and payment receipt collection.
     require_once $includes_dir . 'payment-info-fields.php';
+
+    // Email settings page and template management.
+    require_once $includes_dir . 'functions-email-settings.php';
+
+    // Contributions management page.
+    require_once $includes_dir . 'functions-contributions-page.php';
 
     // Now that all functions are loaded, run migration if needed.
     pmpronbstup_run_migration();

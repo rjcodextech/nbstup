@@ -11,15 +11,18 @@
 3. [User Activation Feature](#user-activation-feature)
 4. [Membership Management](#membership-management)
 5. [Deceased Member Handling](#deceased-member-handling)
-6. [Contribution Verification Feature](#contribution-verification-feature)
-7. [Admin Interface](#admin-interface)
-8. [User Profile Fields](#user-profile-fields)
-9. [Checkout Fields](#checkout-fields)
-10. [Email Notifications](#email-notifications)
-11. [Scheduled Events](#scheduled-events)
-12. [Technical Details](#technical-details)
-13. [Installation & Deployment](#installation--deployment)
-14. [Troubleshooting](#troubleshooting)
+6. [Daughter Wedding Contribution](#daughter-wedding-contribution)
+7. [Contribution Verification Feature](#contribution-verification-feature)
+8. [Users List Shortcode](#users-list-shortcode)
+9. [Email Configuration](#email-configuration)
+10. [Admin Interface](#admin-interface)
+11. [User Profile Fields](#user-profile-fields)
+12. [Checkout Fields](#checkout-fields)
+13. [Email Notifications](#email-notifications)
+14. [Scheduled Events](#scheduled-events)
+15. [Technical Details](#technical-details)
+16. [Installation & Deployment](#installation--deployment)
+17. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -31,8 +34,12 @@
 ✅ **Yearly Membership** - Auto-set 1-year membership duration  
 ✅ **Auto-Deactivation** - Disable accounts when membership expires  
 ✅ **Deceased Members** - Mark and manage deceased members  
-✅ **Contribution System** - Require contribution when member dies  
-✅ **Email Notifications** - Automated emails for all events  
+✅ **Daughter Wedding** - Request contributions for daughter weddings (multiple times)  
+✅ **Contribution System** - Require contribution when member dies or has wedding  
+✅ **Contributions Management** - Dedicated admin page to monitor and manage all contributions  
+✅ **Users List Shortcode** - Display all users with search & pagination  
+✅ **Email Notifications** - Automated emails for all events (fully configurable)  
+✅ **Admin Notifications** - Daily summary of overdue contributions  
 ✅ **Checkout Fields** - Collect transaction IDs and receipts  
 
 ---
@@ -328,17 +335,232 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 
 ---
 
-## Admin Interface
+## Daughter Wedding Contribution
+
+**Feature:** Request contributions from all active members when a member has a daughter wedding. **This can be triggered multiple times** for different weddings.
+
+### How It Works
+
+1. **Admin marks member for daughter wedding:**
+   - Edit user profile
+   - Check "Mark this member as having daughter wedding"
+   - Set wedding date (optional)
+   - Save profile
+
+2. **System automatically:**
+   - Marks all active members to pay wedding contribution
+   - Sets deadline = 1 month from today
+   - Sends notification emails to each member
+   - Sends admin notification
+
+3. **Members make payment:**
+   - Via bank transfer with transaction ID
+   - Via online checkout
+   - Via other means
+
+4. **Admin verifies payments:**
+   - Go to: Memberships > User Approval > Wedding Contribution tab
+   - Upload CSV with transaction IDs
+   - System marks contributions as paid
+   - Sends confirmation emails
+
+### Multiple Weddings Support
+
+Unlike deceased contributions, **wedding contributions can be requested multiple times**:
+- Same member can have multiple daughter weddings over time
+- Each new wedding creates a new contribution requirement
+- Previous wedding contributions don't block new ones
+- Deadline is updated each time
+
+### Wedding vs Deceased Contributions
+
+**Managed Separately:**
+- Deceased contribution tracked separately from wedding contribution
+- User can owe both types simultaneously
+- Each has its own deadline, paid status, and transaction ID
+- Both types visible in user profile
+
+### Manual Override
+
+**If member pays by other means:**
+1. Go to Users > [Member Name]
+2. Under "Daughter Wedding Contribution" section
+3. Check "Mark contribution as paid"
+4. Click "Update Profile"
+
+---
+
+## Users List Shortcode
+
+**Display all users with search and pagination on any page.**
+
+### Usage
+
+```
+[pmpro_nbstup_users_list]
+```
+
+**With custom items per page:**
+```
+[pmpro_nbstup_users_list per_page="30"]
+```
+
+### Features
+
+- **Search**: Search by username, email, or display name
+- **Pagination**: Navigate through pages with customizable items per page
+- **Responsive**: Mobile-friendly table design
+- **Sortable**: Users ordered by display name
+
+### Displayed Information
+
+| Column | Description |
+|--------|-------------|
+| ID | User ID |
+| Name | Display name |
+| Email | User email |
+| Username | Login username |
+| Active | Active/Inactive status badge |
+| Deceased | Yes/No badge |
+| Wedding | Yes/No badge |
+| Membership Status | active, renewal, expired, etc. |
+| Expiry Date | Membership expiry date |
+| Deceased Contribution | Paid/Pending/- |
+| Wedding Contribution | Paid/Pending/- |
+
+### Search Functionality
+
+- Case-insensitive wildcard search
+- Searches in: username, email, display name
+- Results count displayed
+- Clear search button
+- Preserves pagination
+
+### Status Badges
+
+**Color-coded for easy identification:**
+- **Green badges**: Active, Yes, Paid
+- **Red badges**: Inactive, No, Pending
+- **Gray**: N/A or none
+
+### Examples
+
+**On a members page:**
+```
+[pmpro_nbstup_users_list]
+```
+
+**With custom pagination:**
+```
+[pmpro_nbstup_users_list per_page="50"]
+```
+
+**In template files:**
+```php
+<?php echo do_shortcode('[pmpro_nbstup_users_list per_page="25"]'); ?>
+```
+
+---
+
+## Email Configuration
+
+**All email templates are fully configurable from WordPress admin.**
 
 ### Location
-**Paid Memberships Pro > User Approval** (sidebar menu)
 
-### Two Tabs
+**Memberships > Email Settings**
 
-#### Tab 1: User Activation
-- **CSV Upload** for user activation/renewal
-- **Description** of bank transfer matching process
-- **Info** about deceased member flag
+### Available Email Templates
+
+1. **Deceased Member Contribution Required**
+   - Sent when a member is marked as deceased
+   - Notifies all active members to pay contribution
+
+2. **Wedding Contribution Required**
+   - Sent when a member is marked for daughter wedding
+   - Notifies all active members to pay wedding contribution
+
+3. **Deceased Contribution Confirmed**
+   - Sent when deceased contribution payment is verified
+
+4. **Wedding Contribution Confirmed**
+   - Sent when wedding contribution payment is verified
+
+5. **Expiry Reminder (30 days before)**
+   - Sent 30 days before membership expires
+
+6. **Membership Expired**
+   - Sent when membership expires
+
+7. **Membership Renewed**
+   - Sent when renewal payment is verified
+
+8. **Account Activated**
+   - Sent on initial account activation
+
+9. **Contribution Overdue**
+   - Sent when contribution deadline passes without payment
+
+### Available Placeholders
+
+Use these in subject and body:
+
+| Placeholder | Description |
+|-------------|-------------|
+| `{blogname}` | Site name |
+| `{display_name}` | User display name |
+| `{deadline}` | Contribution deadline |
+| `{expiry_date}` | Membership expiry date |
+| `{current_date}` | Current date |
+| `{account_url}` | Account URL |
+| `{days_until_expiry}` | Days until expiry |
+
+### Example Template
+
+**Subject:**
+```
+[{blogname}] Wedding Contribution Required
+```
+
+**Body:**
+```
+Hello {display_name},
+
+A member of our community is celebrating their daughter's wedding. 
+In honor of this joyous occasion, all active members are requested 
+to pay a contribution.
+
+Contribution Deadline: {deadline}
+
+Please visit your account: {account_url}
+
+Thank you for your support.
+
+Best regards,
+{blogname}
+```
+
+### Reset to Defaults
+
+Click **"Reset All to Defaults"** button to restore original templates.
+
+---
+
+## Admin Interface
+
+### Memberships Menu
+
+Admin pages located under **Paid Memberships Pro** menu in sidebar:
+
+#### 1. User Approval (CSV Import)
+**Location:** Memberships > User Approval
+
+**Three Tabs:**
+
+**Tab 1: User Activation**
+- CSV upload for user activation/renewal
+- Description of bank transfer matching process
+- Info about deceased member flag
 
 **Process:**
 1. Upload CSV with transaction IDs from bank statements
@@ -346,16 +568,83 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 3. Sends appropriate emails
 4. Shows results (activated count, skipped, not found)
 
-#### Tab 2: Contribution Verification
-- **CSV Upload** for contribution payment verification
-- **Description** of contribution verification process
-- **Info** about contribution feature
+**Tab 2: Deceased Contribution**
+- CSV upload for deceased contribution payment verification
+- Description of deceased contribution verification process
+- Info about contribution feature
 
 **Process:**
-1. Upload CSV with transaction IDs of members who paid contribution
+1. Upload CSV with transaction IDs of members who paid deceased contribution
 2. System marks matching members as paid
 3. Sends confirmation emails
 4. Shows results (verified count, skipped, not found)
+
+**Tab 3: Wedding Contribution**
+- CSV upload for wedding contribution payment verification
+- Description of wedding contribution verification process
+- Info about multiple wedding support
+
+**Process:**
+1. Upload CSV with transaction IDs of members who paid wedding contribution
+2. System marks matching members as paid
+3. Sends confirmation emails
+4. Shows results (verified count, skipped, not found)
+
+#### 2. Contributions Management
+**Location:** Memberships > Contributions
+
+**Purpose:** Comprehensive contribution management and overview
+
+**Features:**
+
+**Statistics Dashboard**
+- Total members with contributions
+- Deceased contributions count (paid/unpaid)
+- Wedding contributions count (paid/unpaid)
+- Visual card-based dashboard
+
+**Filters and Search**
+- Filter by type: All Types | Deceased Only | Wedding Only
+- Filter by status: All Statuses | Paid | Unpaid
+- Search by username, email, or display name
+- Reset filters button
+
+**Contributions Table**
+- User ID, Name, Email
+- Deceased contribution status (Paid/Unpaid/—)
+- Wedding contribution status (Paid/Unpaid/—)
+- Deadline dates for unpaid contributions
+- Action buttons for each user
+
+**Bulk Actions**
+- Select multiple users with checkboxes
+- Mark Deceased as Paid (bulk)
+- Mark Wedding as Paid (bulk)
+- Automatically sends confirmation emails
+
+**Individual Actions**
+- Mark Deceased Paid button (per user)
+- Mark Wedding Paid button (per user)
+- Edit User link (direct to user profile)
+
+**Quick Links**
+- Upload Deceased CSV (→ User Approval tab)
+- Upload Wedding CSV (→ User Approval tab)
+- Email Settings (→ Email configuration)
+
+**Use Cases:**
+1. **Monitor contribution status** - See all outstanding contributions at a glance
+2. **Mark manual payments** - When member pays via cash/check/other methods
+3. **Bulk processing** - Process multiple payments at once
+4. **Track deadlines** - View which contributions are nearing deadline
+5. **Send confirmations** - Automatically email members when marked as paid
+
+#### 3. Email Settings
+**Location:** Memberships > Email Settings
+
+**Purpose:** Configure all email templates with custom content
+
+**See "Email Configuration" section for details**
 
 ---
 
@@ -366,6 +655,8 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 #### NBSTUP Membership Flags Section
 - **Passed Away** [Checkbox] - Mark member as deceased
 - **Date of Death** [Date Field] - When they passed away
+- **Daughter Wedding** [Checkbox] - Mark member for daughter wedding
+- **Wedding Date** [Date Field] - Wedding date
 
 #### Membership Status Section (Read-Only)
 - **Active Status** - Active or Inactive
@@ -375,6 +666,13 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 - **Last Renewal Date** - Last renewal date (Y-m-d)
 
 #### Contribution Payment Status Section
+
+**Deceased Member Contribution:**
+- **Contribution Required** - Yes or No
+- **Contribution Paid** [Checkbox] - Check to manually mark as paid (if required)
+- **Contribution Deadline** - Payment deadline (Y-m-d)
+
+**Daughter Wedding Contribution:**
 - **Contribution Required** - Yes or No
 - **Contribution Paid** [Checkbox] - Check to manually mark as paid (if required)
 - **Contribution Deadline** - Payment deadline (Y-m-d)
@@ -512,6 +810,23 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 - Member name
 - Admin notification
 
+### 9. Admin Overdue Contributions Summary
+**Sent to:** Admin when daily cron detects overdue contributions  
+**Subject:** `[Site Name] Overdue Contributions Summary`  
+**Contains:**
+- Count of overdue deceased contributions
+- List of members with overdue deceased payments (name, ID, deadline)
+- Count of overdue wedding contributions
+- List of members with overdue wedding payments (name, ID, deadline)
+- Direct link to Contributions Management page
+
+**Frequency:** Once per day (when cron runs and finds overdue contributions)
+
+**Purpose:** 
+- Keep admin informed of payment issues
+- Consolidate multiple overdue notifications into single email
+- Enable quick action via management page link
+
 ---
 
 ## Scheduled Events
@@ -539,14 +854,41 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 **Purpose:** Check and process contribution payment deadlines
 
 **What it does:**
-1. Gets all users with `pmpronbstup_contribution_required = 1`
+
+**For Deceased Contributions:**
+1. Gets all users with `pmpronbstup_contribution_deceased_required = 1`
 2. For each user:
-   - Check if `pmpronbstup_contribution_deadline` < today
-   - Skip if `pmpronbstup_contribution_paid = 1`
+   - Check if `pmpronbstup_contribution_deceased_deadline` < today
+   - Skip if `pmpronbstup_contribution_deceased_paid = 1`
    - If overdue:
      - Deactivate user (`pmpronbstup_active = 0`)
      - Set renewal_status = "contribution_overdue"
-     - Send overdue email
+     - Send overdue email to user
+     - Add to overdue list for admin summary
+
+**For Wedding Contributions:**
+1. Gets all users with `pmpronbstup_contribution_wedding_required = 1`
+2. For each user:
+   - Check if `pmpronbstup_contribution_wedding_deadline` < today
+   - Skip if `pmpronbstup_contribution_wedding_paid = 1`
+   - If overdue:
+     - Deactivate user (`pmpronbstup_active = 0`)
+     - Set renewal_status = "contribution_overdue"
+     - Send overdue email to user
+     - Add to overdue list for admin summary
+
+**Admin Notification:**
+- If any contributions are overdue, sends single summary email to admin
+- Lists all members with overdue deceased contributions
+- Lists all members with overdue wedding contributions
+- Includes member names, IDs, deadlines
+- Provides link to Contributions Management page
+
+**Why Admin Notifications:**
+- Monitor contribution payment issues at a glance
+- Quickly identify members who need follow-up
+- Single daily digest instead of multiple emails
+- Direct link to manage contributions
 
 ### WordPress Cron Requirement
 
@@ -577,6 +919,8 @@ define('DISABLE_WP_CRON', false); // Or remove this line
 | `pmpronbstup_active` | Integer (0 or 1) | 1 | User is active/can login |
 | `pmpronbstup_deceased` | Integer (0 or 1) | 0 | User marked as deceased |
 | `pmpronbstup_deceased_date` | String (Y-m-d) | 2026-01-19 | Date of death |
+| `pmpronbstup_daughter_wedding` | Integer (0 or 1) | 1 | User marked for daughter wedding |
+| `pmpronbstup_wedding_date` | String (Y-m-d) | 2026-06-15 | Wedding date |
 | `pmpronbstup_membership_start_date` | String (Y-m-d) | 2026-01-19 | When membership started |
 | `pmpronbstup_membership_expiry_date` | String (Y-m-d) | 2027-01-19 | When membership expires |
 | `pmpronbstup_renewal_status` | String | active | Status: active, renewal, expired, contribution_overdue |
@@ -584,14 +928,23 @@ define('DISABLE_WP_CRON', false); // Or remove this line
 | `pmpronbstup_expiry_reminder_sent` | Integer (0 or 1) | 1 | Reminder email sent |
 | `pmpronbstup_expiry_email_sent_[YM]` | Integer (0 or 1) | 1 | Monthly tracking flag |
 
-### User Meta Fields - Contribution
+### User Meta Fields - Deceased Contribution
 
 | Meta Key | Data Type | Example | Purpose |
 |----------|-----------|---------|---------|
-| `pmpronbstup_contribution_required` | Integer (0 or 1) | 1 | User must pay contribution |
-| `pmpronbstup_contribution_deadline` | String (Y-m-d) | 2026-02-19 | When payment due |
-| `pmpronbstup_contribution_paid` | Integer (0 or 1) | 1 | Contribution paid |
-| `pmpronbstup_contribution_transaction_id` | String | BANK-001 | Payment transaction ID |
+| `pmpronbstup_contribution_deceased_required` | Integer (0 or 1) | 1 | User must pay deceased contribution |
+| `pmpronbstup_contribution_deceased_deadline` | String (Y-m-d) | 2026-02-19 | When deceased payment due |
+| `pmpronbstup_contribution_deceased_paid` | Integer (0 or 1) | 1 | Deceased contribution paid |
+| `pmpronbstup_contribution_deceased_transaction_id` | String | BANK-001 | Deceased payment transaction ID |
+
+### User Meta Fields - Wedding Contribution
+
+| Meta Key | Data Type | Example | Purpose |
+|----------|-----------|---------|---------|
+| `pmpronbstup_contribution_wedding_required` | Integer (0 or 1) | 1 | User must pay wedding contribution |
+| `pmpronbstup_contribution_wedding_deadline` | String (Y-m-d) | 2026-03-15 | When wedding payment due |
+| `pmpronbstup_contribution_wedding_paid` | Integer (0 or 1) | 1 | Wedding contribution paid |
+| `pmpronbstup_contribution_wedding_transaction_id` | String | BANK-002 | Wedding payment transaction ID |
 
 ### User Meta Fields - Bank Transfer
 
