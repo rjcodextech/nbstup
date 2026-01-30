@@ -1000,9 +1000,74 @@ function pmpronbstup_users_list_shortcode($atts)
     <div class="pmpro-nbstup-users-list">
         <style>
             .pmpro-nbstup-users-list { max-width: 100%; overflow-x: auto; }
-            .pmpro-nbstup-search-form { margin-bottom: 20px; }
-            .pmpro-nbstup-search-form input[type="text"] { padding: 8px; min-width: 300px; }
-            .pmpro-nbstup-search-form button { padding: 8px 15px; cursor: pointer; }
+            .pmpro-nbstup-search-form {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                padding: 12px 14px;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                background: #ffffff;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+                margin-bottom: 20px;
+            }
+            .pmpro-nbstup-search-form input[type="text"] {
+                flex: 1 1 260px;
+                padding: 10px 12px;
+                min-width: 220px;
+                border: 1px solid #d0d5dd;
+                border-radius: 8px;
+                outline: none;
+                transition: border-color 0.15s ease, box-shadow 0.15s ease;
+                background: #fff;
+            }
+            .pmpro-nbstup-search-form input[type="text"]:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            }
+            .pmpro-nbstup-search-form button,
+            .pmpro-nbstup-search-form .button {
+                padding: 5px 15px;
+                border-radius: 8px;
+                border: 1px solid #2563eb;
+                background: #2563eb;
+                color: #fff;
+                cursor: pointer;
+                text-decoration: none;
+                font-weight: 600;
+                line-height: 2;
+                transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+            }
+            .pmpro-nbstup-search-form .button {
+                background: #ffffff;
+                color: #111827;
+                border-color: #d0d5dd;
+            }
+            .pmpro-nbstup-search-form button:hover {
+                background: #1d4ed8;
+                border-color: #1d4ed8;
+            }
+            .pmpro-nbstup-search-form .button:hover {
+                background: #f3f4f6;
+            }
+            .pmpro-nbstup-search-form button:active,
+            .pmpro-nbstup-search-form .button:active {
+                transform: translateY(1px);
+            }
+            @media (max-width: 600px) {
+                .pmpro-nbstup-search-form {
+                    padding: 10px;
+                }
+                .pmpro-nbstup-search-form input[type="text"] {
+                    flex-basis: 100%;
+                }
+                .pmpro-nbstup-search-form button,
+                .pmpro-nbstup-search-form .button {
+                    width: 100%;
+                    text-align: center;
+                }
+            }
             .pmpro-nbstup-users-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
             .pmpro-nbstup-users-table th, .pmpro-nbstup-users-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
             .pmpro-nbstup-users-table th { background-color: #f5f5f5; font-weight: bold; }
@@ -1075,6 +1140,7 @@ function pmpronbstup_users_list_shortcode($atts)
                         ));
 
                         $occupation = pmpronbstup_get_first_user_meta($user->ID, array(
+                            'Occupation',
                             'pmpronbstup_occupation',
                             'occupation',
                             'business',
@@ -1093,7 +1159,12 @@ function pmpronbstup_users_list_shortcode($atts)
                         <tr>
                             <td><?php echo esc_html($serial); ?></td>
                             <td><?php echo esc_html($unique_id ?: '-'); ?></td>
-                            <td><?php echo esc_html($user->display_name ?: '-'); ?></td>
+                            <td>
+                                <?php
+                                $display_name = pmpronbstup_get_first_user_meta($user->ID, array('name'));
+                                echo esc_html($display_name ? $display_name : ($user->display_name ?: '-'));
+                                ?>
+                            </td>
                             <td><?php echo esc_html($father_husband ?: '-'); ?></td>
                             <td><?php echo esc_html($occupation ?: '-'); ?></td>
                             <td><?php echo esc_html($district_name ?: '-'); ?></td>
