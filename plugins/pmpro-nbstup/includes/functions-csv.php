@@ -131,6 +131,7 @@ function pmpronbstup_handle_csv_upload()
             update_user_meta($user_id, 'pmpronbstup_last_renewal_date', date('Y-m-d'));
             update_user_meta($user_id, 'pmpronbstup_renewal_status', 'active');
             update_user_meta($user_id, 'pmpronbstup_active', 1);
+            pmpronbstup_assign_unique_id($user_id);
 
             // Clear reminder flags for new year
             delete_user_meta($user_id, 'pmpronbstup_expiry_reminder_sent');
@@ -143,6 +144,7 @@ function pmpronbstup_handle_csv_upload()
             update_user_meta($user_id, 'pmpronbstup_membership_expiry_date', $new_expiry_date);
             update_user_meta($user_id, 'pmpronbstup_renewal_status', 'active');
             update_user_meta($user_id, 'pmpronbstup_active', 1);
+            pmpronbstup_assign_unique_id($user_id);
 
             $activated++;
             pmpronbstup_send_activation_email($user_id);

@@ -147,6 +147,9 @@ function pmpronbstup_load_files()
     // Checkout form fields for transaction ID and payment receipt collection.
     require_once $includes_dir . 'payment-info-fields.php';
 
+    // Location management (States, Districts, Blocks).
+    require_once $includes_dir . 'functions-location.php';
+
     // Email settings page and template management.
     require_once $includes_dir . 'functions-email-settings.php';
 

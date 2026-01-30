@@ -114,7 +114,80 @@ function pmpronbstup_activate_user($user_id)
         return false;
     }
 
-    return update_user_meta($user_id, 'pmpronbstup_active', 1);
+    $updated = update_user_meta($user_id, 'pmpronbstup_active', 1);
+    if ($updated) {
+        pmpronbstup_assign_unique_id($user_id);
+    }
+
+    return $updated;
+}
+
+/**
+ * Get the first non-empty user meta value from a list of keys.
+ *
+ * @param int   $user_id User ID
+ * @param array $keys    Meta keys to check in order
+ * @return string
+ */
+function pmpronbstup_get_first_user_meta($user_id, $keys)
+{
+    foreach ($keys as $key) {
+        $value = get_user_meta($user_id, $key, true);
+        if (! empty($value)) {
+            return $value;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Assign a 6-digit unique serial ID to a user (only once).
+ * Sequential without gaps when assigned.
+ *
+ * @param int $user_id User ID
+ * @return string|false Unique ID or false on failure
+ */
+function pmpronbstup_assign_unique_id($user_id)
+{
+    $existing = get_user_meta($user_id, 'pmpronbstup_unique_id', true);
+    if (! empty($existing)) {
+        return $existing;
+    }
+
+    $last = (int) get_option('pmpronbstup_unique_id_last', 0);
+    $tries = 0;
+
+    global $wpdb;
+
+    do {
+        $next = $last + 1;
+        $candidate = sprintf('%06d', $next);
+
+        $existing_user = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+                'pmpronbstup_unique_id',
+                $candidate
+            )
+        );
+
+        if (empty($existing_user)) {
+            break;
+        }
+
+        $last = $next;
+        $tries++;
+    } while ($tries < 1000);
+
+    if ($tries >= 1000) {
+        return false;
+    }
+
+    update_user_meta($user_id, 'pmpronbstup_unique_id', $candidate);
+    update_option('pmpronbstup_unique_id_last', $next);
+
+    return $candidate;
 }
 
 /**
@@ -919,6 +992,7 @@ function pmpronbstup_users_list_shortcode($atts)
 
     // Calculate pagination
     $total_pages = ceil($total_users / $per_page);
+    $serial_start = ($paged - 1) * $per_page;
 
     // Start output buffering
     ob_start();
@@ -972,83 +1046,67 @@ function pmpronbstup_users_list_shortcode($atts)
             <table class="pmpro-nbstup-users-table">
                 <thead>
                     <tr>
-                        <th><?php esc_html_e('ID', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Name', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Email', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Username', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Active', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Deceased', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Wedding', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Membership Status', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Expiry Date', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Deceased Contribution', 'pmpro-nbstup'); ?></th>
-                        <th><?php esc_html_e('Wedding Contribution', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('S No', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Unique ID', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('नाम', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('पिता/पति का नाम', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('व्यवसाय', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('स्थाई निवासी जिला', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('ब्लॉक', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Status', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('स्थाई पता', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Submission Date', 'pmpro-nbstup'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($users as $user) :
+                    <?php foreach ($users as $index => $user) :
+                        $serial = $serial_start + $index + 1;
+
+                        $unique_id = get_user_meta($user->ID, 'pmpronbstup_unique_id', true);
                         $active = get_user_meta($user->ID, 'pmpronbstup_active', true);
-                        $deceased = get_user_meta($user->ID, 'pmpronbstup_deceased', true);
-                        $daughter_wedding = get_user_meta($user->ID, 'pmpronbstup_daughter_wedding', true);
-                        $renewal_status = get_user_meta($user->ID, 'pmpronbstup_renewal_status', true);
-                        $expiry_date = get_user_meta($user->ID, 'pmpronbstup_membership_expiry_date', true);
-                        
-                        $contrib_deceased_required = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', true);
-                        $contrib_deceased_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', true);
-                        
-                        $contrib_wedding_required = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_required', true);
-                        $contrib_wedding_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
+
+                        $father_husband = pmpronbstup_get_first_user_meta($user->ID, array(
+                            'pmpronbstup_father_husband_name',
+                            'father_husband_name',
+                            'father_name',
+                            'husband_name',
+                            'pmpronbstup_father_name',
+                            'pmpronbstup_husband_name',
+                        ));
+
+                        $occupation = pmpronbstup_get_first_user_meta($user->ID, array(
+                            'pmpronbstup_occupation',
+                            'occupation',
+                            'business',
+                            'profession',
+                        ));
+
+                        $user_district_id = get_user_meta($user->ID, 'user_district', true);
+                        $user_block_id = get_user_meta($user->ID, 'user_block', true);
+                        $user_address = get_user_meta($user->ID, 'user_address', true);
+
+                        $district_name = $user_district_id ? pmpro_nbstup_get_district_name($user_district_id) : '';
+                        $block_name = $user_block_id ? pmpro_nbstup_get_block_name($user_block_id) : '';
+
+                        $submission_date = $user->user_registered ? date_i18n(get_option('date_format'), strtotime($user->user_registered)) : '';
                     ?>
                         <tr>
-                            <td><?php echo esc_html($user->ID); ?></td>
-                            <td><?php echo esc_html($user->display_name); ?></td>
-                            <td><?php echo esc_html($user->user_email); ?></td>
-                            <td><?php echo esc_html($user->user_login); ?></td>
+                            <td><?php echo esc_html($serial); ?></td>
+                            <td><?php echo esc_html($unique_id ?: '-'); ?></td>
+                            <td><?php echo esc_html($user->display_name ?: '-'); ?></td>
+                            <td><?php echo esc_html($father_husband ?: '-'); ?></td>
+                            <td><?php echo esc_html($occupation ?: '-'); ?></td>
+                            <td><?php echo esc_html($district_name ?: '-'); ?></td>
+                            <td><?php echo esc_html($block_name ?: '-'); ?></td>
                             <td>
-                                <?php if ((int)$active === 1) : ?>
+                                <?php if ((int) $active === 1) : ?>
                                     <span class="status-badge status-active"><?php esc_html_e('Active', 'pmpro-nbstup'); ?></span>
                                 <?php else : ?>
                                     <span class="status-badge status-inactive"><?php esc_html_e('Inactive', 'pmpro-nbstup'); ?></span>
                                 <?php endif; ?>
                             </td>
-                            <td>
-                                <?php if ((int)$deceased === 1) : ?>
-                                    <span class="status-badge status-yes"><?php esc_html_e('Yes', 'pmpro-nbstup'); ?></span>
-                                <?php else : ?>
-                                    <span class="status-badge status-no"><?php esc_html_e('No', 'pmpro-nbstup'); ?></span>
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <?php if ((int)$daughter_wedding === 1) : ?>
-                                    <span class="status-badge status-yes"><?php esc_html_e('Yes', 'pmpro-nbstup'); ?></span>
-                                <?php else : ?>
-                                    <span class="status-badge status-no"><?php esc_html_e('No', 'pmpro-nbstup'); ?></span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo esc_html(ucfirst($renewal_status ?: 'none')); ?></td>
-                            <td><?php echo esc_html($expiry_date ?: '-'); ?></td>
-                            <td>
-                                <?php if ((int)$contrib_deceased_required === 1) : ?>
-                                    <?php if ((int)$contrib_deceased_paid === 1) : ?>
-                                        <span class="status-badge status-yes"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></span>
-                                    <?php else : ?>
-                                        <span class="status-badge status-no"><?php esc_html_e('Pending', 'pmpro-nbstup'); ?></span>
-                                    <?php endif; ?>
-                                <?php else : ?>
-                                    -
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <?php if ((int)$contrib_wedding_required === 1) : ?>
-                                    <?php if ((int)$contrib_wedding_paid === 1) : ?>
-                                        <span class="status-badge status-yes"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></span>
-                                    <?php else : ?>
-                                        <span class="status-badge status-no"><?php esc_html_e('Pending', 'pmpro-nbstup'); ?></span>
-                                    <?php endif; ?>
-                                <?php else : ?>
-                                    -
-                                <?php endif; ?>
-                            </td>
+                            <td><?php echo esc_html($user_address ?: '-'); ?></td>
+                            <td><?php echo esc_html($submission_date ?: '-'); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

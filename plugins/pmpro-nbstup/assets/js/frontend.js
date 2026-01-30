@@ -58,3 +58,95 @@
 
 })(window, document);
 
+// ========== Location Cascading Dropdowns ==========
+jQuery(document).ready(function($) {
+  // Check if we're on checkout page with location fields
+  if (!$('#user_state').length) {
+    return;
+  }
+
+  var $stateSelect = $('#user_state');
+  var $districtSelect = $('#user_district');
+  var $blockSelect = $('#user_block');
+
+  // When state changes, load districts
+  $stateSelect.on('change', function() {
+    var stateId = $(this).val();
+    
+    // Reset district and block
+    $districtSelect.html('<option value="">Select State First</option>').prop('disabled', true);
+    $blockSelect.html('<option value="">Select District First</option>').prop('disabled', true);
+    
+    if (!stateId) {
+      return;
+    }
+    
+    // Load districts
+    $.ajax({
+      url: pmpro_nbstup_ajax.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'pmpro_nbstup_get_districts',
+        state_id: stateId,
+        nonce: pmpro_nbstup_ajax.nonce
+      },
+      beforeSend: function() {
+        $districtSelect.html('<option value="">Loading...</option>');
+      },
+      success: function(response) {
+        if (response.success && response.data.length > 0) {
+          var options = '<option value="">Select District</option>';
+          $.each(response.data, function(index, district) {
+            options += '<option value="' + district.id + '">' + district.name + '</option>';
+          });
+          $districtSelect.html(options).prop('disabled', false);
+        } else {
+          $districtSelect.html('<option value="">No districts available</option>');
+        }
+      },
+      error: function() {
+        $districtSelect.html('<option value="">Error loading districts</option>');
+      }
+    });
+  });
+
+  // When district changes, load blocks
+  $districtSelect.on('change', function() {
+    var districtId = $(this).val();
+    
+    // Reset block
+    $blockSelect.html('<option value="">Select District First</option>').prop('disabled', true);
+    
+    if (!districtId) {
+      return;
+    }
+    
+    // Load blocks
+    $.ajax({
+      url: pmpro_nbstup_ajax.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'pmpro_nbstup_get_blocks',
+        district_id: districtId,
+        nonce: pmpro_nbstup_ajax.nonce
+      },
+      beforeSend: function() {
+        $blockSelect.html('<option value="">Loading...</option>');
+      },
+      success: function(response) {
+        if (response.success && response.data.length > 0) {
+          var options = '<option value="">Select Block</option>';
+          $.each(response.data, function(index, block) {
+            options += '<option value="' + block.id + '">' + block.name + '</option>';
+          });
+          $blockSelect.html(options).prop('disabled', false);
+        } else {
+          $blockSelect.html('<option value="">No blocks available</option>');
+        }
+      },
+      error: function() {
+        $blockSelect.html('<option value="">Error loading blocks</option>');
+      }
+    });
+  });
+});

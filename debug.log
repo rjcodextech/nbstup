@@ -1,0 +1,605 @@
+[28-Jan-2026 16:57:14 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[28-Jan-2026 16:57:14 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[28-Jan-2026 16:58:35 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[28-Jan-2026 16:58:35 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 16:50:26 UTC] PHP Warning:  mysqli_real_connect(): (HY000/2002): No connection could be made because the target machine actively refused it in E:\Sites\WebWallah\nbstup\wp-includes\class-wpdb.php on line 1994
+[30-Jan-2026 16:50:26 UTC] PHP Stack trace:
+[30-Jan-2026 16:50:26 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\index.php:0
+[30-Jan-2026 16:50:26 UTC] PHP   2. require() E:\Sites\WebWallah\nbstup\index.php:17
+[30-Jan-2026 16:50:26 UTC] PHP   3. require_once() E:\Sites\WebWallah\nbstup\wp-blog-header.php:13
+[30-Jan-2026 16:50:26 UTC] PHP   4. require_once() E:\Sites\WebWallah\nbstup\wp-load.php:50
+[30-Jan-2026 16:50:26 UTC] PHP   5. require_once() E:\Sites\WebWallah\nbstup\wp-config.php:99
+[30-Jan-2026 16:50:26 UTC] PHP   6. require_wp_db() E:\Sites\WebWallah\nbstup\wp-settings.php:136
+[30-Jan-2026 16:50:26 UTC] PHP   7. wpdb->__construct($dbuser = 'root', $dbpassword = '[Sensitive Parameter]', $dbname = 'webwallah_nbstup', $dbhost = 'localhost') E:\Sites\WebWallah\nbstup\wp-includes\load.php:724
+[30-Jan-2026 16:50:26 UTC] PHP   8. wpdb->db_connect($allow_bail = *uninitialized*) E:\Sites\WebWallah\nbstup\wp-includes\class-wpdb.php:772
+[30-Jan-2026 16:50:26 UTC] PHP   9. mysqli_real_connect($mysql = class mysqli { public $client_info = 'mysqlnd 8.3.14'; public $client_version = 80314; public $connect_errno = 2002; public $connect_error = 'No connection could be made because the target machine actively refused it'; public $errno = 2002; public $error = 'No connection could be made because the target machine actively refused it' }, $hostname = 'localhost', $username = 'root', $password = '[Sensitive Parameter]', $database = NULL, $port = NULL, $socket = NULL, $flags = 0) E:\Sites\WebWallah\nbstup\wp-includes\class-wpdb.php:1994
+[30-Jan-2026 16:57:27 UTC] Automatic updates starting...
+[30-Jan-2026 16:57:28 UTC]   Automatic plugin updates starting...
+[30-Jan-2026 16:57:28 UTC]   Automatic plugin updates complete.
+[30-Jan-2026 16:57:28 UTC]   Automatic theme updates starting...
+[30-Jan-2026 16:57:28 UTC]   Automatic theme updates complete.
+[30-Jan-2026 16:57:28 UTC] Automatic updates complete.
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Undefined array key "nuS9FN_comments" in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Attempt to read property "rows" on null in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Undefined array key "nuS9FN_options" in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Attempt to read property "rows" on null in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Undefined array key "nuS9FN_posts" in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Attempt to read property "rows" on null in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Undefined array key "nuS9FN_terms" in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Attempt to read property "rows" on null in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Undefined array key "nuS9FN_users" in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 16:57:31 UTC] PHP Warning:  Attempt to read property "rows" on null in E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php on line 3657
+[30-Jan-2026 16:57:31 UTC] PHP Stack trace:
+[30-Jan-2026 16:57:31 UTC] PHP   1. {main}() E:\Sites\WebWallah\nbstup\wp-cron.php:0
+[30-Jan-2026 16:57:31 UTC] PHP   2. do_action_ref_array($hook_name = 'wp_site_health_scheduled_check', $args = []) E:\Sites\WebWallah\nbstup\wp-cron.php:191
+[30-Jan-2026 16:57:31 UTC] PHP   3. WP_Hook->do_action($args = []) E:\Sites\WebWallah\nbstup\wp-includes\plugin.php:570
+[30-Jan-2026 16:57:31 UTC] PHP   4. WP_Hook->apply_filters($value = '', $args = []) E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:365
+[30-Jan-2026 16:57:31 UTC] PHP   5. WP_Site_Health->wp_cron_scheduled_check() E:\Sites\WebWallah\nbstup\wp-includes\class-wp-hook.php:341
+[30-Jan-2026 16:57:31 UTC] PHP   6. WP_Site_Health->perform_test($callback = [0 => class WP_Site_Health { private $is_acceptable_mysql_version = TRUE; private $is_recommended_mysql_version = TRUE; public $is_mariadb = FALSE; private $mysql_server_version = '9.1.0'; private $mysql_required_version = '5.5'; private $mysql_recommended_version = '8.0'; private $mariadb_recommended_version = '10.6'; public $php_memory_limit = '1G'; public $schedules = [...]; public $crons = [...]; public $last_missed_cron = 'recovery_mode_clean_expired_keys'; public $last_late_cron = NULL; private $timeout_missed_cron = -300; private $timeout_late_cron = 0 }, 1 => 'get_test_persistent_object_cache']) E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:3293
+[30-Jan-2026 16:57:31 UTC] PHP   7. WP_Site_Health->get_test_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:194
+[30-Jan-2026 16:57:31 UTC] PHP   8. WP_Site_Health->should_suggest_persistent_object_cache() E:\Sites\WebWallah\nbstup\wp-admin\includes\class-wp-site-health.php:2562
+[30-Jan-2026 17:03:33 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:03:33 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:03:46 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:03:46 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:04:00 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:04:00 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:04:00 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:04:00 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:05:00 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:05:00 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:06:01 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:06:01 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:07:48 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:07:48 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:07:52 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:07:53 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:07:58 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:07:58 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:02 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:02 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:06 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:06 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:24 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:24 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:27 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:27 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:30 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:30 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:41 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:41 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:44 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:44 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:51 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:51 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-admin/admin.php'), require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:08:54 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:08:54 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:03 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:03 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:03 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:03 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:03 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:03 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:03 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:03 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:04 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:04 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:04 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:04 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:07 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:07 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:07 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:07 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:08 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:08 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:08 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:08 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:08 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:08 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:09 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:09 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:09 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:09 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:17 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:17 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:17 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:17 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:18 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:18 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:18 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:18 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:20 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:20 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:25 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:25 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:27 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:27 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:27 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:27 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:29 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:29 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:29 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:29 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:32 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:32 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:33 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:33 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:34 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Frontend->init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:34 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Frontend->init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:09:36 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:09:36 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, rest_get_server, do_action('rest_api_init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->on_rest_api_init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:10:00 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:10:00 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:10:04 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:10:04 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:10:07 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:10:07 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:10:33 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:10:33 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:11:08 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:11:08 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:12:34 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:12:34 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:12:41 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:12:41 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:12:43 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:12:43 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:12:47 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:12:47 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:13:48 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:13:48 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:14:35 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:14:35 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:14:48 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:14:48 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:15:05 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Frontend->init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:15:05 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require('wp-blog-header.php'), require_once('wp-includes/template-loader.php'), do_action('template_redirect'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Frontend->init, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes
+[30-Jan-2026 17:15:49 UTC] WordPress database error Table 'nus9fn_e_events' already exists for query CREATE TABLE `nuS9FN_e_events` (
+			id bigint(20) unsigned auto_increment primary key,
+			event_data text null,
+			created_at datetime not null
+		) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci; made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->create_table
+[30-Jan-2026 17:15:49 UTC] WordPress database error Duplicate key name 'created_at_index' for query ALTER TABLE nuS9FN_e_events
+    		ADD INDEX `created_at_index` (`created_at`)
+		 made by require_once('wp-load.php'), require_once('wp-config.php'), require_once('wp-settings.php'), do_action('init'), WP_Hook->do_action, WP_Hook->apply_filters, Elementor\Plugin->init, Elementor\Plugin->init_components, Elementor\Core\Admin\Admin->__construct, Elementor\Plugin->init_common, Elementor\Core\Common\App->init_components, Elementor\Core\Common\Modules\EventTracker\Module->__construct, Elementor\Core\Common\Modules\EventTracker\DB->__construct, Elementor\Core\Common\Modules\EventTracker\DB->add_indexes

@@ -104,6 +104,112 @@ function pmpronbstup_user_profile_fields($user)
         </tr>
     </table>
 
+    <h2><?php esc_html_e('Address Details', 'pmpro-nbstup'); ?></h2>
+    <?php
+    $user_state_id    = get_user_meta($user->ID, 'user_state', true);
+    $user_district_id = get_user_meta($user->ID, 'user_district', true);
+    $user_block_id    = get_user_meta($user->ID, 'user_block', true);
+    $user_address     = get_user_meta($user->ID, 'user_address', true);
+    
+    $state_name    = $user_state_id ? pmpro_nbstup_get_state_name($user_state_id) : '';
+    $district_name = $user_district_id ? pmpro_nbstup_get_district_name($user_district_id) : '';
+    $block_name    = $user_block_id ? pmpro_nbstup_get_block_name($user_block_id) : '';
+    
+    $all_states    = pmpro_nbstup_get_all_states();
+    $districts     = $user_state_id ? pmpro_nbstup_get_districts($user_state_id) : array();
+    $blocks        = $user_district_id ? pmpro_nbstup_get_blocks($user_district_id) : array();
+    ?>
+    <table class="form-table" role="presentation">
+        <tr>
+            <th scope="row">
+                <label for="user_state"><?php esc_html_e('State', 'pmpro-nbstup'); ?></label>
+            </th>
+            <td>
+                <select name="user_state" id="user_state" class="regular-text">
+                    <option value=""><?php esc_html_e('Select State', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($all_states as $state) : ?>
+                        <option value="<?php echo esc_attr($state->id); ?>" <?php selected($user_state_id, $state->id); ?>>
+                            <?php echo esc_html($state->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="user_district"><?php esc_html_e('District', 'pmpro-nbstup'); ?></label>
+            </th>
+            <td>
+                <select name="user_district" id="user_district" class="regular-text">
+                    <option value=""><?php esc_html_e('Select District', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($districts as $district) : ?>
+                        <option value="<?php echo esc_attr($district->id); ?>" <?php selected($user_district_id, $district->id); ?>>
+                            <?php echo esc_html($district->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="user_block"><?php esc_html_e('Block', 'pmpro-nbstup'); ?></label>
+            </th>
+            <td>
+                <select name="user_block" id="user_block" class="regular-text">
+                    <option value=""><?php esc_html_e('Select Block', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($blocks as $block) : ?>
+                        <option value="<?php echo esc_attr($block->id); ?>" <?php selected($user_block_id, $block->id); ?>>
+                            <?php echo esc_html($block->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="user_address"><?php esc_html_e('Address', 'pmpro-nbstup'); ?></label>
+            </th>
+            <td>
+                <textarea name="user_address" id="user_address" rows="3" cols="30" class="regular-text"><?php echo esc_textarea($user_address); ?></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <h2><?php esc_html_e('Bank Transfer Details', 'pmpro-nbstup'); ?></h2>
+    <?php
+    $bank_transaction_id = get_user_meta($user->ID, 'bank_transaction_id', true);
+    $bank_payment_receipt = get_user_meta($user->ID, 'bank_payment_receipt', true);
+    ?>
+    <table class="form-table" role="presentation">
+        <tr>
+            <th scope="row">
+                <label for="bank_transaction_id"><?php esc_html_e('Transaction ID', 'pmpro-nbstup'); ?></label>
+            </th>
+            <td>
+                <input type="text" name="bank_transaction_id" id="bank_transaction_id" value="<?php echo esc_attr($bank_transaction_id); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><?php esc_html_e('Payment Receipt', 'pmpro-nbstup'); ?></th>
+            <td>
+                <?php if ($bank_payment_receipt) : ?>
+                    <p>
+                        <a href="<?php echo esc_url($bank_payment_receipt); ?>" target="_blank">
+                            <?php esc_html_e('View Receipt', 'pmpro-nbstup'); ?>
+                        </a>
+                    </p>
+                    <label>
+                        <input type="text" name="bank_payment_receipt" id="bank_payment_receipt" value="<?php echo esc_attr($bank_payment_receipt); ?>" class="regular-text" />
+                        <p class="description"><?php esc_html_e('Enter receipt URL or leave blank to keep current', 'pmpro-nbstup'); ?></p>
+                    </label>
+                <?php else : ?>
+                    <input type="text" name="bank_payment_receipt" id="bank_payment_receipt" value="" class="regular-text" placeholder="<?php esc_attr_e('Enter receipt URL', 'pmpro-nbstup'); ?>" />
+                    <p class="description"><?php esc_html_e('No receipt uploaded yet', 'pmpro-nbstup'); ?></p>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </table>
+
     <h2><?php esc_html_e('Contribution Payment Status', 'pmpro-nbstup'); ?></h2>
     
     <!-- Deceased Contribution Section -->
@@ -185,6 +291,40 @@ function pmpronbstup_save_user_profile_fields($user_id)
 {
     if (! current_user_can('manage_options')) {
         return;
+    }
+
+    // Save Address fields
+    if (isset($_POST['user_state'])) {
+        $state_id = intval($_POST['user_state']);
+        update_user_meta($user_id, 'user_state', $state_id);
+    }
+
+    if (isset($_POST['user_district'])) {
+        $district_id = intval($_POST['user_district']);
+        update_user_meta($user_id, 'user_district', $district_id);
+    }
+
+    if (isset($_POST['user_block'])) {
+        $block_id = intval($_POST['user_block']);
+        update_user_meta($user_id, 'user_block', $block_id);
+    }
+
+    if (isset($_POST['user_address'])) {
+        $address = sanitize_textarea_field($_POST['user_address']);
+        update_user_meta($user_id, 'user_address', $address);
+    }
+
+    // Save Bank Transfer fields
+    if (isset($_POST['bank_transaction_id'])) {
+        $transaction_id = sanitize_text_field($_POST['bank_transaction_id']);
+        update_user_meta($user_id, 'bank_transaction_id', $transaction_id);
+    }
+
+    if (isset($_POST['bank_payment_receipt'])) {
+        $receipt_url = esc_url_raw($_POST['bank_payment_receipt']);
+        if (!empty($receipt_url)) {
+            update_user_meta($user_id, 'bank_payment_receipt', $receipt_url);
+        }
     }
 
     $current_deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
@@ -289,3 +429,98 @@ function pmpronbstup_send_wedding_notification($user_id)
 
 add_action('personal_options_update', 'pmpronbstup_save_user_profile_fields');
 add_action('edit_user_profile_update', 'pmpronbstup_save_user_profile_fields');
+
+/**
+ * Enqueue admin scripts for user profile cascading dropdowns
+ */
+function pmpronbstup_admin_user_profile_scripts($hook) {
+    if ($hook !== 'profile.php' && $hook !== 'user-edit.php') {
+        return;
+    }
+    
+    wp_enqueue_script('jquery');
+    
+    wp_add_inline_script('jquery', "
+        jQuery(document).ready(function($) {
+            var stateSelect = $('#user_state');
+            var districtSelect = $('#user_district');
+            var blockSelect = $('#user_block');
+            
+            // When state changes, load districts
+            stateSelect.on('change', function() {
+                var stateId = $(this).val();
+                
+                // Reset district and block
+                districtSelect.html('<option value=\"\">Loading...</option>');
+                blockSelect.html('<option value=\"\">Select District First</option>');
+                
+                if (!stateId) {
+                    districtSelect.html('<option value=\"\">Select State First</option>');
+                    return;
+                }
+                
+                // Load districts
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'pmpro_nbstup_get_districts',
+                        state_id: stateId
+                    },
+                    success: function(response) {
+                        if (response.success && response.data.length > 0) {
+                            var options = '<option value=\"\">Select District</option>';
+                            $.each(response.data, function(index, district) {
+                                options += '<option value=\"' + district.id + '\">' + district.name + '</option>';
+                            });
+                            districtSelect.html(options);
+                        } else {
+                            districtSelect.html('<option value=\"\">No districts available</option>');
+                        }
+                    },
+                    error: function() {
+                        districtSelect.html('<option value=\"\">Error loading districts</option>');
+                    }
+                });
+            });
+            
+            // When district changes, load blocks
+            districtSelect.on('change', function() {
+                var districtId = $(this).val();
+                
+                // Reset block
+                blockSelect.html('<option value=\"\">Loading...</option>');
+                
+                if (!districtId) {
+                    blockSelect.html('<option value=\"\">Select District First</option>');
+                    return;
+                }
+                
+                // Load blocks
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'pmpro_nbstup_get_blocks',
+                        district_id: districtId
+                    },
+                    success: function(response) {
+                        if (response.success && response.data.length > 0) {
+                            var options = '<option value=\"\">Select Block</option>';
+                            $.each(response.data, function(index, block) {
+                                options += '<option value=\"' + block.id + '\">' + block.name + '</option>';
+                            });
+                            blockSelect.html(options);
+                        } else {
+                            blockSelect.html('<option value=\"\">No blocks available</option>');
+                        }
+                    },
+                    error: function() {
+                        blockSelect.html('<option value=\"\">Error loading blocks</option>');
+                    }
+                });
+            });
+        });
+    ");
+}
+add_action('admin_enqueue_scripts', 'pmpronbstup_admin_user_profile_scripts');
