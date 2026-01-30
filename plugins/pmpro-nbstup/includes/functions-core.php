@@ -21,8 +21,16 @@ function pmpronbstup_enqueue_frontend_assets()
         return;
     }
 
-    // Optionally, limit to logged-in users.
-    if (! is_user_logged_in()) {
+    $should_load = is_user_logged_in();
+
+    if ( ! $should_load && is_singular() ) {
+        $post = get_post();
+        if ( $post && has_shortcode( $post->post_content, 'pmpro_nbstup_member_login' ) ) {
+            $should_load = true;
+        }
+    }
+
+    if ( ! $should_load ) {
         return;
     }
 
@@ -425,6 +433,126 @@ function pmpronbstup_account_two_column_shortcode()
 }
 
 /**
+ * Shortcode: Member login with Aadhar + Password
+ * Usage: [pmpro_nbstup_member_login redirect="/account/"]
+ */
+function pmpronbstup_member_login_shortcode( $atts )
+{
+    if ( is_user_logged_in() ) {
+        $account_url = function_exists( 'pmpro_url' ) ? pmpro_url( 'account' ) : home_url( '/' );
+        return '<p>' . sprintf( esc_html__( 'You are already logged in. Go to %s.', 'pmpro-nbstup' ), '<a href="' . esc_url( $account_url ) . '">' . esc_html__( 'your account', 'pmpro-nbstup' ) . '</a>' ) . '</p>';
+    }
+
+    $atts = shortcode_atts(
+        array(
+            'redirect' => '',
+        ),
+        $atts,
+        'pmpro_nbstup_member_login'
+    );
+
+    $errors = array();
+
+    if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['pmpro_nbstup_member_login_nonce'] ) ) {
+        if ( ! wp_verify_nonce( wp_unslash( $_POST['pmpro_nbstup_member_login_nonce'] ), 'pmpro_nbstup_member_login' ) ) {
+            $errors[] = esc_html__( 'Security check failed. Please try again.', 'pmpro-nbstup' );
+        } else {
+            $aadhar = isset( $_POST['aadhar_number'] ) ? sanitize_text_field( wp_unslash( $_POST['aadhar_number'] ) ) : '';
+            $password = isset( $_POST['member_password'] ) ? wp_unslash( $_POST['member_password'] ) : '';
+
+            if ( $aadhar === '' ) {
+                $errors[] = esc_html__( 'Aadhar Number is required.', 'pmpro-nbstup' );
+            }
+
+            if ( $password === '' ) {
+                $errors[] = esc_html__( 'Password is required.', 'pmpro-nbstup' );
+            }
+
+            if ( empty( $errors ) ) {
+                $user = wp_signon(
+                    array(
+                        'user_login'    => $aadhar,
+                        'user_password' => $password,
+                        'remember'      => true,
+                    ),
+                    is_ssl()
+                );
+
+                if ( is_wp_error( $user ) ) {
+                    $errors[] = $user->get_error_message();
+                } elseif ( user_can( $user, 'manage_options' ) ) {
+                    wp_logout();
+                    $errors[] = esc_html__( 'Admin users must log in from the admin login page.', 'pmpro-nbstup' );
+                } else {
+                    $redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : ( function_exists( 'pmpro_url' ) ? pmpro_url( 'account' ) : home_url( '/' ) );
+                    wp_safe_redirect( $redirect );
+                    exit;
+                }
+            }
+        }
+    }
+
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-member-login">
+        <?php if ( ! empty( $errors ) ) : ?>
+            <div class="pmpro_message pmpro_error pmpro-nbstup-member-login__message">
+                <?php echo wp_kses_post( implode( '<br />', $errors ) ); ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" class="pmpro-nbstup-member-login__form">
+            <div class="pmpro-nbstup-member-login__header">
+                <h2 class="pmpro-nbstup-member-login__title">
+                    <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
+                </h2>
+                <p class="pmpro-nbstup-member-login__subtitle">
+                    <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
+                </p>
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="text"
+                    id="pmpro_nbstup_aadhar_number"
+                    name="aadhar_number"
+                    class="pmpro-nbstup-member-login__input"
+                    inputmode="numeric"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="password"
+                    id="pmpro_nbstup_member_password"
+                    name="member_password"
+                    class="pmpro-nbstup-member-login__input"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+            <?php wp_nonce_field( 'pmpro_nbstup_member_login', 'pmpro_nbstup_member_login_nonce' ); ?>
+            <div class="pmpro-nbstup-member-login__actions">
+                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+    <?php
+
+    return ob_get_clean();
+}
+
+/**
  * Render the list of deceased members for contribution payments
  *
  * @return string
@@ -510,6 +638,7 @@ function pmpronbstup_render_deceased_members_list()
 }
 
 add_shortcode('pmpro_account_nbstup', 'pmpronbstup_account_two_column_shortcode');
+add_shortcode('pmpro_nbstup_member_login', 'pmpronbstup_member_login_shortcode');
 
 /**
  * Migrate existing active users to have membership expiry dates
@@ -998,92 +1127,6 @@ function pmpronbstup_users_list_shortcode($atts)
     ob_start();
     ?>
     <div class="pmpro-nbstup-users-list">
-        <style>
-            .pmpro-nbstup-users-list { max-width: 100%; overflow-x: auto; }
-            .pmpro-nbstup-search-form {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                align-items: center;
-                padding: 12px 14px;
-                border: 1px solid #e5e7eb;
-                border-radius: 10px;
-                background: #ffffff;
-                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-                margin-bottom: 20px;
-            }
-            .pmpro-nbstup-search-form input[type="text"] {
-                flex: 1 1 260px;
-                padding: 10px 12px;
-                min-width: 220px;
-                border: 1px solid #d0d5dd;
-                border-radius: 8px;
-                outline: none;
-                transition: border-color 0.15s ease, box-shadow 0.15s ease;
-                background: #fff;
-            }
-            .pmpro-nbstup-search-form input[type="text"]:focus {
-                border-color: #2563eb;
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-            }
-            .pmpro-nbstup-search-form button,
-            .pmpro-nbstup-search-form .button {
-                padding: 5px 15px;
-                border-radius: 8px;
-                border: 1px solid #2563eb;
-                background: #2563eb;
-                color: #fff;
-                cursor: pointer;
-                text-decoration: none;
-                font-weight: 600;
-                line-height: 2;
-                transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
-            }
-            .pmpro-nbstup-search-form .button {
-                background: #ffffff;
-                color: #111827;
-                border-color: #d0d5dd;
-            }
-            .pmpro-nbstup-search-form button:hover {
-                background: #1d4ed8;
-                border-color: #1d4ed8;
-            }
-            .pmpro-nbstup-search-form .button:hover {
-                background: #f3f4f6;
-            }
-            .pmpro-nbstup-search-form button:active,
-            .pmpro-nbstup-search-form .button:active {
-                transform: translateY(1px);
-            }
-            @media (max-width: 600px) {
-                .pmpro-nbstup-search-form {
-                    padding: 10px;
-                }
-                .pmpro-nbstup-search-form input[type="text"] {
-                    flex-basis: 100%;
-                }
-                .pmpro-nbstup-search-form button,
-                .pmpro-nbstup-search-form .button {
-                    width: 100%;
-                    text-align: center;
-                }
-            }
-            .pmpro-nbstup-users-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-            .pmpro-nbstup-users-table th, .pmpro-nbstup-users-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-            .pmpro-nbstup-users-table th { background-color: #f5f5f5; font-weight: bold; }
-            .pmpro-nbstup-users-table tr:nth-child(even) { background-color: #f9f9f9; }
-            .pmpro-nbstup-users-table tr:hover { background-color: #f0f0f0; }
-            .pmpro-nbstup-pagination { display: flex; gap: 10px; align-items: center; justify-content: center; }
-            .pmpro-nbstup-pagination a, .pmpro-nbstup-pagination span { padding: 8px 12px; border: 1px solid #ddd; text-decoration: none; }
-            .pmpro-nbstup-pagination a:hover { background-color: #f0f0f0; }
-            .pmpro-nbstup-pagination .current { background-color: #0073aa; color: white; border-color: #0073aa; }
-            .status-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
-            .status-active { background-color: #d4edda; color: #155724; }
-            .status-inactive { background-color: #f8d7da; color: #721c24; }
-            .status-yes { background-color: #d4edda; color: #155724; }
-            .status-no { background-color: #f8d7da; color: #721c24; }
-        </style>
-
         <!-- Search Form -->
         <form method="get" class="pmpro-nbstup-search-form">
             <?php
@@ -1211,7 +1254,7 @@ function pmpronbstup_users_list_shortcode($atts)
                     <?php endif; ?>
                 </div>
 
-                <p style="text-align: center; margin-top: 10px;">
+                <p class="pmpro-nbstup-pagination-summary">
                     <?php printf(__('Page %d of %d | Total users: %d', 'pmpro-nbstup'), $paged, $total_pages, $total_users); ?>
                 </p>
             <?php endif; ?>

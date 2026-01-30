@@ -17,10 +17,10 @@ const paths = {
     },
     js: {
         src: [
-            'assets/js/frontend.js'
+            'assets/script/frontend.js'
         ],
-        watch: 'assets/js/**/*.js',
-        dest: 'assets/js/dist/'
+        watch: 'assets/script/**/*.js',
+        dest: 'assets/js/'
     }
 };
 

@@ -126,7 +126,7 @@ function pmpronbstup_render_email_settings_page()
     <div class="wrap">
         <h1><?php esc_html_e('NBSTUP Email Settings', 'pmpro-nbstup'); ?></h1>
         <p><?php esc_html_e('Configure email templates sent by the NBSTUP addon. Available placeholders:', 'pmpro-nbstup'); ?></p>
-        <ul style="list-style: disc; margin-left: 20px;">
+        <ul class="pmpro-nbstup-bullet-list">
             <li><code>{blogname}</code> - <?php esc_html_e('Site name', 'pmpro-nbstup'); ?></li>
             <li><code>{display_name}</code> - <?php esc_html_e('User display name', 'pmpro-nbstup'); ?></li>
             <li><code>{deadline}</code> - <?php esc_html_e('Contribution deadline', 'pmpro-nbstup'); ?></li>
@@ -136,44 +136,53 @@ function pmpronbstup_render_email_settings_page()
             <li><code>{days_until_expiry}</code> - <?php esc_html_e('Days until expiry', 'pmpro-nbstup'); ?></li>
         </ul>
 
-        <div style="background: #f0f0f1; padding: 15px; margin: 20px 0; border-left: 4px solid #2271b1;">
-            <h3 style="margin-top: 0;"><?php esc_html_e('Available Shortcodes', 'pmpro-nbstup'); ?></h3>
+        <div class="pmpro-nbstup-shortcodes-box">
+            <h3 class="pmpro-nbstup-shortcodes-title"><?php esc_html_e('Available Shortcodes', 'pmpro-nbstup'); ?></h3>
             <p><?php esc_html_e('Use these shortcodes in your pages and posts:', 'pmpro-nbstup'); ?></p>
             
-            <table class="widefat" style="background: #fff; margin-top: 10px;">
+            <table class="widefat pmpro-nbstup-shortcodes-table">
                 <thead>
                     <tr>
-                        <th style="padding: 10px;"><strong><?php esc_html_e('Shortcode', 'pmpro-nbstup'); ?></strong></th>
-                        <th style="padding: 10px;"><strong><?php esc_html_e('Description', 'pmpro-nbstup'); ?></strong></th>
-                        <th style="padding: 10px;"><strong><?php esc_html_e('Attributes', 'pmpro-nbstup'); ?></strong></th>
+                        <th class="pmpro-nbstup-shortcodes-cell"><strong><?php esc_html_e('Shortcode', 'pmpro-nbstup'); ?></strong></th>
+                        <th class="pmpro-nbstup-shortcodes-cell"><strong><?php esc_html_e('Description', 'pmpro-nbstup'); ?></strong></th>
+                        <th class="pmpro-nbstup-shortcodes-cell"><strong><?php esc_html_e('Attributes', 'pmpro-nbstup'); ?></strong></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="padding: 10px;"><code>[pmpro_nbstup_users_list]</code></td>
-                        <td style="padding: 10px;"><?php esc_html_e('Display a list of all users with membership details, status, and contribution information. Includes search and pagination.', 'pmpro-nbstup'); ?></td>
-                        <td style="padding: 10px;">
+                        <td class="pmpro-nbstup-shortcodes-cell"><code>[pmpro_nbstup_users_list]</code></td>
+                        <td class="pmpro-nbstup-shortcodes-cell"><?php esc_html_e('Display a list of all users with membership details, status, and contribution information. Includes search and pagination.', 'pmpro-nbstup'); ?></td>
+                        <td class="pmpro-nbstup-shortcodes-cell">
                             <code>per_page</code> - <?php esc_html_e('Number of users per page (default: 20)', 'pmpro-nbstup'); ?><br>
                             <strong><?php esc_html_e('Example:', 'pmpro-nbstup'); ?></strong> <code>[pmpro_nbstup_users_list per_page="30"]</code>
                         </td>
                     </tr>
-                    <tr style="background: #f9f9f9;">
-                        <td style="padding: 10px;"><code>[pmpro_account_nbstup]</code></td>
-                        <td style="padding: 10px;"><?php esc_html_e('Enhanced member account page with two-column layout. Shows account overview, membership details, order history, and contribution list.', 'pmpro-nbstup'); ?></td>
-                        <td style="padding: 10px;">
+                    <tr class="pmpro-nbstup-shortcodes-row-alt">
+                        <td class="pmpro-nbstup-shortcodes-cell"><code>[pmpro_account_nbstup]</code></td>
+                        <td class="pmpro-nbstup-shortcodes-cell"><?php esc_html_e('Enhanced member account page with two-column layout. Shows account overview, membership details, order history, and contribution list.', 'pmpro-nbstup'); ?></td>
+                        <td class="pmpro-nbstup-shortcodes-cell">
                             <?php esc_html_e('No attributes', 'pmpro-nbstup'); ?><br>
                             <strong><?php esc_html_e('Example:', 'pmpro-nbstup'); ?></strong> <code>[pmpro_account_nbstup]</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pmpro-nbstup-shortcodes-cell"><code>[pmpro_nbstup_member_login]</code></td>
+                        <td class="pmpro-nbstup-shortcodes-cell"><?php esc_html_e('Member login form using Aadhar number and password.', 'pmpro-nbstup'); ?></td>
+                        <td class="pmpro-nbstup-shortcodes-cell">
+                            <code>redirect</code> - <?php esc_html_e('Redirect URL after login (optional)', 'pmpro-nbstup'); ?><br>
+                            <strong><?php esc_html_e('Example:', 'pmpro-nbstup'); ?></strong> <code>[pmpro_nbstup_member_login redirect="/account/"]</code>
                         </td>
                     </tr>
                 </tbody>
             </table>
             
-            <p style="margin-top: 15px;">
+            <p class="pmpro-nbstup-shortcodes-features-title">
                 <strong><?php esc_html_e('Features:', 'pmpro-nbstup'); ?></strong>
             </p>
-            <ul style="list-style: disc; margin-left: 20px;">
+            <ul class="pmpro-nbstup-bullet-list">
                 <li><strong>[pmpro_nbstup_users_list]</strong> - <?php esc_html_e('Shows user ID, name, email, username, active status, deceased status, wedding status, membership status, expiry date, and contribution payment status (both deceased and wedding)', 'pmpro-nbstup'); ?></li>
                 <li><strong>[pmpro_account_nbstup]</strong> - <?php esc_html_e('Replaces standard PMPro account page with sidebar navigation and content area. Includes link to view deceased members list for contribution payments', 'pmpro-nbstup'); ?></li>
+                <li><strong>[pmpro_nbstup_member_login]</strong> - <?php esc_html_e('Member login form for Aadhar number and password (subscribers only).', 'pmpro-nbstup'); ?></li>
             </ul>
         </div>
 
@@ -358,7 +367,7 @@ function pmpronbstup_render_email_settings_page()
             <?php submit_button(__('Save Email Settings', 'pmpro-nbstup')); ?>
         </form>
 
-        <hr style="margin: 40px 0;" />
+        <hr class="pmpro-nbstup-section-divider" />
         
         <form method="post" action="" onsubmit="return confirm('<?php echo esc_js(__('Are you sure you want to reset all email templates to defaults? This cannot be undone.', 'pmpro-nbstup')); ?>');">
             <?php wp_nonce_field('pmpronbstup_reset_email_defaults', 'pmpronbstup_reset_defaults_nonce'); ?>

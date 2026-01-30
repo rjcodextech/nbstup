@@ -215,7 +215,7 @@ function pmpronbstup_render_location_admin_page()
         </nav>
 
         <!-- Tab Content -->
-        <div class="tab-content" style="margin-top: 20px;">
+        <div class="tab-content pmpro-nbstup-tab-content">
             <?php if ($tab === 'districts') : ?>
                 <?php pmpronbstup_render_districts_tab(); ?>
             <?php elseif ($tab === 'blocks') : ?>
@@ -240,9 +240,9 @@ function pmpronbstup_render_states_tab()
         $edit_state = pmpro_nbstup_get_state(intval($_GET['edit_state']));
     }
 ?>
-    <div style="display: flex; gap: 30px;">
+    <div class="pmpro-nbstup-admin-split">
         <!-- Add/Edit Form -->
-        <div style="flex: 0 0 300px;">
+        <div class="pmpro-nbstup-admin-col-fixed">
             <h2><?php echo $edit_state ? esc_html__('Edit State', 'pmpro-nbstup') : esc_html__('Add New State', 'pmpro-nbstup'); ?></h2>
             <form method="post">
                 <?php wp_nonce_field('pmpronbstup_state_action', 'pmpronbstup_state_nonce'); ?>
@@ -274,7 +274,7 @@ function pmpronbstup_render_states_tab()
         </div>
 
         <!-- States List -->
-        <div style="flex: 1;">
+        <div class="pmpro-nbstup-admin-col-fluid">
             <h2><?php esc_html_e('All States', 'pmpro-nbstup'); ?></h2>
             <?php if (empty($states)) : ?>
                 <p><?php esc_html_e('No states found. Add your first state.', 'pmpro-nbstup'); ?></p>
@@ -325,9 +325,9 @@ function pmpronbstup_render_districts_tab()
         $edit_district = pmpro_nbstup_get_district(intval($_GET['edit_district']));
     }
 ?>
-    <div style="display: flex; gap: 30px;">
+    <div class="pmpro-nbstup-admin-split">
         <!-- Add/Edit Form -->
-        <div style="flex: 0 0 300px;">
+        <div class="pmpro-nbstup-admin-col-fixed">
             <h2><?php echo $edit_district ? esc_html__('Edit District', 'pmpro-nbstup') : esc_html__('Add New District', 'pmpro-nbstup'); ?></h2>
             <form method="post">
                 <?php wp_nonce_field('pmpronbstup_district_action', 'pmpronbstup_district_nonce'); ?>
@@ -373,7 +373,7 @@ function pmpronbstup_render_districts_tab()
         </div>
 
         <!-- Districts List -->
-        <div style="flex: 1;">
+        <div class="pmpro-nbstup-admin-col-fluid">
             <h2><?php esc_html_e('All Districts', 'pmpro-nbstup'); ?></h2>
             <?php if (empty($districts)) : ?>
                 <p><?php esc_html_e('No districts found. Add your first district.', 'pmpro-nbstup'); ?></p>
@@ -426,9 +426,9 @@ function pmpronbstup_render_blocks_tab()
         $edit_block = pmpro_nbstup_get_block(intval($_GET['edit_block']));
     }
 ?>
-    <div style="display: flex; gap: 30px;">
+    <div class="pmpro-nbstup-admin-split">
         <!-- Add/Edit Form -->
-        <div style="flex: 0 0 300px;">
+        <div class="pmpro-nbstup-admin-col-fixed">
             <h2><?php echo $edit_block ? esc_html__('Edit Block', 'pmpro-nbstup') : esc_html__('Add New Block', 'pmpro-nbstup'); ?></h2>
             <form method="post">
                 <?php wp_nonce_field('pmpronbstup_block_action', 'pmpronbstup_block_nonce'); ?>
@@ -474,7 +474,7 @@ function pmpronbstup_render_blocks_tab()
         </div>
 
         <!-- Blocks List -->
-        <div style="flex: 1;">
+        <div class="pmpro-nbstup-admin-col-fluid">
             <h2><?php esc_html_e('All Blocks', 'pmpro-nbstup'); ?></h2>
             <?php if (empty($blocks)) : ?>
                 <p><?php esc_html_e('No blocks found. Add your first block.', 'pmpro-nbstup'); ?></p>

@@ -234,35 +234,35 @@ function pmpronbstup_render_contributions_page()
         <h1><?php esc_html_e('Contributions Management', 'pmpro-nbstup'); ?></h1>
 
         <!-- Statistics Dashboard -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-            <div style="background: #fff; border-left: 4px solid #2271b1; padding: 15px; box-shadow: 0 1px 1px rgba(0,0,0,0.04);">
-                <div style="font-size: 32px; font-weight: bold; color: #2271b1;"><?php echo esc_html($stats['total']); ?></div>
-                <div style="color: #646970;"><?php esc_html_e('Total Members', 'pmpro-nbstup'); ?></div>
+        <div class="pmpro-nbstup-contrib-stats">
+            <div class="pmpro-nbstup-contrib-stat is-primary">
+                <div class="pmpro-nbstup-contrib-stat-value is-primary"><?php echo esc_html($stats['total']); ?></div>
+                <div class="pmpro-nbstup-contrib-stat-label"><?php esc_html_e('Total Members', 'pmpro-nbstup'); ?></div>
             </div>
-            <div style="background: #fff; border-left: 4px solid #d63638; padding: 15px; box-shadow: 0 1px 1px rgba(0,0,0,0.04);">
-                <div style="font-size: 32px; font-weight: bold; color: #d63638;"><?php echo esc_html($stats['deceased_required']); ?></div>
-                <div style="color: #646970;"><?php esc_html_e('Deceased Contributions', 'pmpro-nbstup'); ?></div>
+            <div class="pmpro-nbstup-contrib-stat is-danger">
+                <div class="pmpro-nbstup-contrib-stat-value is-danger"><?php echo esc_html($stats['deceased_required']); ?></div>
+                <div class="pmpro-nbstup-contrib-stat-label"><?php esc_html_e('Deceased Contributions', 'pmpro-nbstup'); ?></div>
                 <small><?php printf(__('%d paid, %d unpaid', 'pmpro-nbstup'), $stats['deceased_paid'], $stats['deceased_unpaid']); ?></small>
             </div>
-            <div style="background: #fff; border-left: 4px solid #00a32a; padding: 15px; box-shadow: 0 1px 1px rgba(0,0,0,0.04);">
-                <div style="font-size: 32px; font-weight: bold; color: #00a32a;"><?php echo esc_html($stats['wedding_required']); ?></div>
-                <div style="color: #646970;"><?php esc_html_e('Wedding Contributions', 'pmpro-nbstup'); ?></div>
+            <div class="pmpro-nbstup-contrib-stat is-success">
+                <div class="pmpro-nbstup-contrib-stat-value is-success"><?php echo esc_html($stats['wedding_required']); ?></div>
+                <div class="pmpro-nbstup-contrib-stat-label"><?php esc_html_e('Wedding Contributions', 'pmpro-nbstup'); ?></div>
                 <small><?php printf(__('%d paid, %d unpaid', 'pmpro-nbstup'), $stats['wedding_paid'], $stats['wedding_unpaid']); ?></small>
             </div>
         </div>
 
         <!-- Filters and Search -->
-        <form method="get" style="background: #fff; padding: 15px; margin: 20px 0;">
+        <form method="get" class="pmpro-nbstup-contrib-filters">
             <input type="hidden" name="page" value="pmpro-nbstup-contributions" />
             
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                <select name="filter_type" style="min-width: 150px;">
+            <div class="pmpro-nbstup-contrib-filters-row">
+                <select name="filter_type" class="pmpro-nbstup-contrib-filter-select">
                     <option value="all" <?php selected($filter_type, 'all'); ?>><?php esc_html_e('All Types', 'pmpro-nbstup'); ?></option>
                     <option value="deceased" <?php selected($filter_type, 'deceased'); ?>><?php esc_html_e('Deceased Only', 'pmpro-nbstup'); ?></option>
                     <option value="wedding" <?php selected($filter_type, 'wedding'); ?>><?php esc_html_e('Wedding Only', 'pmpro-nbstup'); ?></option>
                 </select>
 
-                <select name="filter_status" style="min-width: 150px;">
+                <select name="filter_status" class="pmpro-nbstup-contrib-filter-select">
                     <option value="all" <?php selected($filter_status, 'all'); ?>><?php esc_html_e('All Statuses', 'pmpro-nbstup'); ?></option>
                     <option value="paid" <?php selected($filter_status, 'paid'); ?>><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></option>
                     <option value="unpaid" <?php selected($filter_status, 'unpaid'); ?>><?php esc_html_e('Unpaid', 'pmpro-nbstup'); ?></option>
@@ -270,7 +270,7 @@ function pmpronbstup_render_contributions_page()
 
                 <input type="text" name="s" value="<?php echo esc_attr($search); ?>" 
                        placeholder="<?php esc_attr_e('Search users...', 'pmpro-nbstup'); ?>" 
-                       style="min-width: 250px;" />
+                       class="pmpro-nbstup-contrib-filter-search" />
 
                 <button type="submit" class="button"><?php esc_html_e('Filter', 'pmpro-nbstup'); ?></button>
                 <a href="?page=pmpro-nbstup-contributions" class="button"><?php esc_html_e('Reset', 'pmpro-nbstup'); ?></a>
@@ -338,33 +338,33 @@ function pmpronbstup_render_contributions_page()
                                 <td>
                                     <?php if ((int)$deceased_required === 1) : ?>
                                         <?php if ((int)$deceased_paid === 1) : ?>
-                                            <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
-                                            <strong style="color: #00a32a;"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></strong>
+                                            <span class="dashicons dashicons-yes-alt pmpro-nbstup-status-icon pmpro-nbstup-status-paid"></span>
+                                            <strong class="pmpro-nbstup-status-paid"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></strong>
                                         <?php else : ?>
-                                            <span class="dashicons dashicons-warning" style="color: #d63638;"></span>
-                                            <strong style="color: #d63638;"><?php esc_html_e('Unpaid', 'pmpro-nbstup'); ?></strong>
+                                            <span class="dashicons dashicons-warning pmpro-nbstup-status-icon pmpro-nbstup-status-unpaid"></span>
+                                            <strong class="pmpro-nbstup-status-unpaid"><?php esc_html_e('Unpaid', 'pmpro-nbstup'); ?></strong>
                                             <?php if ($deceased_deadline) : ?>
                                                 <br><small><?php printf(__('Deadline: %s', 'pmpro-nbstup'), esc_html($deceased_deadline)); ?></small>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                     <?php else : ?>
-                                        <span style="color: #646970;">—</span>
+                                        <span class="pmpro-nbstup-status-empty">—</span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if ((int)$wedding_required === 1) : ?>
                                         <?php if ((int)$wedding_paid === 1) : ?>
-                                            <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
-                                            <strong style="color: #00a32a;"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></strong>
+                                            <span class="dashicons dashicons-yes-alt pmpro-nbstup-status-icon pmpro-nbstup-status-paid"></span>
+                                            <strong class="pmpro-nbstup-status-paid"><?php esc_html_e('Paid', 'pmpro-nbstup'); ?></strong>
                                         <?php else : ?>
-                                            <span class="dashicons dashicons-warning" style="color: #d63638;"></span>
-                                            <strong style="color: #d63638;"><?php esc_html_e('Unpaid', 'pmpro-nbstup'); ?></strong>
+                                            <span class="dashicons dashicons-warning pmpro-nbstup-status-icon pmpro-nbstup-status-unpaid"></span>
+                                            <strong class="pmpro-nbstup-status-unpaid"><?php esc_html_e('Unpaid', 'pmpro-nbstup'); ?></strong>
                                             <?php if ($wedding_deadline) : ?>
                                                 <br><small><?php printf(__('Deadline: %s', 'pmpro-nbstup'), esc_html($wedding_deadline)); ?></small>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                     <?php else : ?>
-                                        <span style="color: #646970;">—</span>
+                                        <span class="pmpro-nbstup-status-empty">—</span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
@@ -396,16 +396,9 @@ function pmpronbstup_render_contributions_page()
                 </table>
             </form>
 
-            <script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    $('#select-all').on('change', function() {
-                        $('input[name="user_ids[]"]').prop('checked', this.checked);
-                    });
-                });
-            </script>
         <?php endif; ?>
 
-        <div style="margin-top: 20px; padding: 15px; background: #fff;">
+        <div class="pmpro-nbstup-contrib-quick-actions">
             <h3><?php esc_html_e('Quick Actions', 'pmpro-nbstup'); ?></h3>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pmpro-nbstup-user-approval&tab=contribution_deceased')); ?>" class="button">
