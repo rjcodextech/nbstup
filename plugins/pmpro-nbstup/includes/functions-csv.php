@@ -16,6 +16,9 @@ if (! defined('ABSPATH')) {
  */
 function pmpronbstup_handle_csv_upload()
 {
+    if (! function_exists('pmpronbstup_user_activation_csv_enabled') || ! pmpronbstup_user_activation_csv_enabled()) {
+        return;
+    }
     if (! is_admin()) {
         return;
     }

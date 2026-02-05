@@ -22,11 +22,15 @@ function pmpronbstup_enqueue_frontend_assets()
     }
 
     $should_load = is_user_logged_in();
+    $has_login_shortcode = false;
 
-    if ( ! $should_load && is_singular() ) {
+    if ( is_singular() ) {
         $post = get_post();
         if ( $post && has_shortcode( $post->post_content, 'pmpro_nbstup_member_login' ) ) {
-            $should_load = true;
+            $has_login_shortcode = true;
+            if ( ! $should_load ) {
+                $should_load = true;
+            }
         }
     }
 
@@ -49,6 +53,23 @@ function pmpronbstup_enqueue_frontend_assets()
         PMPRONBSTUP_VERSION,
         true
     );
+
+    if ( $has_login_shortcode ) {
+        wp_localize_script(
+            'pmpro-nbstup-frontend',
+            'pmpro_nbstup_login',
+            array(
+                'ajax_url'      => admin_url( 'admin-ajax.php' ),
+                'nonce'         => wp_create_nonce( 'pmpro_nbstup_login' ),
+                'generic_error' => esc_html__( 'Login failed. Please try again.', 'pmpro-nbstup' ),
+                'validation_message'       => esc_html__( 'Please fix the highlighted fields and try again.', 'pmpro-nbstup' ),
+                'validation_login'         => esc_html__( 'Please enter your username or email.', 'pmpro-nbstup' ),
+                'validation_password'      => esc_html__( 'Please enter your password.', 'pmpro-nbstup' ),
+                'validation_aadhar'        => esc_html__( 'Please enter your Aadhar number.', 'pmpro-nbstup' ),
+                'validation_aadhar_format' => esc_html__( 'Enter a valid 12-digit Aadhar number.', 'pmpro-nbstup' ),
+            )
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
 
@@ -445,107 +466,133 @@ function pmpronbstup_member_login_shortcode( $atts )
 
     $atts = shortcode_atts(
         array(
-            'redirect' => '',
+            'redirect'       => '',
+            'admin_redirect' => '',
         ),
         $atts,
         'pmpro_nbstup_member_login'
     );
 
-    $errors = array();
-
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['pmpro_nbstup_member_login_nonce'] ) ) {
-        if ( ! wp_verify_nonce( wp_unslash( $_POST['pmpro_nbstup_member_login_nonce'] ), 'pmpro_nbstup_member_login' ) ) {
-            $errors[] = esc_html__( 'Security check failed. Please try again.', 'pmpro-nbstup' );
-        } else {
-            $aadhar = isset( $_POST['aadhar_number'] ) ? sanitize_text_field( wp_unslash( $_POST['aadhar_number'] ) ) : '';
-            $password = isset( $_POST['member_password'] ) ? wp_unslash( $_POST['member_password'] ) : '';
-
-            if ( $aadhar === '' ) {
-                $errors[] = esc_html__( 'Aadhar Number is required.', 'pmpro-nbstup' );
-            }
-
-            if ( $password === '' ) {
-                $errors[] = esc_html__( 'Password is required.', 'pmpro-nbstup' );
-            }
-
-            if ( empty( $errors ) ) {
-                $user = wp_signon(
-                    array(
-                        'user_login'    => $aadhar,
-                        'user_password' => $password,
-                        'remember'      => true,
-                    ),
-                    is_ssl()
-                );
-
-                if ( is_wp_error( $user ) ) {
-                    $errors[] = $user->get_error_message();
-                } elseif ( user_can( $user, 'manage_options' ) ) {
-                    wp_logout();
-                    $errors[] = esc_html__( 'Admin users must log in from the admin login page.', 'pmpro-nbstup' );
-                } else {
-                    $redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : ( function_exists( 'pmpro_url' ) ? pmpro_url( 'account' ) : home_url( '/' ) );
-                    wp_safe_redirect( $redirect );
-                    exit;
-                }
-            }
-        }
-    }
+    $member_redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : '';
+    $admin_redirect = ! empty( $atts['admin_redirect'] ) ? $atts['admin_redirect'] : '';
 
     ob_start();
     ?>
-    <div class="pmpro-nbstup-member-login">
-        <?php if ( ! empty( $errors ) ) : ?>
-            <div class="pmpro_message pmpro_error pmpro-nbstup-member-login__message">
-                <?php echo wp_kses_post( implode( '<br />', $errors ) ); ?>
-            </div>
-        <?php endif; ?>
+    <div class="pmpro-nbstup-member-login pmpro-nbstup-login-tabs" data-login-tabs>
+        <div class="pmpro-nbstup-login-tabs__header" role="tablist" aria-label="<?php esc_attr_e( 'Login tabs', 'pmpro-nbstup' ); ?>">
+            <button type="button" class="pmpro-nbstup-login-tab is-active" data-tab="member" role="tab" aria-selected="true" aria-controls="pmpro-nbstup-login-panel-member" id="pmpro-nbstup-login-tab-member">
+                <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
+            </button>
+            <button type="button" class="pmpro-nbstup-login-tab" data-tab="admin" role="tab" aria-selected="false" aria-controls="pmpro-nbstup-login-panel-admin" id="pmpro-nbstup-login-tab-admin">
+                <?php esc_html_e( 'Admin Login', 'pmpro-nbstup' ); ?>
+            </button>
+        </div>
 
-        <form method="post" class="pmpro-nbstup-member-login__form">
-            <div class="pmpro-nbstup-member-login__header">
-                <h2 class="pmpro-nbstup-member-login__title">
-                    <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
-                </h2>
-                <p class="pmpro-nbstup-member-login__subtitle">
-                    <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
-                </p>
-            </div>
+        <div class="pmpro-nbstup-login-panel is-active" data-panel="member" role="tabpanel" id="pmpro-nbstup-login-panel-member" aria-labelledby="pmpro-nbstup-login-tab-member">
+            <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
 
-            <div class="pmpro-nbstup-member-login__field">
-                <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
-                    <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
-                </label>
-                <input
-                    type="text"
-                    id="pmpro_nbstup_aadhar_number"
-                    name="aadhar_number"
-                    class="pmpro-nbstup-member-login__input"
-                    inputmode="numeric"
-                    autocomplete="username"
-                    required
-                />
-            </div>
+            <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="member" data-redirect="<?php echo esc_attr( $member_redirect ); ?>">
+                <div class="pmpro-nbstup-member-login__header">
+                    <h2 class="pmpro-nbstup-member-login__title">
+                        <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
+                    </h2>
+                    <p class="pmpro-nbstup-member-login__subtitle">
+                        <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
+                    </p>
+                </div>
 
-            <div class="pmpro-nbstup-member-login__field">
-                <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
-                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
-                </label>
-                <input
-                    type="password"
-                    id="pmpro_nbstup_member_password"
-                    name="member_password"
-                    class="pmpro-nbstup-member-login__input"
-                    autocomplete="current-password"
-                    required
-                />
-            </div>
-            <?php wp_nonce_field( 'pmpro_nbstup_member_login', 'pmpro_nbstup_member_login_nonce' ); ?>
-            <div class="pmpro-nbstup-member-login__actions">
-                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
-                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
-                </button>
-            </div>
-        </form>
+                <div class="pmpro-nbstup-member-login__field">
+                    <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
+                        <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
+                    </label>
+                    <input
+                        type="text"
+                        id="pmpro_nbstup_aadhar_number"
+                        name="aadhar_number"
+                        class="pmpro-nbstup-member-login__input"
+                        inputmode="numeric"
+                        autocomplete="username"
+                        required
+                    />
+                </div>
+
+                <div class="pmpro-nbstup-member-login__field">
+                    <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
+                        <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                    </label>
+                    <input
+                        type="password"
+                        id="pmpro_nbstup_member_password"
+                        name="member_password"
+                        class="pmpro-nbstup-member-login__input"
+                        autocomplete="current-password"
+                        required
+                    />
+                </div>
+
+                <div class="pmpro-nbstup-member-login__actions">
+                    <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                        <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="pmpro-nbstup-login-panel" data-panel="admin" role="tabpanel" id="pmpro-nbstup-login-panel-admin" aria-labelledby="pmpro-nbstup-login-tab-admin">
+            <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
+
+            <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="admin" data-redirect="<?php echo esc_attr( $admin_redirect ); ?>">
+                <div class="pmpro-nbstup-member-login__header">
+                    <h2 class="pmpro-nbstup-member-login__title">
+                        <?php esc_html_e( 'Admin Login', 'pmpro-nbstup' ); ?>
+                    </h2>
+                    <p class="pmpro-nbstup-member-login__subtitle">
+                        <?php esc_html_e( 'Login with your WordPress username or email.', 'pmpro-nbstup' ); ?>
+                    </p>
+                </div>
+
+                <div class="pmpro-nbstup-member-login__field">
+                    <label for="pmpro_nbstup_admin_login" class="pmpro-nbstup-member-login__label">
+                        <?php esc_html_e( 'Username or Email', 'pmpro-nbstup' ); ?>
+                    </label>
+                    <input
+                        type="text"
+                        id="pmpro_nbstup_admin_login"
+                        name="user_login"
+                        class="pmpro-nbstup-member-login__input"
+                        autocomplete="username"
+                        required
+                    />
+                </div>
+
+                <div class="pmpro-nbstup-member-login__field">
+                    <label for="pmpro_nbstup_admin_password" class="pmpro-nbstup-member-login__label">
+                        <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                    </label>
+                    <input
+                        type="password"
+                        id="pmpro_nbstup_admin_password"
+                        name="user_password"
+                        class="pmpro-nbstup-member-login__input"
+                        autocomplete="current-password"
+                        required
+                    />
+                </div>
+
+                <div class="pmpro-nbstup-member-login__field pmpro-nbstup-login__checkbox">
+                    <label for="pmpro_nbstup_admin_remember">
+                        <input type="checkbox" id="pmpro_nbstup_admin_remember" name="remember" value="1" />
+                        <?php esc_html_e( 'Remember me', 'pmpro-nbstup' ); ?>
+                    </label>
+                </div>
+
+                <div class="pmpro-nbstup-member-login__actions">
+                    <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                        <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
     <?php
 

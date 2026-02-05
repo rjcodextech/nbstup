@@ -71,3 +71,120 @@ function pmpronbstup_authenticate($user, $username, $password)
     return $user;
 }
 add_filter('authenticate', 'pmpronbstup_authenticate', 30, 3);
+
+/**
+ * AJAX: Member login via Aadhar number and password.
+ */
+add_action( 'wp_ajax_nopriv_pmpronbstup_member_login', 'pmpronbstup_ajax_member_login' );
+add_action( 'wp_ajax_pmpronbstup_member_login', 'pmpronbstup_ajax_member_login' );
+function pmpronbstup_ajax_member_login() {
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['nonce'] ), 'pmpro_nbstup_login' ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Security check failed. Please try again.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( is_user_logged_in() ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'You are already logged in.', 'pmpro-nbstup' ) ) );
+    }
+
+    $aadhar_raw = isset( $_POST['aadhar_number'] ) ? wp_unslash( $_POST['aadhar_number'] ) : '';
+    $aadhar = preg_replace( '/\D+/', '', $aadhar_raw );
+    $password = isset( $_POST['member_password'] ) ? wp_unslash( $_POST['member_password'] ) : '';
+
+    if ( $aadhar === '' || ! preg_match( '/^\d{12}$/', $aadhar ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Please enter a valid 12-digit Aadhar number.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( $password === '' ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Password is required.', 'pmpro-nbstup' ) ) );
+    }
+
+    $users = get_users(
+        array(
+            'number'     => 2,
+            'meta_key'   => 'aadhar_number',
+            'meta_value' => $aadhar,
+        )
+    );
+
+    if ( empty( $users ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'No account found for this Aadhar number.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( count( $users ) > 1 ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Multiple accounts found for this Aadhar number. Please contact support.', 'pmpro-nbstup' ) ) );
+    }
+
+    $user = $users[0];
+
+    $signon = wp_signon(
+        array(
+            'user_login'    => $user->user_login,
+            'user_password' => $password,
+            'remember'      => true,
+        ),
+        is_ssl()
+    );
+
+    if ( is_wp_error( $signon ) ) {
+        wp_send_json_error( array( 'message' => $signon->get_error_message() ) );
+    }
+
+    if ( user_can( $signon, 'manage_options' ) ) {
+        wp_logout();
+        wp_send_json_error( array( 'message' => esc_html__( 'Admin users must log in from the admin login tab.', 'pmpro-nbstup' ) ) );
+    }
+
+    $default_redirect = function_exists( 'pmpro_url' ) ? pmpro_url( 'account' ) : home_url( '/' );
+    $redirect_raw = isset( $_POST['redirect'] ) ? wp_unslash( $_POST['redirect'] ) : '';
+    $redirect_raw = $redirect_raw !== '' ? esc_url_raw( $redirect_raw ) : '';
+    $redirect = $redirect_raw ? wp_validate_redirect( $redirect_raw, $default_redirect ) : $default_redirect;
+
+    wp_send_json_success( array( 'redirect' => $redirect ) );
+}
+
+/**
+ * AJAX: Admin login via username/email and password.
+ */
+add_action( 'wp_ajax_nopriv_pmpronbstup_admin_login', 'pmpronbstup_ajax_admin_login' );
+add_action( 'wp_ajax_pmpronbstup_admin_login', 'pmpronbstup_ajax_admin_login' );
+function pmpronbstup_ajax_admin_login() {
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['nonce'] ), 'pmpro_nbstup_login' ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Security check failed. Please try again.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( is_user_logged_in() ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'You are already logged in.', 'pmpro-nbstup' ) ) );
+    }
+
+    $user_login = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
+    $password = isset( $_POST['user_password'] ) ? wp_unslash( $_POST['user_password'] ) : '';
+    $remember = ! empty( $_POST['remember'] );
+
+    if ( $user_login === '' ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Username or email is required.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( $password === '' ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Password is required.', 'pmpro-nbstup' ) ) );
+    }
+
+    $signon = wp_signon(
+        array(
+            'user_login'    => $user_login,
+            'user_password' => $password,
+            'remember'      => $remember,
+        ),
+        is_ssl()
+    );
+
+    if ( is_wp_error( $signon ) ) {
+        wp_send_json_error( array( 'message' => $signon->get_error_message() ) );
+    }
+
+    $default_redirect = admin_url();
+    $redirect_raw = isset( $_POST['redirect'] ) ? wp_unslash( $_POST['redirect'] ) : '';
+    $redirect_raw = $redirect_raw !== '' ? esc_url_raw( $redirect_raw ) : '';
+    $redirect = $redirect_raw ? wp_validate_redirect( $redirect_raw, $default_redirect ) : $default_redirect;
+
+    wp_send_json_success( array( 'redirect' => $redirect ) );
+}

@@ -8,17 +8,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'pmpronbstup_bank_transfer_fields_enabled' ) ) {
+	function pmpronbstup_bank_transfer_fields_enabled() {
+		/**
+		 * Filter whether Bank Transfer Details fields are enabled on checkout.
+		 *
+		 * @param bool $enabled Default false to disable fields.
+		 */
+		return (bool) apply_filters( 'pmpronbstup_enable_bank_transfer_fields', false );
+	}
+}
+
 /**
  * Enable file upload on PMPro checkout form
  */
-add_filter( 'pmpro_checkout_form_enctype', function () {
-	return 'multipart/form-data';
-});
+if ( pmpronbstup_bank_transfer_fields_enabled() ) {
+	add_filter( 'pmpro_checkout_form_enctype', function () {
+		return 'multipart/form-data';
+	} );
+}
 
 /**
  * Add fields after Payment Details section
  */
-add_action( 'pmpro_checkout_after_payment_information_fields', 'pmpro_add_bank_transfer_fields' );
+if ( pmpronbstup_bank_transfer_fields_enabled() ) {
+	add_action( 'pmpro_checkout_after_payment_information_fields', 'pmpro_add_bank_transfer_fields' );
+}
 function pmpro_add_bank_transfer_fields() {
 	?>
 	<fieldset id="pmpro_form_fieldset-bank-transfer" class="pmpro_form_fieldset">
@@ -589,6 +604,9 @@ function pmpro_add_address_fields() {
  */
 add_action( 'pmpro_after_checkout', 'pmpro_save_bank_transfer_data', 10, 2 );
 function pmpro_save_bank_transfer_data( $user_id, $order ) {
+	if ( ! pmpronbstup_bank_transfer_fields_enabled() ) {
+		return;
+	}
 
 	if ( empty( $_POST['gateway'] ) || $_POST['gateway'] !== 'check' ) {
 		return;
@@ -843,7 +861,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		$errors[] = __( 'Block is required.', 'pmpro-nbstup' );
 	}
 
-	if ( ! empty( $_REQUEST['gateway'] ) && $_REQUEST['gateway'] === 'check' ) {
+	if ( pmpronbstup_bank_transfer_fields_enabled() && ! empty( $_REQUEST['gateway'] ) && $_REQUEST['gateway'] === 'check' ) {
 		$txn_id = isset( $_REQUEST['bank_transaction_id'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['bank_transaction_id'] ) ) ) : '';
 		if ( $txn_id === '' ) {
 			$errors[] = __( 'Transaction ID is required.', 'pmpro-nbstup' );

@@ -11,6 +11,18 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+if (! function_exists('pmpronbstup_user_activation_csv_enabled')) {
+    function pmpronbstup_user_activation_csv_enabled()
+    {
+        /**
+         * Filter whether user activation CSV import is enabled.
+         *
+         * @param bool $enabled Default false to disable activation from CSV.
+         */
+        return (bool) apply_filters('pmpronbstup_enable_user_activation_csv', false);
+    }
+}
+
 /**
  * Add admin menu page under Paid Memberships Pro.
  */
@@ -52,17 +64,25 @@ function pmpronbstup_render_admin_page()
 
     settings_errors('pmpro-nbstup');
 
+    $user_activation_enabled = pmpronbstup_user_activation_csv_enabled();
+
     // Get current tab
-    $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'user_activation';
+    $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : ($user_activation_enabled ? 'user_activation' : 'contribution_deceased');
+
+    if (! $user_activation_enabled && $tab === 'user_activation') {
+        $tab = 'contribution_deceased';
+    }
 ?>
     <div class="wrap">
         <h1><?php esc_html_e('User Approval', 'pmpro-nbstup'); ?></h1>
 
         <!-- Tab Navigation -->
         <nav class="nav-tab-wrapper">
-            <a href="?page=pmpro-nbstup-user-approval&tab=user_activation" class="nav-tab <?php echo $tab === 'user_activation' ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('User Activation', 'pmpro-nbstup'); ?>
-            </a>
+            <?php if ($user_activation_enabled) : ?>
+                <a href="?page=pmpro-nbstup-user-approval&tab=user_activation" class="nav-tab <?php echo $tab === 'user_activation' ? 'nav-tab-active' : ''; ?>">
+                    <?php esc_html_e('User Activation', 'pmpro-nbstup'); ?>
+                </a>
+            <?php endif; ?>
             <a href="?page=pmpro-nbstup-user-approval&tab=contribution_deceased" class="nav-tab <?php echo $tab === 'contribution_deceased' ? 'nav-tab-active' : ''; ?>">
                 <?php esc_html_e('Deceased Contribution', 'pmpro-nbstup'); ?>
             </a>
@@ -78,7 +98,11 @@ function pmpronbstup_render_admin_page()
             <?php elseif ($tab === 'contribution_wedding') : ?>
                 <?php pmpronbstup_render_contribution_wedding_csv_form(); ?>
             <?php else : ?>
-                <?php pmpronbstup_render_user_activation_csv_form(); ?>
+                <?php if ($user_activation_enabled) : ?>
+                    <?php pmpronbstup_render_user_activation_csv_form(); ?>
+                <?php else : ?>
+                    <?php pmpronbstup_render_contribution_deceased_csv_form(); ?>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

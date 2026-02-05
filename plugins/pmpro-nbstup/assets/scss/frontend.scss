@@ -645,11 +645,11 @@ $breakpoint-sm: 480px;
 .pmpro-nbstup-member-login {
   max-width: 480px;
   margin: 40px auto;
-  padding: 24px;
+  padding: 28px;
   background: $color-white;
   border: 1px solid $color-gray-200;
-  border-radius: 12px;
-  box-shadow: $shadow-sm;
+  border-radius: 16px;
+  box-shadow: $shadow-md;
   position: relative;
   overflow: hidden;
 
@@ -663,17 +663,28 @@ $breakpoint-sm: 480px;
 }
 
 .pmpro-nbstup-member-login__message {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid $color-gray-200;
+  background: $color-gray-50;
+  color: $color-gray-700;
+  font-weight: 500;
+}
+
+.pmpro-nbstup-member-login__form {
+  display: flex;
+  flex-direction: column;
 }
 
 .pmpro-nbstup-member-login__header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .pmpro-nbstup-member-login__title {
   margin: 0 0 6px;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: $color-gray-900;
 }
@@ -684,7 +695,7 @@ $breakpoint-sm: 480px;
 }
 
 .pmpro-nbstup-member-login__field {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .pmpro-nbstup-member-login__label {
@@ -692,32 +703,160 @@ $breakpoint-sm: 480px;
   margin-bottom: 6px;
   font-weight: 600;
   color: $color-gray-700;
+  letter-spacing: 0.1px;
 }
 
 .pmpro-nbstup-member-login__input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 1px solid $color-gray-300;
-  border-radius: 8px;
+  border-radius: 10px;
   background: $color-white;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  color: $color-gray-900;
 
   &:focus {
     border-color: $color-primary;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
     outline: none;
   }
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+}
+
+.pmpro-nbstup-member-login__field.has-error {
+  .pmpro-nbstup-member-login__input {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.15);
+  }
+}
+
+.pmpro-nbstup-field-error {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: $color-danger;
 }
 
 .pmpro-nbstup-member-login__actions {
   display: flex;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 12px;
+  gap: $spacing-sm;
 }
 
 .pmpro-nbstup-member-login__submit {
-  min-width: 160px;
+  min-width: 180px;
   border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.pmpro-nbstup-login-tabs__header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  background: $color-gray-100;
+  border: 1px solid $color-gray-200;
+  border-radius: 999px;
+  padding: 6px;
+  margin-bottom: $spacing-xl;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  position: relative;
+}
+
+.pmpro-nbstup-login-tab {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  min-height: 40px;
+  border: none;
+  background: transparent;
+  color: $color-gray-700;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-gray-900;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($color-primary, 0.5);
+    outline-offset: 2px;
+  }
+
+  &.is-active {
+    background: $color-white;
+    color: $color-gray-900;
+    box-shadow: 0 2px 6px rgba(17, 24, 39, 0.12);
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .pmpro-nbstup-login-tabs__header {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
+  }
+
+  .pmpro-nbstup-login-tab {
+    width: 100%;
+    border-radius: $radius-md;
+  }
+}
+
+.pmpro-nbstup-login-panel[hidden] {
+  display: none;
+}
+
+.pmpro-nbstup-login-panel {
+  padding-top: $spacing-sm;
+}
+
+.pmpro-nbstup-login-message {
+  margin-bottom: $spacing-lg;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid $color-gray-200;
+  background: $color-gray-50;
+  color: $color-gray-700;
+}
+
+.pmpro-nbstup-login__checkbox {
+  label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $color-gray-700;
+    font-weight: 500;
+  }
+
+  input {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: $color-primary;
+  }
+}
+
+.pmpro-nbstup-login-form.is-loading {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.pmpro-nbstup-login-form.is-loading .pmpro-nbstup-member-login__submit {
+  opacity: 0.85;
+  cursor: progress;
 }
 
 // ============================================================================
