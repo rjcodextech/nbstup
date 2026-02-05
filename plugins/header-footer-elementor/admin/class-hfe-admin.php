@@ -151,7 +151,7 @@ class HFE_Admin {
 		add_action( 'elementor/editor/before_enqueue_styles', [ $this, 'enqueue_permalink_clear_notice_css' ] );
 		// Hook into Elementor's editor styles
 		add_action('elementor/editor/before_enqueue_scripts', [$this, 'enqueue_editor_scripts']);
-		if ( 'yes' === get_option( 'uae_analytics_optin', false ) ) {
+		if ( 'yes' === get_option( 'uae_usage_optin', false ) ) {
 			add_action('shutdown', [ $this, 'maybe_run_hfe_widgets_usage_check' ] );
 		}
 	}

@@ -242,16 +242,16 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
            ]
        );
 
-       $this->add_control(
-           'ekit_blog_posts_num',
-           [
-               'label'     => esc_html__( 'Posts Count', 'elementskit-lite' ),
-               'type'      => Controls_Manager::NUMBER,
-               'min'       => 1,
-               'max'       => 100,
-               'default'   => 3,
-           ]
-       );
+        $this->add_control(
+            'ekit_blog_posts_num',
+            [
+                'label'   => esc_html__( 'Posts Count', 'elementskit-lite' ),
+                'type'    => Controls_Manager::NUMBER,
+                'min'     => 1,
+                'default' => 3,
+            ]
+        );
+
 
        $this->add_control(
         'ekit_blog_posts_is_manual_selection',

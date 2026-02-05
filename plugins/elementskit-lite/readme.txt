@@ -4,7 +4,7 @@ Tags: Elementor addons, mega menu builder,  header footer builder, elementor add
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 3.7.8
+Stable tag: 3.7.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -332,6 +332,12 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme)  for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+
+= ElementsKit Elementor Addons Version: 3.7.9 (2026-02-03) =
+* Fixed: `posts count` control settings in blog posts widget
+* Fixed: Team widget modal scroll not working in iPhone
+* Fixed: Dashboard modules pages scroll blink issue
+* Removed: Caldera forms widget and related assets
 
 = ElementsKit Elementor Addons Version: 3.7.8 (2025-12-21) =
 * Fixed: Default SVG color not working in button widget

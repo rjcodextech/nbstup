@@ -360,7 +360,7 @@ class HFE_Settings_Page {
 			$siteurl    = $this->fetch_site_url();
 			$show_theme_support = 'no';
 			$hfe_theme_status   = get_option( 'hfe_is_theme_supported', false );
-			$analytics_status   = get_option( 'uae_analytics_optin', false );
+			$analytics_status   = get_option( 'uae_usage_optin', false );
 	
 			if ( ( ! current_theme_supports( 'header-footer-elementor' ) ) && ! $hfe_theme_status ) {
 				$show_theme_support = 'yes';
@@ -399,8 +399,10 @@ class HFE_Settings_Page {
 					'theme_url'                => HFE_URL . 'assets/images/settings/layout-template.svg',
 					'version_url'              => HFE_URL . 'assets/images/settings/version.svg',
 					'version__selected_url'    => HFE_URL . 'assets/images/settings/git-compare.svg',
-					'tracking_url'              => HFE_URL . 'assets/images/settings/tracking.svg',
-					'tracking__selected_url'    => HFE_URL . 'assets/images/settings/tracking_selected.svg',
+					'tracking_url'             => HFE_URL . 'assets/images/settings/tracking.svg',
+					'tracking__selected_url'   => HFE_URL . 'assets/images/settings/tracking_selected.svg',
+					'branding_url'             => HFE_URL . 'assets/images/settings/branding.svg',
+					'branding__selected_url'   => HFE_URL . 'assets/images/settings/branding-selected.svg',
 					'user_url'                 => HFE_URL . 'assets/images/settings/user.svg',
 					'user__selected_url'       => HFE_URL . 'assets/images/settings/user-selected.svg',
 					'integrations_url'         => HFE_URL . 'assets/images/settings/integrations.svg', // Update the path to your assets folder.

@@ -236,12 +236,6 @@ class Widget_List extends \ElementsKit_Lite\Core\Config_List
 					'package'         => 'free',
 					'widget-category' => 'general', // general
 				),
-				'caldera-forms' => array(
-					'slug'            => 'caldera-forms',
-					'title'           => 'Caldera Forms',
-					'package'         => 'free',
-					'widget-category' => 'form', // form
-				),
 				'we-forms' => array(
 					'slug'            => 'we-forms',
 					'title'           => 'weForms',

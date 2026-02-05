@@ -1,14 +1,14 @@
-# Copyright (C) 2025 Wpmet
+# Copyright (C) 2026 Wpmet
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: ElementsKit Lite 3.7.8\n"
+"Project-Id-Version: ElementsKit Lite 3.7.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/elementskit-lite\n"
-"POT-Creation-Date: 2025-12-21 05:47:20+00:00\n"
+"POT-Creation-Date: 2026-02-03 08:57:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
@@ -74,8 +74,7 @@ msgstr ""
 msgid "ElementsKit Header Footer"
 msgstr ""
 
-#: helpers/utils.php:231 widgets/caldera-forms/caldera-forms.php:49
-#: widgets/caldera-forms/caldera-forms.php:74
+#: helpers/utils.php:231
 msgid "Select Form"
 msgstr ""
 
@@ -369,7 +368,7 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: libs/framework/controls/settings/switch.php:53
+#: libs/framework/controls/settings/switch.php:64
 msgid "View Demo"
 msgstr ""
 
@@ -1957,7 +1956,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:1784
 #: widgets/blog-posts/blog-posts.php:1996
 #: widgets/blog-posts/blog-posts.php:2207 widgets/button/button.php:143
-#: widgets/caldera-forms/caldera-forms.php:584
 #: widgets/category-list/category-list.php:176
 #: widgets/contact-form7/contact-form7.php:582
 #: widgets/dual-button/dual-button.php:86
@@ -2006,7 +2004,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:1074
 #: widgets/blog-posts/blog-posts.php:2004
 #: widgets/blog-posts/blog-posts.php:2215 widgets/button/button.php:151
-#: widgets/caldera-forms/caldera-forms.php:592
 #: widgets/category-list/category-list.php:184
 #: widgets/contact-form7/contact-form7.php:590
 #: widgets/dual-button/dual-button.php:94
@@ -2383,7 +2380,6 @@ msgid "Show Loop Count"
 msgstr ""
 
 #: widgets/accordion/accordion.php:178 widgets/blog-posts/blog-posts.php:2253
-#: widgets/caldera-forms/caldera-forms.php:654
 #: widgets/client-logo/client-logo.php:436
 #: widgets/contact-form7/contact-form7.php:652
 #: widgets/fluent-forms/fluent-forms.php:142
@@ -2412,7 +2408,6 @@ msgid "Show"
 msgstr ""
 
 #: widgets/accordion/accordion.php:179 widgets/blog-posts/blog-posts.php:2254
-#: widgets/caldera-forms/caldera-forms.php:655
 #: widgets/client-logo/client-logo.php:437
 #: widgets/contact-form7/contact-form7.php:653
 #: widgets/fluent-forms/fluent-forms.php:143
@@ -2474,11 +2469,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:2161
 #: widgets/business-hours/business-hours.php:270
 #: widgets/business-hours/business-hours.php:333
-#: widgets/caldera-forms/caldera-forms.php:104
-#: widgets/caldera-forms/caldera-forms.php:146
-#: widgets/caldera-forms/caldera-forms.php:494
-#: widgets/caldera-forms/caldera-forms.php:764
-#: widgets/caldera-forms/caldera-forms.php:821
 #: widgets/category-list/category-list.php:302
 #: widgets/category-list/category-list.php:363
 #: widgets/client-logo/client-logo.php:1070
@@ -2601,11 +2591,6 @@ msgstr ""
 #: widgets/business-hours/business-hours.php:229
 #: widgets/business-hours/business-hours.php:289
 #: widgets/business-hours/business-hours.php:352
-#: widgets/caldera-forms/caldera-forms.php:322
-#: widgets/caldera-forms/caldera-forms.php:375
-#: widgets/caldera-forms/caldera-forms.php:428
-#: widgets/caldera-forms/caldera-forms.php:777
-#: widgets/caldera-forms/caldera-forms.php:834
 #: widgets/client-logo/client-logo.php:456
 #: widgets/client-logo/client-logo.php:532
 #: widgets/client-logo/client-logo.php:553
@@ -2717,11 +2702,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:1564
 #: widgets/blog-posts/blog-posts.php:2522
 #: widgets/business-hours/business-hours.php:251 widgets/button/button.php:307
-#: widgets/caldera-forms/caldera-forms.php:346
-#: widgets/caldera-forms/caldera-forms.php:399
-#: widgets/caldera-forms/caldera-forms.php:452
-#: widgets/caldera-forms/caldera-forms.php:797
-#: widgets/caldera-forms/caldera-forms.php:854
 #: widgets/client-logo/client-logo.php:686
 #: widgets/client-logo/client-logo.php:713
 #: widgets/client-logo/client-logo.php:894
@@ -2815,11 +2795,7 @@ msgstr ""
 #: widgets/business-hours/business-hours.php:238
 #: widgets/business-hours/business-hours.php:298
 #: widgets/business-hours/business-hours.php:361 widgets/button/button.php:366
-#: widgets/button/button.php:402 widgets/caldera-forms/caldera-forms.php:332
-#: widgets/caldera-forms/caldera-forms.php:385
-#: widgets/caldera-forms/caldera-forms.php:438
-#: widgets/caldera-forms/caldera-forms.php:615
-#: widgets/category-list/category-list.php:330
+#: widgets/button/button.php:402 widgets/category-list/category-list.php:330
 #: widgets/client-logo/client-logo.php:581
 #: widgets/client-logo/client-logo.php:902
 #: widgets/contact-form7/contact-form7.php:330
@@ -2899,11 +2875,6 @@ msgstr ""
 #: widgets/accordion/accordion.php:652 widgets/accordion/accordion.php:692
 #: widgets/blog-posts/blog-posts.php:861 widgets/blog-posts/blog-posts.php:1218
 #: widgets/blog-posts/blog-posts.php:1299
-#: widgets/caldera-forms/caldera-forms.php:355
-#: widgets/caldera-forms/caldera-forms.php:408
-#: widgets/caldera-forms/caldera-forms.php:461
-#: widgets/caldera-forms/caldera-forms.php:788
-#: widgets/caldera-forms/caldera-forms.php:845
 #: widgets/client-logo/client-logo.php:677
 #: widgets/client-logo/client-logo.php:704
 #: widgets/contact-form7/contact-form7.php:353
@@ -2957,9 +2928,6 @@ msgstr ""
 #: widgets/business-hours/business-hours.php:215
 #: widgets/business-hours/business-hours.php:310
 #: widgets/business-hours/business-hours.php:373 widgets/button/button.php:216
-#: widgets/caldera-forms/caldera-forms.php:169
-#: widgets/caldera-forms/caldera-forms.php:292
-#: widgets/caldera-forms/caldera-forms.php:627
 #: widgets/client-logo/client-logo.php:465
 #: widgets/client-logo/client-logo.php:652
 #: widgets/client-logo/client-logo.php:873
@@ -3031,7 +2999,6 @@ msgid "Padding"
 msgstr ""
 
 #: widgets/accordion/accordion.php:491
-#: widgets/caldera-forms/caldera-forms.php:233
 #: widgets/contact-form7/contact-form7.php:230
 #: widgets/countdown-timer/countdown-timer.php:321
 #: widgets/countdown-timer/countdown-timer.php:392
@@ -3055,8 +3022,6 @@ msgstr ""
 #: widgets/accordion/accordion.php:575 widgets/blog-posts/blog-posts.php:1354
 #: widgets/blog-posts/blog-posts.php:2077
 #: widgets/blog-posts/blog-posts.php:2291
-#: widgets/caldera-forms/caldera-forms.php:181
-#: widgets/caldera-forms/caldera-forms.php:664
 #: widgets/category-list/category-list.php:255
 #: widgets/client-logo/client-logo.php:1228
 #: widgets/client-logo/client-logo.php:1315
@@ -3133,8 +3098,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:2235
 #: widgets/blog-posts/blog-posts.php:2530
 #: widgets/business-hours/business-hours.php:202
-#: widgets/caldera-forms/caldera-forms.php:116
-#: widgets/caldera-forms/caldera-forms.php:639
 #: widgets/client-logo/client-logo.php:476
 #: widgets/client-logo/client-logo.php:639
 #: widgets/contact-form7/contact-form7.php:113
@@ -3225,7 +3188,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:594 widgets/blog-posts/blog-posts.php:1062
 #: widgets/blog-posts/blog-posts.php:1992
 #: widgets/blog-posts/blog-posts.php:2203 widgets/button/button.php:138
-#: widgets/caldera-forms/caldera-forms.php:580
 #: widgets/category-list/category-list.php:172
 #: widgets/contact-form7/contact-form7.php:578
 #: widgets/dual-button/dual-button.php:82
@@ -3258,7 +3220,6 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:602 widgets/blog-posts/blog-posts.php:1070
 #: widgets/blog-posts/blog-posts.php:2000
 #: widgets/blog-posts/blog-posts.php:2211 widgets/button/button.php:147
-#: widgets/caldera-forms/caldera-forms.php:588
 #: widgets/category-list/category-list.php:180
 #: widgets/contact-form7/contact-form7.php:586
 #: widgets/dual-button/dual-button.php:90
@@ -3320,11 +3281,6 @@ msgstr ""
 
 #: widgets/back-to-top/back-to-top.php:215
 #: widgets/blog-posts/blog-posts.php:2610 widgets/button/button.php:229
-#: widgets/caldera-forms/caldera-forms.php:96
-#: widgets/caldera-forms/caldera-forms.php:138
-#: widgets/caldera-forms/caldera-forms.php:476
-#: widgets/caldera-forms/caldera-forms.php:486
-#: widgets/caldera-forms/caldera-forms.php:607
 #: widgets/contact-form7/contact-form7.php:93
 #: widgets/contact-form7/contact-form7.php:135
 #: widgets/contact-form7/contact-form7.php:474
@@ -3410,9 +3366,7 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:2379
 #: widgets/blog-posts/blog-posts.php:2620
 #: widgets/blog-posts/blog-posts.php:2710 widgets/button/button.php:247
-#: widgets/button/button.php:348 widgets/caldera-forms/caldera-forms.php:314
-#: widgets/caldera-forms/caldera-forms.php:757
-#: widgets/client-logo/client-logo.php:524
+#: widgets/button/button.php:348 widgets/client-logo/client-logo.php:524
 #: widgets/client-logo/client-logo.php:669
 #: widgets/client-logo/client-logo.php:726
 #: widgets/client-logo/client-logo.php:1063
@@ -3475,9 +3429,7 @@ msgstr ""
 #: widgets/blog-posts/blog-posts.php:2398
 #: widgets/blog-posts/blog-posts.php:2648
 #: widgets/blog-posts/blog-posts.php:2736 widgets/button/button.php:276
-#: widgets/button/button.php:385 widgets/caldera-forms/caldera-forms.php:367
-#: widgets/caldera-forms/caldera-forms.php:814
-#: widgets/category-list/category-list.php:375
+#: widgets/button/button.php:385 widgets/category-list/category-list.php:375
 #: widgets/category-list/category-list.php:428
 #: widgets/client-logo/client-logo.php:545
 #: widgets/client-logo/client-logo.php:696
@@ -3758,7 +3710,6 @@ msgid "Read More Button"
 msgstr ""
 
 #: widgets/blog-posts/blog-posts.php:540 widgets/button/button.php:59
-#: widgets/caldera-forms/caldera-forms.php:87
 #: widgets/contact-form7/contact-form7.php:84
 #: widgets/countdown-timer/countdown-timer.php:413
 #: widgets/countdown-timer/countdown-timer.php:625
@@ -3960,9 +3911,6 @@ msgstr ""
 
 #: widgets/blog-posts/blog-posts.php:1331
 #: widgets/blog-posts/blog-posts.php:2103
-#: widgets/caldera-forms/caldera-forms.php:209
-#: widgets/caldera-forms/caldera-forms.php:265
-#: widgets/caldera-forms/caldera-forms.php:694
 #: widgets/category-list/category-list.php:273
 #: widgets/client-logo/client-logo.php:1251
 #: widgets/client-logo/client-logo.php:1341
@@ -4109,8 +4057,7 @@ msgid "Radius"
 msgstr ""
 
 #: widgets/blog-posts/blog-posts.php:2568 widgets/button/button-handler.php:11
-#: widgets/button/button.php:197 widgets/caldera-forms/caldera-forms.php:572
-#: widgets/contact-form7/contact-form7.php:570
+#: widgets/button/button.php:197 widgets/contact-form7/contact-form7.php:570
 #: widgets/dual-button/dual-button.php:173
 #: widgets/dual-button/dual-button.php:302
 #: widgets/fluent-forms/fluent-forms.php:2138
@@ -4259,8 +4206,7 @@ msgstr ""
 msgid "Hover Box Shadow"
 msgstr ""
 
-#: widgets/button/button.php:453 widgets/caldera-forms/caldera-forms.php:517
-#: widgets/contact-form7/contact-form7.php:515
+#: widgets/button/button.php:453 widgets/contact-form7/contact-form7.php:515
 #: widgets/fluent-forms/fluent-forms.php:1841
 #: widgets/header-search/header-search.php:93
 #: widgets/mail-chimp/mail-chimp.php:916 widgets/mail-chimp/mail-chimp.php:1268
@@ -4280,82 +4226,6 @@ msgstr ""
 
 #: widgets/button/button.php:529
 msgid "Move icon  Vertically"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms-handler.php:12
-#: widgets/caldera-forms/caldera-forms.php:67
-msgid "Caldera Forms"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:59
-msgid "Form Not Found!"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:128
-#: widgets/contact-form7/contact-form7.php:125
-msgid "Hint"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:161
-#: widgets/contact-form7/contact-form7.php:158
-#: widgets/mail-chimp/mail-chimp.php:653
-msgid "Input"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:256
-#: widgets/contact-form7/contact-form7.php:254
-msgid "Textarea"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:420
-#: widgets/contact-form7/contact-form7.php:418
-#: widgets/fluent-forms/fluent-forms.php:794
-#: widgets/mail-chimp/mail-chimp.php:712
-#: widgets/ninja-forms/ninja-forms.php:469 widgets/we-forms/we-forms.php:216
-#: widgets/wp-forms/wp-forms.php:300
-msgid "Focus"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:508
-#: widgets/contact-form7/contact-form7.php:506
-#: widgets/fluent-forms/fluent-forms.php:151
-#: widgets/fluent-forms/fluent-forms.php:840
-#: widgets/mail-chimp/mail-chimp.php:170 widgets/mail-chimp/mail-chimp.php:269
-#: widgets/mail-chimp/mail-chimp.php:368 widgets/mail-chimp/mail-chimp.php:453
-#: widgets/mail-chimp/mail-chimp.php:892
-#: widgets/ninja-forms/ninja-forms.php:565 widgets/wp-forms/wp-forms.php:379
-msgid "Placeholder"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:547
-#: widgets/contact-form7/contact-form7.php:545
-#: widgets/header-search/header-search.php:373
-#: widgets/mail-chimp/mail-chimp.php:901
-msgid "Placeholder Color"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:652
-#: widgets/contact-form7/contact-form7.php:650
-#: widgets/header-search/header-search.php:247 widgets/social/social.php:543
-#: widgets/social-share/social-share.php:511 widgets/team/team.php:1143
-#: widgets/team/team.php:1732 widgets/team/team.php:2278
-msgid "Use Height Width"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:724
-#: widgets/contact-form7/contact-form7.php:722
-#: widgets/countdown-timer/countdown-timer.php:293
-#: widgets/countdown-timer/countdown-timer.php:1692
-#: widgets/header-search/header-search.php:295
-#: widgets/icon-box/icon-box.php:1233 widgets/page-list/page-list.php:674
-#: widgets/post-list/post-list.php:846 widgets/social/social.php:618
-#: widgets/social-share/social-share.php:575 widgets/team/team.php:1206
-#: widgets/team/team.php:1806 widgets/team/team.php:2332
-msgid "Line Height"
-msgstr ""
-
-#: widgets/caldera-forms/caldera-forms.php:894
-msgid "Please select a Contact Form From Setting!"
 msgstr ""
 
 #: widgets/category-list/category-list-handler.php:11
@@ -4742,6 +4612,61 @@ msgstr ""
 #: widgets/contact-form7/contact-form7-handler.php:11
 #: widgets/contact-form7/contact-form7.php:62
 msgid "Contact Form 7"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:125
+msgid "Hint"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:158
+#: widgets/mail-chimp/mail-chimp.php:653
+msgid "Input"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:254
+msgid "Textarea"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:418
+#: widgets/fluent-forms/fluent-forms.php:794
+#: widgets/mail-chimp/mail-chimp.php:712
+#: widgets/ninja-forms/ninja-forms.php:469 widgets/we-forms/we-forms.php:216
+#: widgets/wp-forms/wp-forms.php:300
+msgid "Focus"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:506
+#: widgets/fluent-forms/fluent-forms.php:151
+#: widgets/fluent-forms/fluent-forms.php:840
+#: widgets/mail-chimp/mail-chimp.php:170 widgets/mail-chimp/mail-chimp.php:269
+#: widgets/mail-chimp/mail-chimp.php:368 widgets/mail-chimp/mail-chimp.php:453
+#: widgets/mail-chimp/mail-chimp.php:892
+#: widgets/ninja-forms/ninja-forms.php:565 widgets/wp-forms/wp-forms.php:379
+msgid "Placeholder"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:545
+#: widgets/header-search/header-search.php:373
+#: widgets/mail-chimp/mail-chimp.php:901
+msgid "Placeholder Color"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:650
+#: widgets/header-search/header-search.php:247 widgets/social/social.php:543
+#: widgets/social-share/social-share.php:511 widgets/team/team.php:1143
+#: widgets/team/team.php:1732 widgets/team/team.php:2278
+msgid "Use Height Width"
+msgstr ""
+
+#: widgets/contact-form7/contact-form7.php:722
+#: widgets/countdown-timer/countdown-timer.php:293
+#: widgets/countdown-timer/countdown-timer.php:1692
+#: widgets/header-search/header-search.php:295
+#: widgets/icon-box/icon-box.php:1233 widgets/page-list/page-list.php:674
+#: widgets/post-list/post-list.php:846 widgets/social/social.php:618
+#: widgets/social-share/social-share.php:575 widgets/team/team.php:1206
+#: widgets/team/team.php:1806 widgets/team/team.php:2332
+msgid "Line Height"
 msgstr ""
 
 #: widgets/countdown-timer/countdown-timer-handler.php:11

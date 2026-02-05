@@ -67,10 +67,10 @@ if ( ! class_exists( 'HFE_Analytics' ) ) {
 		}
 
 		/**
-		 * Migrates analytics tracking option from 'bsf_analytics_optin' to 'uae_analytics_optin'.
+		 * Migrates analytics tracking option from 'bsf_usage_optin' to 'uae_usage_optin'.
 		 *
-		 * Checks if the old analytics tracking option ('bsf_analytics_optin') is set to 'yes'
-		 * and if the new option ('uae_analytics_optin') is not already set.
+		 * Checks if the old analytics tracking option ('bsf_usage_optin') is set to 'yes'
+		 * and if the new option ('uae_usage_optin') is not already set.
 		 * If so, updates the new tracking option to 'yes' to maintain user consent during migration.
 		 *
 		 * @since 2.3.2
@@ -79,12 +79,12 @@ if ( ! class_exists( 'HFE_Analytics' ) ) {
 		 * @return void
 		 */
 		public function maybe_migrate_analytics_tracking() {
-			$old_tracking = get_option( 'bsf_analytics_optin', false );
-			$new_tracking = get_option( 'uae_analytics_optin', false );
+			$old_tracking = get_option( 'bsf_usage_optin', false );
+			$new_tracking = get_option( 'uae_usage_optin', false );
 			if ( 'yes' === $old_tracking && false === $new_tracking ) {
-				update_option( 'uae_analytics_optin', 'yes' );
-				$time = get_option('bsf_analytics_installed_time');
-				update_option( 'bsf_analytics_installed_time' , $time );
+				update_option( 'uae_usage_optin', 'yes' );
+				$time = get_option( 'bsf_usage_installed_time' );
+				update_option( 'bsf_usage_installed_time', $time );
 			}
 		}
         

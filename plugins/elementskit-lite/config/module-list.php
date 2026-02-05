@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 class Module_List extends \ElementsKit_Lite\Core\Config_List {
 
 	protected $type = 'module';
-	
+
 	protected function set_required_list() {
 
 		$this->required_list = array(
@@ -134,7 +134,7 @@ class Module_List extends \ElementsKit_Lite\Core\Config_List {
 					'slug'              => 'badge',
 					'package'           => 'pro-disabled',
 					'title'             => 'Global Badge',
-					'attributes'        => array( 'upcoming' ),
+					'attributes'        => array( 'new' ),
 				],
 			)
 		);
