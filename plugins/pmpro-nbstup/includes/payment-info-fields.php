@@ -22,85 +22,7 @@ if ( ! function_exists( 'pmpronbstup_bank_transfer_fields_enabled' ) ) {
 /**
  * Enable file upload on PMPro checkout form
  */
-if ( pmpronbstup_bank_transfer_fields_enabled() ) {
-	add_filter( 'pmpro_checkout_form_enctype', function () {
-		return 'multipart/form-data';
-	} );
-}
-
-/**
- * Add fields after Payment Details section
- */
-if ( pmpronbstup_bank_transfer_fields_enabled() ) {
-	add_action( 'pmpro_checkout_after_payment_information_fields', 'pmpro_add_bank_transfer_fields' );
-}
-function pmpro_add_bank_transfer_fields() {
-	?>
-	<fieldset id="pmpro_form_fieldset-bank-transfer" class="pmpro_form_fieldset">
-		<div class="pmpro_card">
-			<div class="pmpro_card_content">
-
-				<legend class="pmpro_form_legend">
-					<h2 class="pmpro_form_heading pmpro_font-large">
-						<?php esc_html_e( 'Bank Transfer Details', 'pmpro-nbstup' ); ?>
-					</h2>
-				</legend>
-
-				<div class="pmpro_form_fields">
-
-					<!-- Transaction ID -->
-					<div id="bank_transaction_id_wrap"
-						class="pmpro_form_field pmpro_form_field-text pmpro_form_field-bank_transaction_id pmpro_form_field-required">
-
-						<label class="pmpro_form_label" for="bank_transaction_id">
-							<?php esc_html_e( 'Transaction ID', 'pmpro-nbstup' ); ?>
-							<span class="pmpro_asterisk">
-								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
-							</span>
-						</label>
-
-						<input
-							type="text"
-							id="bank_transaction_id"
-							name="bank_transaction_id"
-							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-bank_transaction_id pmpro_form_input-required"
-							aria-required="true"
-						/>
-					</div>
-
-					<!-- Payment Receipt -->
-					<div id="bank_payment_receipt_wrap"
-						class="pmpro_form_field pmpro_form_field-file pmpro_form_field-bank_payment_receipt pmpro_form_field-required">
-
-						<label class="pmpro_form_label" for="bank_payment_receipt">
-							<?php esc_html_e( 'Payment Receipt', 'pmpro-nbstup' ); ?>
-							<span class="pmpro_asterisk">
-								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
-							</span>
-						</label>
-
-						<div id="pmpro_file_bank_payment_receipt_upload"
-							class="pmpro_form_field-file-upload">
-
-							<input
-								type="file"
-								id="bank_payment_receipt"
-								name="bank_payment_receipt"
-								accept=".png,.jpg,.jpeg,.pdf"
-								class="pmpro_form_input pmpro_form_input-file pmpro_form_input-bank_payment_receipt pmpro_form_input-required"
-								aria-required="true"
-							/>
-						</div>
-					</div>
-
-				</div><!-- .pmpro_form_fields -->
-
-			</div><!-- .pmpro_card_content -->
-		</div><!-- .pmpro_card -->
-	</fieldset>
-	<?php
-}
+// Bank transfer fields removed from checkout per requirements.
 
 /**
  * Add member details fields after Payment Details section
@@ -602,42 +524,7 @@ function pmpro_add_address_fields() {
  * Save Bank Transfer data after checkout
  * (User meta + Order meta)
  */
-add_action( 'pmpro_after_checkout', 'pmpro_save_bank_transfer_data', 10, 2 );
-function pmpro_save_bank_transfer_data( $user_id, $order ) {
-	if ( ! pmpronbstup_bank_transfer_fields_enabled() ) {
-		return;
-	}
-
-	if ( empty( $_POST['gateway'] ) || $_POST['gateway'] !== 'check' ) {
-		return;
-	}
-
-	// Transaction ID
-	if ( ! empty( $_POST['bank_transaction_id'] ) ) {
-		$txn_id = sanitize_text_field( $_POST['bank_transaction_id'] );
-
-		update_user_meta( $user_id, 'bank_transaction_id', $txn_id );
-		update_post_meta( $order->id, 'bank_transaction_id', $txn_id );
-	}
-
-	// Payment Receipt
-	if ( ! empty( $_FILES['bank_payment_receipt']['name'] ) ) {
-
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-
-		$upload = wp_handle_upload(
-			$_FILES['bank_payment_receipt'],
-			array( 'test_form' => false )
-		);
-
-		if ( empty( $upload['error'] ) ) {
-			$receipt_url = esc_url_raw( $upload['url'] );
-
-			update_user_meta( $user_id, 'bank_payment_receipt', $receipt_url );
-			update_post_meta( $order->id, 'bank_payment_receipt', $receipt_url );
-		}
-	}
-}
+// Bank transfer data save removed from checkout per requirements.
 
 /**
  * Save Address data after checkout
@@ -800,12 +687,24 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		}
 	}
 
+	$name = isset( $_REQUEST['name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['name'] ) ) ) : '';
+	if ( $name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $name ) ) {
+		$errors[] = __( 'Name should contain only letters and valid characters.', 'pmpro-nbstup' );
+	}
+
+	$father_name = isset( $_REQUEST['father_husband_name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['father_husband_name'] ) ) ) : '';
+	if ( $father_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $father_name ) ) {
+		$errors[] = __( 'Father / Husband Name should contain only letters and valid characters.', 'pmpro-nbstup' );
+	}
+
 	$phone = isset( $_REQUEST['phone_no'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['phone_no'] ) ) : '';
+	$phone = preg_replace( '/\D+/', '', $phone );
 	if ( $phone !== '' && ! preg_match( '/^\d{10}$/', $phone ) ) {
 		$errors[] = __( 'Phone Number must be 10 digits.', 'pmpro-nbstup' );
 	}
 
 	$aadhar = isset( $_REQUEST['aadhar_number'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['aadhar_number'] ) ) : '';
+	$aadhar = preg_replace( '/\D+/', '', $aadhar );
 	if ( $aadhar !== '' && ! preg_match( '/^\d{12}$/', $aadhar ) ) {
 		$errors[] = __( 'Aadhar Number must be 12 digits.', 'pmpro-nbstup' );
 	}
@@ -829,13 +728,35 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	}
 
 	$nominee_1_mobile = isset( $_REQUEST['nominee_1_mobile'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['nominee_1_mobile'] ) ) : '';
+	$nominee_1_mobile = preg_replace( '/\D+/', '', $nominee_1_mobile );
 	if ( $nominee_1_mobile !== '' && ! preg_match( '/^\d{10}$/', $nominee_1_mobile ) ) {
 		$errors[] = __( 'Nominee 1 Mobile must be 10 digits.', 'pmpro-nbstup' );
 	}
 
 	$nominee_2_mobile = isset( $_REQUEST['nominee_2_mobile'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['nominee_2_mobile'] ) ) : '';
+	$nominee_2_mobile = preg_replace( '/\D+/', '', $nominee_2_mobile );
 	if ( $nominee_2_mobile !== '' && ! preg_match( '/^\d{10}$/', $nominee_2_mobile ) ) {
 		$errors[] = __( 'Nominee 2 Mobile must be 10 digits.', 'pmpro-nbstup' );
+	}
+
+	$nominee_1_name = isset( $_REQUEST['nominee_name_1'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['nominee_name_1'] ) ) ) : '';
+	if ( $nominee_1_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $nominee_1_name ) ) {
+		$errors[] = __( 'Nominee Name 1 should contain only letters and valid characters.', 'pmpro-nbstup' );
+	}
+
+	$nominee_2_name = isset( $_REQUEST['nominee_name_2'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['nominee_name_2'] ) ) ) : '';
+	if ( $nominee_2_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $nominee_2_name ) ) {
+		$errors[] = __( 'Nominee Name 2 should contain only letters and valid characters.', 'pmpro-nbstup' );
+	}
+
+	$relation_1 = isset( $_REQUEST['relation_with_nominee_1'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['relation_with_nominee_1'] ) ) ) : '';
+	if ( $relation_1 !== '' && strlen( $relation_1 ) < 2 ) {
+		$errors[] = __( 'Relation With Nominee 1 must be at least 2 characters.', 'pmpro-nbstup' );
+	}
+
+	$relation_2 = isset( $_REQUEST['relation_with_nominee_2'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['relation_with_nominee_2'] ) ) ) : '';
+	if ( $relation_2 !== '' && strlen( $relation_2 ) < 2 ) {
+		$errors[] = __( 'Relation With Nominee 2 must be at least 2 characters.', 'pmpro-nbstup' );
 	}
 
 	$dob = isset( $_REQUEST['dob'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['dob'] ) ) : '';
@@ -872,6 +793,11 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		$errors[] = __( 'Password must be at least 6 characters.', 'pmpro-nbstup' );
 	}
 
+	$address = isset( $_REQUEST['user_address'] ) ? trim( sanitize_textarea_field( wp_unslash( $_REQUEST['user_address'] ) ) ) : '';
+	if ( $address !== '' && strlen( $address ) < 5 ) {
+		$errors[] = __( 'Address must be at least 5 characters.', 'pmpro-nbstup' );
+	}
+
 	$state_id = isset( $_REQUEST['user_state'] ) ? intval( $_REQUEST['user_state'] ) : 0;
 	if ( $state_id <= 0 ) {
 		$errors[] = __( 'State is required.', 'pmpro-nbstup' );
@@ -887,18 +813,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		$errors[] = __( 'Block is required.', 'pmpro-nbstup' );
 	}
 
-	if ( pmpronbstup_bank_transfer_fields_enabled() && ! empty( $_REQUEST['gateway'] ) && $_REQUEST['gateway'] === 'check' ) {
-		$txn_id = isset( $_REQUEST['bank_transaction_id'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['bank_transaction_id'] ) ) ) : '';
-		if ( $txn_id === '' ) {
-			$errors[] = __( 'Transaction ID is required.', 'pmpro-nbstup' );
-		}
-
-		if ( empty( $_FILES['bank_payment_receipt']['name'] ) ) {
-			$errors[] = __( 'Payment Receipt is required.', 'pmpro-nbstup' );
-		} elseif ( ! empty( $_FILES['bank_payment_receipt']['error'] ) ) {
-			$errors[] = __( 'Payment Receipt upload failed.', 'pmpro-nbstup' );
-		}
-	}
+	// Bank transfer validation removed from checkout per requirements.
 
 	if ( ! empty( $errors ) ) {
 		$pmpro_msg  = implode( '<br />', array_unique( $errors ) );
