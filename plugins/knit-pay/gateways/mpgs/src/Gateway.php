@@ -5,7 +5,7 @@ use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
 use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use KnitPay\Gateways\PaymentMethods;
 use Exception;
 use KnitPay\Utils as KnitPayUtils;
 
@@ -50,16 +50,6 @@ class Gateway extends Core_Gateway {
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::VISA ) );
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::MASTERCARD ) );
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::AMERICAN_EXPRESS ) );
-	}
-
-	/**
-	 * Get available payment methods.
-	 *
-	 * @return array<int, string>
-	 * @see Core_Gateway::get_available_payment_methods()
-	 */
-	public function get_available_payment_methods() {
-		return $this->get_supported_payment_methods();
 	}
 
 	/**

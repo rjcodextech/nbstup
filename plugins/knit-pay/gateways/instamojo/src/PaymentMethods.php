@@ -24,6 +24,7 @@ class PaymentMethods extends KP_PaymentMethods {
 				return 'Net Banking';
 			case self::DEBIT_CARD:
 			case self::CREDIT_CARD:
+			case self::CARD:
 				return 'Credit / Debit Cards';
 			case self::UPI:
 				if ( wp_is_mobile() ) {

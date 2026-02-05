@@ -3,7 +3,7 @@ namespace KnitPay\Gateways\Coinbase;
 
 use Pronamic\WordPress\Pay\Core\Gateway as Core_Gateway;
 use Pronamic\WordPress\Pay\Core\PaymentMethod;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use KnitPay\Gateways\PaymentMethods;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Exception;
 use KnitPay\Utils as KnitPayUtils;

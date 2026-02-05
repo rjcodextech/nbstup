@@ -8,6 +8,7 @@ use Exception;
 use paytm\paytmchecksum\PaytmChecksum;
 use Pronamic\WordPress\Pay\Core\PaymentMethod;
 use KnitPay\Utils as KnitPayUtils;
+use KnitPay\Gateways\PaymentMethods;
 
 /**
  * Title: Paytm Gateway

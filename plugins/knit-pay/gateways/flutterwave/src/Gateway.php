@@ -115,9 +115,9 @@ class Gateway extends Core_Gateway {
 			$payment->add_note( $note );
 
 		if ( ! ( $transaction_details->tx_ref === $payment->get_transaction_id()
-				&& floatval( $transaction_details->charged_amount ) === floatval( $payment->get_total_amount()->number_format( null, '.', '' ) ) ) ) {
-			$payment->set_status( PaymentStatus::FAILURE );
-			return;
+			&& floatval( $transaction_details->charged_amount ) === floatval( $payment->get_total_amount()->number_format( null, '.', '' ) ) ) ) {
+				$payment->set_status( PaymentStatus::FAILURE );
+				return;
 		}
 
 		if ( 'successful' === $transaction_details->status ) {

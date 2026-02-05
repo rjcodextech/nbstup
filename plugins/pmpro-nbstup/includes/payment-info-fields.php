@@ -645,8 +645,7 @@ function pmpro_save_bank_transfer_data( $user_id, $order ) {
  */
 add_action( 'pmpro_after_checkout', 'pmpro_save_address_data', 10, 2 );
 function pmpro_save_address_data( $user_id, $order ) {
-
-	if ( empty( $_POST['gateway'] ) || $_POST['gateway'] !== 'check' ) {
+	if ( empty( $user_id ) || empty( $order ) ) {
 		return;
 	}
 
@@ -673,7 +672,7 @@ function pmpro_save_address_data( $user_id, $order ) {
 
 	// Address
 	if ( ! empty( $_POST['user_address'] ) ) {
-		$address = sanitize_textarea_field( $_POST['user_address'] );
+		$address = sanitize_textarea_field( wp_unslash( $_POST['user_address'] ) );
 		update_user_meta( $user_id, 'user_address', $address );
 		update_post_meta( $order->id, 'user_address', $address );
 	}
@@ -702,10 +701,19 @@ function pmpro_save_member_details_fields( $user_id, $order ) {
 	foreach ( $fields as $key => $type ) {
 		if ( isset( $_POST[ $key ] ) ) {
 			$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+			if ( $key === 'aadhar_number' || $key === 'phone_no' ) {
+				$value = preg_replace( '/\D+/', '', $value );
+			}
 			if ( $value !== '' ) {
 				update_user_meta( $user_id, $key, $value );
+				if ( ! empty( $order ) ) {
+					update_post_meta( $order->id, $key, $value );
+				}
 			} else {
 				delete_user_meta( $user_id, $key );
+				if ( ! empty( $order ) ) {
+					delete_post_meta( $order->id, $key );
+				}
 			}
 		}
 	}
@@ -800,6 +808,24 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	$aadhar = isset( $_REQUEST['aadhar_number'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['aadhar_number'] ) ) : '';
 	if ( $aadhar !== '' && ! preg_match( '/^\d{12}$/', $aadhar ) ) {
 		$errors[] = __( 'Aadhar Number must be 12 digits.', 'pmpro-nbstup' );
+	}
+
+	if ( $aadhar !== '' && preg_match( '/^\d{12}$/', $aadhar ) ) {
+		$existing_users = get_users(
+			array(
+				'meta_key' => 'aadhar_number',
+				'meta_value' => $aadhar,
+				'number' => 1,
+				'fields' => array( 'ID' ),
+			)
+		);
+		if ( ! empty( $existing_users ) ) {
+			$existing_id = (int) $existing_users[0]->ID;
+			$current_id = get_current_user_id();
+			if ( $current_id <= 0 || $existing_id !== $current_id ) {
+				$errors[] = __( 'This Aadhar Number is already registered.', 'pmpro-nbstup' );
+			}
+		}
 	}
 
 	$nominee_1_mobile = isset( $_REQUEST['nominee_1_mobile'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['nominee_1_mobile'] ) ) : '';
@@ -900,9 +926,7 @@ function pmpro_nbstup_set_dummy_email_on_checkout( $user, $order ) {
 		$user['user_email'] = $dummy_email;
 	}
 
-	if ( empty( $user['user_login'] ) ) {
-		$user['user_login'] = pmpro_nbstup_unique_login( $aadhar );
-	}
+	$user['user_login'] = pmpro_nbstup_unique_login( $aadhar );
 
 	return $user;
 }

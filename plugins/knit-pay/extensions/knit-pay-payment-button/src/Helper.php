@@ -56,13 +56,13 @@ class Helper {
 	/**
 	 * Get value from object.
 	 *
-	 * @param object $object Object.
+	 * @param object $obj Object.
 	 * @param string $key   Key.
 	 * @return string|null
 	 */
-	private static function get_value_from_object( $object, $var ) {
-		if ( isset( $object->{$var} ) ) {
-			return $object->{$var};
+	private static function get_value_from_object( $obj, $prop ) {
+		if ( isset( $obj->{$prop} ) ) {
+			return $obj->{$prop};
 		}
 		return null;
 	}

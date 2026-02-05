@@ -19,6 +19,7 @@ use AWPCP_Payment_Transaction;
  * @since   2.5
  */
 class Helper {
+	private $user_info;
 
 	/**
 	 * Transaction

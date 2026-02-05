@@ -45,10 +45,10 @@ function pmpronbstup_enqueue_frontend_assets()
         PMPRONBSTUP_VERSION
     );
 
-    // Frontend JS (compiled via Gulp from assets/js/frontend.js).
+    // Frontend JS (source in assets/js/frontend.js).
     wp_enqueue_script(
         'pmpro-nbstup-frontend',
-        PMPRONBSTUP_PLUGIN_URL . 'assets/js/dist/frontend.js',
+        PMPRONBSTUP_PLUGIN_URL . 'assets/js/frontend.js',
         array('jquery'),
         PMPRONBSTUP_VERSION,
         true

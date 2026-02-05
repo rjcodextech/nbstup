@@ -53,6 +53,11 @@ class Gateway extends Core_Gateway {
 			'refunds',
 		];
 
+		if ( 'in-import-flow' === $this->config->country ) {
+			$this->default_currency     = 'INR';
+			$this->supported_currencies = [ 'INR' ];
+		}
+
 		if ( defined( 'KNIT_PAY_RAZORPAY_SUBSCRIPTION' ) ) {
 			$this->supports = wp_parse_args(
 				$this->supports,
@@ -113,22 +118,22 @@ class Gateway extends Core_Gateway {
 
 		$this->get_payment_method( PaymentMethods::RAZORPAY )->set_status( 'active' );
 
-		foreach ( $methods as $method => $method_status ) {
-			if ( ! is_string( $method ) ) {
+		foreach ( $methods as $method_id => $method_status ) {
+			if ( ! is_string( $method_id ) ) {
 				continue;
 			}
 
-			switch ( $method ) {
+			switch ( $method_id ) {
 				case 'amex':
-					$method = PaymentMethods::AMERICAN_EXPRESS;
+					$method_id = PaymentMethods::AMERICAN_EXPRESS;
 					break;
 				case 'netbanking':
-					$method = PaymentMethods::NET_BANKING;
+					$method_id = PaymentMethods::NET_BANKING;
 					break;
 				default:
 			}
 
-			$method = $this->get_payment_method( $method );
+			$method = $this->get_payment_method( $method_id );
 			if ( null === $method ) {
 				continue;
 			}
@@ -575,11 +580,10 @@ class Gateway extends Core_Gateway {
 			'prefill'      => [
 				'name'   => KnitPayUtils::substr_after_trim( $customer->get_name(), 0, 45 ),
 				'email'  => $customer->get_email(),
-				'method' => PaymentMethods::transform( $payment->get_payment_method() ),
+				'method' => PaymentMethods::prefill_method( $payment->get_payment_method() ),
 			],
-			// TODO: add option to add custom color.
 			'theme'        => [
-				// 'color' => '#F37254',
+				// 'color' => '#F37254', // TODO: add option to add custom color.
 				'backdrop_color' => 'rgba(0, 0, 0, 0.8)',
 			],
 			'callback_url' => $payment->get_return_url(),
@@ -594,8 +598,8 @@ class Gateway extends Core_Gateway {
 				'integration'         => 'knit-pay',
 				'integration_version' => KNITPAY_VERSION,
 			],
+			'method'       => PaymentMethods::get_methods( $payment->get_payment_method() ),
 			// TODO: Add card saving feature if possible.
-			// TODO: payment methods customization. https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/configure-payment-methods
 		];
 
 		if ( 'in-import-flow' === $this->config->country ) {
@@ -604,8 +608,13 @@ class Gateway extends Core_Gateway {
 			}
 
 			$data['notes'] = [
-				'invoice_number' => $payment->get_id(),
+				'invoice_number' => $razorpay_order_id, // Razorpay suggests to pass order id in invoice number on meet.
 			];
+
+			// These methods are not supported in Import flow, still visible in checkout.
+			$data['method']['wallet']   = false;
+			$data['method']['paylater'] = false;
+			$data['method']['emi']      = false;
 		}
 
 		if ( ! empty( $razorpay_subscription_id ) ) {
@@ -646,7 +655,7 @@ class Gateway extends Core_Gateway {
 		return $api;
 	}
 
-	private function call_api( $entity, $method, $args = [], $api_client = null, $allow_retry = true ) {
+	private function call_api( $entity, $method = '', $args = [], $api_client = null, $allow_retry = true ) {
 		try {
 			if ( null === $api_client ) {
 				$api_client = $this->get_razorpay_api();
@@ -752,7 +761,7 @@ class Gateway extends Core_Gateway {
 
 			$user = get_user_by( 'email', $razorpay_payment->email );
 			if ( false !== $user ) {
-				$payment->user_id = $user->ID;
+				$customer->set_user_id( $user->ID );
 			}
 		}
 
@@ -767,30 +776,9 @@ class Gateway extends Core_Gateway {
 
 	public function get_balance() {
 		try {
-			if ( ! empty( $this->config->access_token ) ) {
-				$auth_header = 'Bearer ' . $this->config->access_token;
-			} else {
-				$auth_header = 'Basic ' . base64_encode( $this->config->key_id . ':' . $this->config->key_secret );
-			}
-
-			$response = wp_remote_get(
-				Api::getFullUrl( 'balance' ),
-				[
-					'headers' => [
-						'Authorization' => $auth_header,
-					],
-				]
-			);
-
-			$result = wp_remote_retrieve_body( $response );
-
-			return json_decode( $result, true );
-		} catch ( BadRequestError $e ) {
-			$this->error = new WP_Error( 'razorpay_error', $e->getMessage() );
-		} catch ( Requests_Exception $e ) {
-			$this->error = new WP_Error( 'razorpay_error', $e->getMessage() );
-		} catch ( ServerError $e ) {
-			$this->error = new WP_Error( 'razorpay_error', $e->getMessage() );
+			return $this->call_api( 'balance' );
+		} catch ( \Exception $e ) {
+			return [];
 		}
 	}
 

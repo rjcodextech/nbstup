@@ -302,7 +302,7 @@ class Gateway extends Core_Gateway {
 
 			$user = get_user_by( 'email', $payment_details->email );
 			if ( false !== $user ) {
-				$payment->user_id = $user->ID;
+				$customer->set_user_id( $user->ID );
 			}
 		}
 

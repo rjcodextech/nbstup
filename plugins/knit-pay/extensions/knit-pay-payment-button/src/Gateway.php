@@ -6,6 +6,7 @@ use Pronamic\WordPress\Money\Currency;
 use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic\WordPress\Pay\Payments\PaymentStatus as Core_Statuses;
 
 /**
  * Title: Knit Pay - Payment Button Gateway
@@ -51,7 +52,7 @@ class Gateway {
 	 */
 	function knit_pay_payment_button_dependencies() {
 		/* Scripts */
-		wp_register_script( 'knit-pay-payment-button-frontend', plugins_url( 'build/view.js', __FILE__ ), [ 'jquery' ], KNITPAY_VERSION );
+		wp_register_script( 'knit-pay-payment-button-frontend', plugins_url( 'build/view.js', __FILE__ ), [ 'jquery' ], KNITPAY_VERSION, true );
 
 		wp_localize_script(
 			'jquery',
@@ -74,9 +75,12 @@ class Gateway {
 		$currency            = Helper::get_post_variable( 'currency' );
 		$payment_description = Helper::get_post_variable( 'payment_description' );
 		$config_id           = Helper::get_post_variable( 'config_id' );
-		$nonce_action        = "knit_pay_payment_button|{$amount}|{$currency}|{$payment_description}|{$config_id}";
+		$honeypot_field      = Helper::get_post_variable( 'knit_pay_honeypot_field' );
+		$knit_pay_nonce      = Helper::get_post_variable( 'knit_pay_nonce' );
+		$old_payment         = get_pronamic_payment_by_meta( 'knit_pay_nonce', $knit_pay_nonce );
+		$nonce_action        = "knit_pay_payment_button|{$amount}|{$currency}|{$payment_description}|{$config_id}|{$honeypot_field}";
 
-		if ( ! wp_verify_nonce( Helper::get_post_variable( 'knit_pay_nonce' ), $nonce_action ) ) {
+		if ( ! wp_verify_nonce( $knit_pay_nonce, $nonce_action ) ) {
 			echo wp_json_encode(
 				[
 					'status'    => 'error',
@@ -84,6 +88,30 @@ class Gateway {
 				]
 			);
 			exit;
+		} elseif ( null !== $old_payment && Core_Statuses::FAILURE !== $old_payment->get_status() ) {
+			// Execute a redirect.
+			echo wp_json_encode(
+				[
+					'status'       => 'success',
+					'redirect_url' => $old_payment->get_pay_redirect_url(),
+				]
+			);
+			exit;
+		}
+
+		// SPAM PROTECTION: Honeypot field check
+		if ( ! empty( $honeypot_field ) ) {
+			$honeypot_value = Helper::get_post_variable( $honeypot_field );
+			if ( ! empty( $honeypot_value ) ) {
+				// Bot detected - honeypot field was filled
+				echo wp_json_encode(
+					[
+						'status'    => 'error',
+						'error_msg' => __( 'Invalid submission detected.', 'knit-pay-lang' ),
+					]
+				);
+				exit;
+			}
 		}
 
 		if ( empty( $amount ) ) {
@@ -143,6 +171,8 @@ class Gateway {
 
 		try {
 			$payment = Plugin::start_payment( $payment );
+
+			update_post_meta( $payment->get_id(), 'knit_pay_nonce', $knit_pay_nonce );
 
 			// Execute a redirect.
 			echo wp_json_encode(

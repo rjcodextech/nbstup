@@ -5,7 +5,7 @@ namespace KnitPay\Gateways;
 use Pronamic\WordPress\DateTime\DateTime;
 use Pronamic\WordPress\Pay\AbstractGatewayIntegration;
 use Pronamic\WordPress\Pay\Core\IntegrationModeTrait;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use KnitPay\Gateways\PaymentMethods;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use KnitPay\Utils;
 
@@ -275,6 +275,9 @@ abstract class IntegrationOAuthClient extends AbstractGatewayIntegration {
 		delete_post_meta( $config_id, '_pronamic_gateway_' . $this->snake_case_id . '_account_id' );
 		delete_post_meta( $config_id, '_pronamic_gateway_' . $this->snake_case_id . '_connection_fail_count' );
 
+		// Clear Payment Methods Cache.
+		delete_transient( 'knit_pay_razorpay_payment_methods_' . $config_id );
+
 		// Stop Refresh Token Scheduler.
 		$timestamp_next_schedule = wp_next_scheduled( 'knit_pay_' . $this->snake_case_id . '_refresh_access_token', [ 'config_id' => $config_id ] );
 		wp_unschedule_event( $timestamp_next_schedule, 'knit_pay_' . $this->snake_case_id . '_refresh_access_token', [ 'config_id' => $config_id ] );
@@ -332,7 +335,6 @@ abstract class IntegrationOAuthClient extends AbstractGatewayIntegration {
 		// Update active payment methods.
 		PaymentMethods::update_active_payment_methods();
 
-		// TODO move to razorpay.
 		$this->configure_webhook( $gateway_id );
 
 		self::redirect_to_config( $gateway_id );

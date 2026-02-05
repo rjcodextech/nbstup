@@ -1110,10 +1110,6 @@ return array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/Formatter/SimpleFormatter.php'
 	),
-	'Http\\Message\\MessageFactory' => array(
-		'version' => '1.1.0.0',
-		'path'    => $vendorDir . '/php-http/message-factory/src/MessageFactory.php'
-	),
 	'Http\\Message\\MessageFactory\\DiactorosMessageFactory' => array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/MessageFactory/DiactorosMessageFactory.php'
@@ -1125,10 +1121,6 @@ return array(
 	'Http\\Message\\MessageFactory\\SlimMessageFactory' => array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/MessageFactory/SlimMessageFactory.php'
-	),
-	'Http\\Message\\RequestFactory' => array(
-		'version' => '1.1.0.0',
-		'path'    => $vendorDir . '/php-http/message-factory/src/RequestFactory.php'
 	),
 	'Http\\Message\\RequestMatcher' => array(
 		'version' => '1.16.2.0',
@@ -1146,14 +1138,6 @@ return array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/RequestMatcher/RequestMatcher.php'
 	),
-	'Http\\Message\\ResponseFactory' => array(
-		'version' => '1.1.0.0',
-		'path'    => $vendorDir . '/php-http/message-factory/src/ResponseFactory.php'
-	),
-	'Http\\Message\\StreamFactory' => array(
-		'version' => '1.1.0.0',
-		'path'    => $vendorDir . '/php-http/message-factory/src/StreamFactory.php'
-	),
 	'Http\\Message\\StreamFactory\\DiactorosStreamFactory' => array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/StreamFactory/DiactorosStreamFactory.php'
@@ -1169,10 +1153,6 @@ return array(
 	'Http\\Message\\Stream\\BufferedStream' => array(
 		'version' => '1.16.2.0',
 		'path'    => $vendorDir . '/php-http/message/src/Stream/BufferedStream.php'
-	),
-	'Http\\Message\\UriFactory' => array(
-		'version' => '1.1.0.0',
-		'path'    => $vendorDir . '/php-http/message-factory/src/UriFactory.php'
 	),
 	'Http\\Message\\UriFactory\\DiactorosUriFactory' => array(
 		'version' => '1.16.2.0',
@@ -2703,131 +2683,139 @@ return array(
 		'path'    => $vendorDir . '/razorpay/razorpay/tests/OAuthTokenClientTest.php'
 	),
 	'Omnipay\\Common\\AbstractGateway' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/AbstractGateway.php'
 	),
 	'Omnipay\\Common\\CreditCard' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/CreditCard.php'
 	),
 	'Omnipay\\Common\\Exception\\BadMethodCallException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/BadMethodCallException.php'
 	),
 	'Omnipay\\Common\\Exception\\InvalidCreditCardException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/InvalidCreditCardException.php'
 	),
 	'Omnipay\\Common\\Exception\\InvalidRequestException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/InvalidRequestException.php'
 	),
 	'Omnipay\\Common\\Exception\\InvalidResponseException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/InvalidResponseException.php'
 	),
 	'Omnipay\\Common\\Exception\\OmnipayException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/OmnipayException.php'
 	),
 	'Omnipay\\Common\\Exception\\RuntimeException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Exception/RuntimeException.php'
 	),
 	'Omnipay\\Common\\GatewayFactory' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/GatewayFactory.php'
 	),
 	'Omnipay\\Common\\GatewayInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/GatewayInterface.php'
 	),
 	'Omnipay\\Common\\Helper' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Helper.php'
 	),
+	'Omnipay\\Common\\Http\\AbstractClient' => array(
+		'version' => '3.5.0.0',
+		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/AbstractClient.php'
+	),
 	'Omnipay\\Common\\Http\\Client' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/Client.php'
 	),
 	'Omnipay\\Common\\Http\\ClientInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/ClientInterface.php'
 	),
 	'Omnipay\\Common\\Http\\Exception' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/Exception.php'
 	),
 	'Omnipay\\Common\\Http\\Exception\\NetworkException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/Exception/NetworkException.php'
 	),
 	'Omnipay\\Common\\Http\\Exception\\RequestException' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/Exception/RequestException.php'
 	),
+	'Omnipay\\Common\\Http\\PsrClient' => array(
+		'version' => '3.5.0.0',
+		'path'    => $vendorDir . '/omnipay/common/src/Common/Http/PsrClient.php'
+	),
 	'Omnipay\\Common\\Issuer' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Issuer.php'
 	),
 	'Omnipay\\Common\\Item' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Item.php'
 	),
 	'Omnipay\\Common\\ItemBag' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/ItemBag.php'
 	),
 	'Omnipay\\Common\\ItemInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/ItemInterface.php'
 	),
 	'Omnipay\\Common\\Message\\AbstractRequest' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/AbstractRequest.php'
 	),
 	'Omnipay\\Common\\Message\\AbstractResponse' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/AbstractResponse.php'
 	),
 	'Omnipay\\Common\\Message\\FetchIssuersResponseInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/FetchIssuersResponseInterface.php'
 	),
 	'Omnipay\\Common\\Message\\FetchPaymentMethodsResponseInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/FetchPaymentMethodsResponseInterface.php'
 	),
 	'Omnipay\\Common\\Message\\MessageInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/MessageInterface.php'
 	),
 	'Omnipay\\Common\\Message\\NotificationInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/NotificationInterface.php'
 	),
 	'Omnipay\\Common\\Message\\RedirectResponseInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/RedirectResponseInterface.php'
 	),
 	'Omnipay\\Common\\Message\\RequestInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/RequestInterface.php'
 	),
 	'Omnipay\\Common\\Message\\ResponseInterface' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/Message/ResponseInterface.php'
 	),
 	'Omnipay\\Common\\ParametersTrait' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/ParametersTrait.php'
 	),
 	'Omnipay\\Common\\PaymentMethod' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Common/PaymentMethod.php'
 	),
 	'Omnipay\\Omnipay' => array(
-		'version' => '3.4.0.0',
+		'version' => '3.5.0.0',
 		'path'    => $vendorDir . '/omnipay/common/src/Omnipay.php'
 	),
 	'Omnipay\\PayPal\\ExpressGateway' => array(

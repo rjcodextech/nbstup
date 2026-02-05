@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f
+class ComposerStaticInit5d7cde4b7c38def89b5663dc40158db7
 {
     public static $files = array (
         '509f66d930a3f0b7d9b65b22aa319565' => __DIR__ . '/../..' . '/packages/wp-pay/core/includes/functions.php',
@@ -241,8 +241,7 @@ class ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f
         ),
         'Http\\Message\\' =>
         array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
-            1 => __DIR__ . '/..' . '/php-http/message/src',
+            0 => __DIR__ . '/..' . '/php-http/message/src',
         ),
         'Http\\Discovery\\' =>
         array (
@@ -564,22 +563,17 @@ class ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f
         'Http\\Message\\Formatter\\CurlCommandFormatter' => __DIR__ . '/..' . '/php-http/message/src/Formatter/CurlCommandFormatter.php',
         'Http\\Message\\Formatter\\FullHttpMessageFormatter' => __DIR__ . '/..' . '/php-http/message/src/Formatter/FullHttpMessageFormatter.php',
         'Http\\Message\\Formatter\\SimpleFormatter' => __DIR__ . '/..' . '/php-http/message/src/Formatter/SimpleFormatter.php',
-        'Http\\Message\\MessageFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/MessageFactory.php',
         'Http\\Message\\MessageFactory\\DiactorosMessageFactory' => __DIR__ . '/..' . '/php-http/message/src/MessageFactory/DiactorosMessageFactory.php',
         'Http\\Message\\MessageFactory\\GuzzleMessageFactory' => __DIR__ . '/..' . '/php-http/message/src/MessageFactory/GuzzleMessageFactory.php',
         'Http\\Message\\MessageFactory\\SlimMessageFactory' => __DIR__ . '/..' . '/php-http/message/src/MessageFactory/SlimMessageFactory.php',
-        'Http\\Message\\RequestFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/RequestFactory.php',
         'Http\\Message\\RequestMatcher' => __DIR__ . '/..' . '/php-http/message/src/RequestMatcher.php',
         'Http\\Message\\RequestMatcher\\CallbackRequestMatcher' => __DIR__ . '/..' . '/php-http/message/src/RequestMatcher/CallbackRequestMatcher.php',
         'Http\\Message\\RequestMatcher\\RegexRequestMatcher' => __DIR__ . '/..' . '/php-http/message/src/RequestMatcher/RegexRequestMatcher.php',
         'Http\\Message\\RequestMatcher\\RequestMatcher' => __DIR__ . '/..' . '/php-http/message/src/RequestMatcher/RequestMatcher.php',
-        'Http\\Message\\ResponseFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/ResponseFactory.php',
-        'Http\\Message\\StreamFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/StreamFactory.php',
         'Http\\Message\\StreamFactory\\DiactorosStreamFactory' => __DIR__ . '/..' . '/php-http/message/src/StreamFactory/DiactorosStreamFactory.php',
         'Http\\Message\\StreamFactory\\GuzzleStreamFactory' => __DIR__ . '/..' . '/php-http/message/src/StreamFactory/GuzzleStreamFactory.php',
         'Http\\Message\\StreamFactory\\SlimStreamFactory' => __DIR__ . '/..' . '/php-http/message/src/StreamFactory/SlimStreamFactory.php',
         'Http\\Message\\Stream\\BufferedStream' => __DIR__ . '/..' . '/php-http/message/src/Stream/BufferedStream.php',
-        'Http\\Message\\UriFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/UriFactory.php',
         'Http\\Message\\UriFactory\\DiactorosUriFactory' => __DIR__ . '/..' . '/php-http/message/src/UriFactory/DiactorosUriFactory.php',
         'Http\\Message\\UriFactory\\GuzzleUriFactory' => __DIR__ . '/..' . '/php-http/message/src/UriFactory/GuzzleUriFactory.php',
         'Http\\Message\\UriFactory\\SlimUriFactory' => __DIR__ . '/..' . '/php-http/message/src/UriFactory/SlimUriFactory.php',
@@ -970,11 +964,13 @@ class ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f
         'Omnipay\\Common\\GatewayFactory' => __DIR__ . '/..' . '/omnipay/common/src/Common/GatewayFactory.php',
         'Omnipay\\Common\\GatewayInterface' => __DIR__ . '/..' . '/omnipay/common/src/Common/GatewayInterface.php',
         'Omnipay\\Common\\Helper' => __DIR__ . '/..' . '/omnipay/common/src/Common/Helper.php',
+        'Omnipay\\Common\\Http\\AbstractClient' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/AbstractClient.php',
         'Omnipay\\Common\\Http\\Client' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/Client.php',
         'Omnipay\\Common\\Http\\ClientInterface' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/ClientInterface.php',
         'Omnipay\\Common\\Http\\Exception' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/Exception.php',
         'Omnipay\\Common\\Http\\Exception\\NetworkException' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/Exception/NetworkException.php',
         'Omnipay\\Common\\Http\\Exception\\RequestException' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/Exception/RequestException.php',
+        'Omnipay\\Common\\Http\\PsrClient' => __DIR__ . '/..' . '/omnipay/common/src/Common/Http/PsrClient.php',
         'Omnipay\\Common\\Issuer' => __DIR__ . '/..' . '/omnipay/common/src/Common/Issuer.php',
         'Omnipay\\Common\\Item' => __DIR__ . '/..' . '/omnipay/common/src/Common/Item.php',
         'Omnipay\\Common\\ItemBag' => __DIR__ . '/..' . '/omnipay/common/src/Common/ItemBag.php',
@@ -1802,10 +1798,10 @@ class ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit7d04741b0630ae3cd9df6a9c6233283f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5d7cde4b7c38def89b5663dc40158db7::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5d7cde4b7c38def89b5663dc40158db7::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit5d7cde4b7c38def89b5663dc40158db7::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit5d7cde4b7c38def89b5663dc40158db7::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -5,7 +5,6 @@ namespace KnitPay\Gateways\Razorpay;
 use Pronamic\WordPress\DateTime\DateTime;
 use KnitPay\Gateways\IntegrationOAuthClient;
 use Pronamic\WordPress\Pay\Core\IntegrationModeTrait;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use WP_Query;
@@ -394,6 +393,7 @@ class Integration extends IntegrationOAuthClient {
 	 * @return Gateway
 	 */
 	public function get_gateway( $config_id ) {
+		/** @var Config $config */
 		$config = $this->get_config( $config_id );
 
 		$gateway = new Gateway();
@@ -437,7 +437,10 @@ class Integration extends IntegrationOAuthClient {
 	}
 
 	protected function configure_webhook( $config_id ) {
-		$webhook = new Webhook( $config_id, $this->get_config( $config_id ) );
+		/** @var Config $config */
+		$config = $this->get_config( $config_id );
+
+		$webhook = new Webhook( $config_id, $config );
 		$webhook->configure_webhook();
 	}
 

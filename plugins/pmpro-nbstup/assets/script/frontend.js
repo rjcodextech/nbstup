@@ -232,6 +232,13 @@ jQuery(document).ready(function ($) {
     }
   }
 
+  function clearFieldError($field) {
+    var $wrapper = $field.closest('.pmpro-nbstup-member-login__field');
+    $wrapper.removeClass('has-error');
+    $wrapper.find('.pmpro-nbstup-field-error').remove();
+    $field.removeAttr('aria-invalid aria-describedby');
+  }
+
   function validateForm($form) {
     var isValid = true;
     var type = $form.data('login-type');
@@ -281,6 +288,10 @@ jQuery(document).ready(function ($) {
     }
   });
 
+  $(document).on('input', '.pmpro-nbstup-member-login__input', function () {
+    clearFieldError($(this));
+  });
+
   $(document).on('submit', '.pmpro-nbstup-login-form', function (event) {
     event.preventDefault();
 
@@ -299,7 +310,8 @@ jQuery(document).ready(function ($) {
       data.user_password = $form.find('input[name="user_password"]').val();
       data.remember = $form.find('input[name="remember"]').is(':checked') ? 1 : 0;
     } else {
-      data.aadhar_number = $.trim($form.find('input[name="aadhar_number"]').val());
+      var aadharNumber = $.trim($form.find('input[name="aadhar_number"]').val()).replace(/\D+/g, '');
+      data.aadhar_number = aadharNumber;
       data.member_password = $form.find('input[name="member_password"]').val();
     }
 

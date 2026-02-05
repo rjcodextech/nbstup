@@ -59,8 +59,8 @@ class Integration extends IntegrationOAuthClient {
 		parent::setup();
 
 		// Add Partner ID.
-		add_filter( 'http_request_args', [ $this, 'add_paypal_partner_id' ], 1000, 2 );
-		add_filter( 'wp_redirect', [ $this, 'add_paypal_bn' ], 1000 );
+		add_filter( 'http_request_args', [ $this, 'http_request_args' ], 1000, 2 );
+		add_filter( 'wp_redirect', [ $this, 'wp_redirect' ], 1000 );
 
 		$this->auto_save_on_mode_change = true;
 	}
@@ -72,7 +72,7 @@ class Integration extends IntegrationOAuthClient {
 	 * @param string $url         URL.
 	 * @return array
 	 */
-	public function add_paypal_partner_id( $parsed_args, $url ) {
+	public function http_request_args( $parsed_args, $url ) {
 		if ( strpos( $url, 'paypal.com' ) !== false ) {
 			$parsed_args['headers']['PayPal-Partner-Attribution-Id'] = self::PARTNER_ATTRIBUTION_ID;
 		}
@@ -86,7 +86,7 @@ class Integration extends IntegrationOAuthClient {
 	 * @param string $location Redirect URL.
 	 * @return string
 	 */
-	public function add_paypal_bn( $location ) {
+	public function wp_redirect( $location ) {
 		if ( strpos( $location, 'paypal.com' ) !== false ) {
 			$location = add_query_arg( 'bn', self::PARTNER_ATTRIBUTION_ID, $location );
 		}

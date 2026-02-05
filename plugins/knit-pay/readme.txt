@@ -4,10 +4,10 @@ Tags: instamojo, razorpay, cashfree, payment, woocommerce
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 9.0.1.0
+Stable tag: 9.0.2.0
 License: GPL-3.0-or-later
 
-Seamlessly integrates 500+ payment gateways, including Cashfree, Instamojo, PayPal, Razorpay, GoUrl, and SSLCommerz, with over 100 WordPress plugins.
+Seamlessly integrates 500+ payment gateways, including Cashfree, Instamojo, PayPal, Razorpay, and SSLCommerz, with over 100 WordPress plugins.
 
 == Description ==
 One plugin to integrate various Payment Gateways like Cashfree, Instamojo, Razorpay, PayPal, PhonePe, CCAvenue, Easebuzz, etc with WordPress plugins like WooCommerce, Easy Digital Downloads, Paid Memberships Pro, Learn Press, Give, Ninja Forms, Tourmaster, Memberpress, Bookly, etc.
@@ -24,6 +24,7 @@ One plugin to integrate various Payment Gateways like Cashfree, Instamojo, Razor
 * Create a fully branded payment link directly from WordPress Dashboard even if Payment Gateway does not support this feature.
 * Create multiple payment buttons in Gutenberg blocks and Elementor.
 * Supports WordPress Payments Rest APIs.
+* Auto currency conversion feature automatically converts the amount to the supported currency if the provided currency is not supported by the payment provider.
 
 https://www.youtube.com/watch?v=vWxSqhSVCQE
 
@@ -36,7 +37,6 @@ https://www.youtube.com/watch?v=vWxSqhSVCQE
 * RazorPay (India and Import Flow for Non-Indian businesses)
 * SSLCommerz - Bangladesh
 * Stripe Connect (For Indian Businesses) (Use Stripe at just 0.75% additional fee.)
-* GoUrl - Crypto Currency Gateway
 
 = Indian Payment Gateways (Try for free with Knit Pay - Pro and Knit Pay - UPI) =
 * Cashfree Pro (Integration using API Keys)

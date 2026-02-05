@@ -3,10 +3,7 @@
 namespace KnitPay\Extensions\LatePoint;
 
 use Pronamic\WordPress\Pay\AbstractPluginIntegration;
-use Pronamic\WordPress\Pay\Payments\PaymentStatus as Core_Statuses;
-use Pronamic\WordPress\Pay\Core\Util;
 use Pronamic\WordPress\Pay\Payments\Payment;
-use LLMS_Order;
 
 /**
  * Title: LatePoint extension

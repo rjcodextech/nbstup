@@ -3,7 +3,7 @@
 namespace KnitPay\Gateways\Stripe\Connect;
 
 use KnitPay\Gateways\Stripe\Integration as Stripe_Integration;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use KnitPay\Gateways\PaymentMethods;
 use KnitPay\Utils as KnitPayUtils;
 
 /**

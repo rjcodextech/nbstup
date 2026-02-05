@@ -9,6 +9,7 @@ use Exception;
 use Pronamic\WordPress\Pay\Payments\FailureReason;
 use Pronamic\WordPress\Pay\Refunds\Refund;
 use KnitPay\Utils as KnitPayUtils;
+use Pronamic\WordPress\Pay\Core\PaymentMethodsCollection;
 
 /**
  * Title: Cashfree Gateway
@@ -56,6 +57,61 @@ class Gateway extends Core_Gateway {
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::CARD ) );
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::NET_BANKING ) );
 		$this->register_payment_method( new PaymentMethod( PaymentMethods::UPI ) );
+		$this->register_payment_method( new PaymentMethod( PaymentMethods::PAYPAL ) );
+	}
+
+	/**
+	 * Get payment methods.
+	 *
+	 * @param array $args Query arguments.
+	 * @return PaymentMethodsCollection
+	 */
+	public function get_payment_methods( array $args = [] ): PaymentMethodsCollection {
+		$cache_key = 'knit_pay_cashfree_payment_methods_' . $this->config->config_id;
+
+		$methods = \get_transient( $cache_key );
+
+		if ( false === $methods ) {
+			// @see https://www.cashfree.com/docs/api-reference/payments/latest/eligibility/get-eligible-payment-methods
+			try {
+				$api_client = new API( $this->config, $this->test_mode );
+				$methods    = $api_client->get_eligible_payment_methods();
+				\set_transient( $cache_key, $methods, \DAY_IN_SECONDS );
+			} catch ( \Exception $e ) {
+				// Handle exception
+				$methods = [];
+			}
+		}
+
+		$this->get_payment_method( PaymentMethods::CASHFREE )->set_status( 'active' );
+
+		foreach ( $methods as  $cashfree_method ) {
+			if ( ! is_object( $cashfree_method ) ) {
+				continue;
+			}
+
+			$method_id = $cashfree_method->entity_value;
+
+			switch ( $method_id ) {
+				case 'netbanking':
+					$method_id = PaymentMethods::NET_BANKING;
+					break;
+				default:
+			}
+
+			$method = $this->get_payment_method( $method_id );
+			if ( null === $method ) {
+				continue;
+			}
+			$method->set_status( $cashfree_method->eligibility ? 'active' : 'inactive' );
+		}
+
+		if ( 'active' === $this->get_payment_method( PaymentMethods::DEBIT_CARD )->get_status() || 'active' === $this->get_payment_method( PaymentMethods::CREDIT_CARD )->get_status() ) {
+			$method = $this->get_payment_method( PaymentMethods::CARD );
+			$method->set_status( 'active' );
+		}
+
+		return parent::get_payment_methods( $args );
 	}
 
 	/**

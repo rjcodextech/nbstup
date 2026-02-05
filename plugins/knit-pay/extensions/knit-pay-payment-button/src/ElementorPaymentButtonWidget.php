@@ -148,19 +148,24 @@ class ElementorPaymentButtonWidget extends Widget_Base {
 			return;
 		}
 		
-		$form_id  = 'knit-pay-payment-button-form-' . uniqid();
-		$settings = $this->get_settings_for_display();
+		$form_id             = 'knit-pay-payment-button-form-' . uniqid();
+		$honeypot_field_name = 'knit_pay_contact_' . substr( md5( $form_id ), 0, 8 );
+		$settings            = $this->get_settings_for_display();
 		$this->add_render_attribute( 'button', 'class', 'knit-pay-payment-button-submit-class' );
 		$this->add_render_attribute( 'text', 'id', 'knit-pay-payment-button-submit' );
 		$this->add_render_attribute( 'text', 'knit-pay-button-text', $settings['text'] );
-		
 		?>
 		
 		<form id="<?php echo $form_id; ?>" class="knit-pay-payment-button-form-class" method="post">
 			<?php 
-				$nonce_action = "knit_pay_payment_button|{$settings['amount']}|{$settings['currency']}|{$settings['payment_description']}|{$settings['config_id']}";
+				$nonce_action = "knit_pay_payment_button|{$settings['amount']}|{$settings['currency']}|{$settings['payment_description']}|{$settings['config_id']}|{$honeypot_field_name}";
 				wp_nonce_field( $nonce_action, 'knit_pay_nonce' );
 			?>
+
+			<!-- Honeypot field to catch bots (hidden from users) -->
+			<input type="text" name="<?php echo esc_attr( $honeypot_field_name ); ?>" id="<?php echo esc_attr( $honeypot_field_name ); ?>" value="" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" autocomplete="off">
+			<input type="hidden" name="knit_pay_honeypot_field" value="<?php echo esc_attr( $honeypot_field_name ); ?>">
+
 			<input type="hidden" id="knit_pay_payment_button_amount" value="<?php echo esc_attr( $settings['amount'] ); ?>">
 			<input type="hidden" id="knit_pay_payment_button_currency" value="<?php echo esc_attr( $settings['currency'] ); ?>">
 			<input type="hidden" id="knit_pay_payment_button_payment_description" value="<?php echo esc_attr( $settings['payment_description'] ); ?>">
