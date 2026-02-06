@@ -49,22 +49,47 @@ function pmpronbstup_authenticate($user, $username, $password)
             );
         }
 
-        // Check if contribution is required but not paid
-        $contribution_required = get_user_meta($user->ID, 'pmpronbstup_contribution_required', true);
-        if ((int) $contribution_required === 1) {
-            $contribution_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_paid', true);
-            if ((int) $contribution_paid !== 1) {
-                $deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deadline', true);
-                $error_msg = sprintf(
-                    __('<strong>Error</strong>: Your contribution payment is required by %s. Please pay the contribution to access your account.', 'pmpro-nbstup'),
-                    $deadline ? date_i18n(get_option('date_format'), strtotime($deadline)) : 'the deadline'
-                );
+        $deceased_required = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', true);
+        $deceased_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', true);
+        $deceased_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_deadline', true);
 
-                return new WP_Error(
-                    'pmpronbstup_contribution_required',
-                    $error_msg
-                );
+        $wedding_required = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_required', true);
+        $wedding_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
+        $wedding_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_deadline', true);
+
+        $requires_payment = false;
+        $deadline_timestamps = array();
+
+        if ((int) $deceased_required === 1 && (int) $deceased_paid !== 1) {
+            $requires_payment = true;
+            if (! empty($deceased_deadline)) {
+                $deadline_timestamps[] = strtotime($deceased_deadline);
             }
+        }
+
+        if ((int) $wedding_required === 1 && (int) $wedding_paid !== 1) {
+            $requires_payment = true;
+            if (! empty($wedding_deadline)) {
+                $deadline_timestamps[] = strtotime($wedding_deadline);
+            }
+        }
+
+        if ($requires_payment) {
+            $deadline_text = 'the deadline';
+            if (! empty($deadline_timestamps)) {
+                $next_deadline = min($deadline_timestamps);
+                $deadline_text = date_i18n(get_option('date_format'), $next_deadline);
+            }
+
+            $error_msg = sprintf(
+                __('<strong>Error</strong>: Your contribution payment is required by %s. Please pay the contribution to access your account.', 'pmpro-nbstup'),
+                $deadline_text
+            );
+
+            return new WP_Error(
+                'pmpronbstup_contribution_required',
+                $error_msg
+            );
         }
     }
 

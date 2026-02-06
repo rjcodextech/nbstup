@@ -21,22 +21,6 @@ function pmpronbstup_enqueue_frontend_assets()
         return;
     }
 
-    $should_load = is_user_logged_in();
-    $has_login_shortcode = false;
-
-    if ( is_singular() ) {
-        $post = get_post();
-        if ( $post && has_shortcode( $post->post_content, 'pmpro_nbstup_member_login' ) ) {
-            $has_login_shortcode = true;
-            if ( ! $should_load ) {
-                $should_load = true;
-            }
-        }
-    }
-
-    if ( ! $should_load ) {
-        return;
-    }
 
     wp_enqueue_style(
         'pmpro-nbstup-frontend',
@@ -54,22 +38,22 @@ function pmpronbstup_enqueue_frontend_assets()
         true
     );
 
-    if ( $has_login_shortcode ) {
-        wp_localize_script(
-            'pmpro-nbstup-frontend',
-            'pmpro_nbstup_login',
-            array(
-                'ajax_url'      => admin_url( 'admin-ajax.php' ),
-                'nonce'         => wp_create_nonce( 'pmpro_nbstup_login' ),
-                'generic_error' => esc_html__( 'Login failed. Please try again.', 'pmpro-nbstup' ),
-                'validation_message'       => esc_html__( 'Please fix the highlighted fields and try again.', 'pmpro-nbstup' ),
-                'validation_login'         => esc_html__( 'Please enter your username or email.', 'pmpro-nbstup' ),
-                'validation_password'      => esc_html__( 'Please enter your password.', 'pmpro-nbstup' ),
-                'validation_aadhar'        => esc_html__( 'Please enter your Aadhar number.', 'pmpro-nbstup' ),
-                'validation_aadhar_format' => esc_html__( 'Enter a valid 12-digit Aadhar number.', 'pmpro-nbstup' ),
-            )
-        );
-    }
+    wp_localize_script(
+        'pmpro-nbstup-frontend',
+        'pmpro_nbstup_data',
+        array(
+            'ajax_url'      => admin_url( 'admin-ajax.php' ),
+            'ajax_nonce'    => wp_create_nonce( 'pmpro_nbstup_ajax' ),
+            'login_nonce'   => wp_create_nonce( 'pmpro_nbstup_login' ),
+            'generic_error' => esc_html__( 'Login failed. Please try again.', 'pmpro-nbstup' ),
+            'validation_message'       => esc_html__( 'Please fix the highlighted fields and try again.', 'pmpro-nbstup' ),
+            'validation_login'         => esc_html__( 'Please enter your username or email.', 'pmpro-nbstup' ),
+            'validation_password'      => esc_html__( 'Please enter your password.', 'pmpro-nbstup' ),
+            'validation_aadhar'        => esc_html__( 'Please enter your Aadhar number.', 'pmpro-nbstup' ),
+            'validation_aadhar_format' => esc_html__( 'Enter a valid 12-digit Aadhar number.', 'pmpro-nbstup' ),
+        )
+    );
+
 }
 add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
 
@@ -1164,14 +1148,18 @@ function pmpronbstup_is_user_active_with_contribution($user_id)
         return false;
     }
 
-    // Check if contribution is required
-    $contribution_required = get_user_meta($user_id, 'pmpronbstup_contribution_required', true);
-    if ((int) $contribution_required === 1) {
-        // Check if contribution is paid
-        $contribution_paid = get_user_meta($user_id, 'pmpronbstup_contribution_paid', true);
-        if ((int) $contribution_paid !== 1) {
-            return false;
-        }
+    $deceased_required = get_user_meta($user_id, 'pmpronbstup_contribution_deceased_required', true);
+    $deceased_paid = get_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', true);
+
+    $wedding_required = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
+    $wedding_paid = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', true);
+
+    if ((int) $deceased_required === 1 && (int) $deceased_paid !== 1) {
+        return false;
+    }
+
+    if ((int) $wedding_required === 1 && (int) $wedding_paid !== 1) {
+        return false;
     }
 
     return true;

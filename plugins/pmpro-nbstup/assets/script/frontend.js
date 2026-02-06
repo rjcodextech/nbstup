@@ -61,7 +61,7 @@
 // ========== Location Cascading Dropdowns ==========
 jQuery(document).ready(function($) {
   // Check if we're on checkout page with location fields
-  if (!$('#user_state').length || typeof pmpro_nbstup_ajax === 'undefined') {
+  if (!$('#user_state').length || typeof pmpro_nbstup_data === 'undefined') {
     return;
   }
 
@@ -83,12 +83,12 @@ jQuery(document).ready(function($) {
     
     // Load districts
     $.ajax({
-      url: pmpro_nbstup_ajax.ajax_url,
+      url: pmpro_nbstup_data.ajax_url,
       type: 'POST',
       data: {
         action: 'pmpro_nbstup_get_districts',
         state_id: stateId,
-        nonce: pmpro_nbstup_ajax.nonce
+        nonce: pmpro_nbstup_data.ajax_nonce
       },
       beforeSend: function() {
         $districtSelect.html('<option value="">Loading...</option>');
@@ -123,12 +123,12 @@ jQuery(document).ready(function($) {
     
     // Load blocks
     $.ajax({
-      url: pmpro_nbstup_ajax.ajax_url,
+      url: pmpro_nbstup_data.ajax_url,
       type: 'POST',
       data: {
         action: 'pmpro_nbstup_get_blocks',
         district_id: districtId,
-        nonce: pmpro_nbstup_ajax.nonce
+        nonce: pmpro_nbstup_data.ajax_nonce
       },
       beforeSend: function() {
         $blockSelect.html('<option value="">Loading...</option>');
@@ -225,7 +225,7 @@ jQuery(document).ready(function ($) {
   }
 
   var $containers = $('.pmpro-nbstup-login-tabs');
-  if (!$containers.length || typeof pmpro_nbstup_login === 'undefined') {
+  if (!$containers.length || typeof pmpro_nbstup_data === 'undefined') {
     return;
   }
 
@@ -307,12 +307,12 @@ jQuery(document).ready(function ($) {
       var $password = $form.find('input[name="user_password"]');
 
       if (!$.trim($login.val())) {
-        setFieldError($form, $login, pmpro_nbstup_login.validation_login || 'Please enter your username or email.');
+        setFieldError($form, $login, pmpro_nbstup_data.validation_login || 'Please enter your username or email.');
         isValid = false;
       }
 
       if (!$.trim($password.val())) {
-        setFieldError($form, $password, pmpro_nbstup_login.validation_password || 'Please enter your password.');
+        setFieldError($form, $password, pmpro_nbstup_data.validation_password || 'Please enter your password.');
         isValid = false;
       }
     } else {
@@ -321,15 +321,15 @@ jQuery(document).ready(function ($) {
       var aadharValue = $.trim($aadhar.val()).replace(/\s+/g, '');
 
       if (!aadharValue) {
-        setFieldError($form, $aadhar, pmpro_nbstup_login.validation_aadhar || 'Please enter your Aadhar number.');
+        setFieldError($form, $aadhar, pmpro_nbstup_data.validation_aadhar || 'Please enter your Aadhar number.');
         isValid = false;
       } else if (!/^\d{12}$/.test(aadharValue)) {
-        setFieldError($form, $aadhar, pmpro_nbstup_login.validation_aadhar_format || 'Enter a valid 12-digit Aadhar number.');
+        setFieldError($form, $aadhar, pmpro_nbstup_data.validation_aadhar_format || 'Enter a valid 12-digit Aadhar number.');
         isValid = false;
       }
 
       if (!$.trim($memberPassword.val())) {
-        setFieldError($form, $memberPassword, pmpro_nbstup_login.validation_password || 'Please enter your password.');
+        setFieldError($form, $memberPassword, pmpro_nbstup_data.validation_password || 'Please enter your password.');
         isValid = false;
       }
     }
@@ -360,7 +360,7 @@ jQuery(document).ready(function ($) {
 
     var data = {
       action: type === 'admin' ? 'pmpronbstup_admin_login' : 'pmpronbstup_member_login',
-      nonce: pmpro_nbstup_login.nonce,
+      nonce: pmpro_nbstup_data.login_nonce,
       redirect: $form.data('redirect') || ''
     };
 
@@ -375,7 +375,7 @@ jQuery(document).ready(function ($) {
     }
 
     if (!validateForm($form)) {
-      showMessage($form, pmpro_nbstup_login.validation_message || 'Please fix the highlighted fields and try again.');
+      showMessage($form, pmpro_nbstup_data.validation_message || 'Please fix the highlighted fields and try again.');
       var $firstError = $form.find('.pmpro-nbstup-member-login__field.has-error').first();
       if ($firstError.length) {
         $firstError.find('input').first().trigger('focus');
@@ -386,7 +386,7 @@ jQuery(document).ready(function ($) {
     setLoading($form, true);
 
     $.ajax({
-      url: pmpro_nbstup_login.ajax_url,
+      url: pmpro_nbstup_data.ajax_url,
       type: 'POST',
       dataType: 'json',
       data: data
@@ -396,12 +396,12 @@ jQuery(document).ready(function ($) {
           var redirect = response.data && response.data.redirect ? response.data.redirect : window.location.href;
           window.location.href = redirect;
         } else {
-          var message = response && response.data && response.data.message ? response.data.message : pmpro_nbstup_login.generic_error;
+          var message = response && response.data && response.data.message ? response.data.message : pmpro_nbstup_data.generic_error;
           showMessage($form, message);
         }
       })
       .fail(function () {
-        showMessage($form, pmpro_nbstup_login.generic_error);
+        showMessage($form, pmpro_nbstup_data.generic_error);
       })
       .always(function () {
         setLoading($form, false);

@@ -334,6 +334,11 @@ function pmpro_nbstup_delete_block( $id ) {
 add_action( 'wp_ajax_pmpro_nbstup_get_districts', 'pmpro_nbstup_ajax_get_districts' );
 add_action( 'wp_ajax_nopriv_pmpro_nbstup_get_districts', 'pmpro_nbstup_ajax_get_districts' );
 function pmpro_nbstup_ajax_get_districts() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'pmpro_nbstup_ajax' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid request' ) );
+	}
+
 	$state_id = isset( $_POST['state_id'] ) ? intval( $_POST['state_id'] ) : 0;
 	
 	if ( ! $state_id ) {
@@ -350,6 +355,11 @@ function pmpro_nbstup_ajax_get_districts() {
 add_action( 'wp_ajax_pmpro_nbstup_get_blocks', 'pmpro_nbstup_ajax_get_blocks' );
 add_action( 'wp_ajax_nopriv_pmpro_nbstup_get_blocks', 'pmpro_nbstup_ajax_get_blocks' );
 function pmpro_nbstup_ajax_get_blocks() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'pmpro_nbstup_ajax' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid request' ) );
+	}
+
 	$district_id = isset( $_POST['district_id'] ) ? intval( $_POST['district_id'] ) : 0;
 	
 	if ( ! $district_id ) {
@@ -360,30 +370,3 @@ function pmpro_nbstup_ajax_get_blocks() {
 	wp_send_json_success( $blocks );
 }
 
-/**
- * Enqueue frontend scripts for cascading dropdowns
- */
-add_action( 'wp_enqueue_scripts', 'pmpro_nbstup_enqueue_location_scripts' );
-function pmpro_nbstup_enqueue_location_scripts() {
-	// Only load on checkout page
-	if ( ! function_exists( 'pmpro_is_checkout' ) || ! pmpro_is_checkout() ) {
-		return;
-	}
-	
-	wp_enqueue_script(
-		'pmpro-nbstup-location',
-		plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/frontend.js',
-		array( 'jquery' ),
-		'1.0.0',
-		true
-	);
-	
-	wp_localize_script(
-		'pmpro-nbstup-location',
-		'pmpro_nbstup_ajax',
-		array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'pmpro_nbstup_ajax' ),
-		)
-	);
-}
