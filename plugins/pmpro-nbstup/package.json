@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "gulp watch",
-    "build": "gulp build"
+    "build": "gulp build",
+    "bundle": "gulp bundle"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
@@ -18,7 +19,9 @@
     "cssnano": "^5.1.2",
     "gulp-uglify": "^3.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-rename": "^2.0.0"
+    "gulp-rename": "^2.0.0",
+    "gulp-zip": "^5.1.0",
+    "del": "^7.1.0"
   }
 }
 

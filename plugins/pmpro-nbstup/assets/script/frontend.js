@@ -61,7 +61,7 @@
 // ========== Location Cascading Dropdowns ==========
 jQuery(document).ready(function($) {
   // Check if we're on checkout page with location fields
-  if (!$('#user_state').length) {
+  if (!$('#user_state').length || typeof pmpro_nbstup_ajax === 'undefined') {
     return;
   }
 
@@ -185,10 +185,10 @@ jQuery(document).ready(function ($) {
     }
 
     function syncFromMemberDetails() {
-      var aadharValue = $.trim($aadhar.val()).replace(/\D+/g, '');
-      var fullName = $.trim($memberName.val() || '');
-      var phoneValue = $.trim($memberPhone.val() || '');
-      var passwordValue = $memberPassword.val() || '';
+      var aadharValue = $aadhar.length ? $.trim($aadhar.val()).replace(/\D+/g, '') : '';
+      var fullName = $memberName.length ? $.trim($memberName.val() || '') : '';
+      var phoneValue = $memberPhone.length ? $.trim($memberPhone.val() || '') : '';
+      var passwordValue = $memberPassword.length ? ($memberPassword.val() || '') : '';
       var nameParts = fullName ? fullName.split(/\s+/) : [];
       var firstName = nameParts.length ? nameParts[0] : '';
       var lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
