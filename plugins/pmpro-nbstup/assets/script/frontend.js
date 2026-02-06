@@ -168,12 +168,17 @@ jQuery(document).ready(function ($) {
   var $memberDetails = $('#pmpro_form_fieldset-member-details');
   if ($memberDetails.length) {
     var $aadhar = $memberDetails.find('#aadhar_number');
+    var $memberName = $memberDetails.find('#member_name');
+    var $memberPhone = $memberDetails.find('#phone_no');
     var $memberPassword = $memberDetails.find('#member_password');
     var $username = $('#pmpro_user_fields #username');
     var $password = $('#pmpro_user_fields #password');
     var $password2 = $('#pmpro_user_fields #password2');
     var $bemail = $('#pmpro_user_fields #bemail');
     var $bconfirm = $('#pmpro_user_fields #bconfirmemail');
+    var $bfirstname = $('#pmpro_billing_address_fields #bfirstname');
+    var $blastname = $('#pmpro_billing_address_fields #blastname');
+    var $bphone = $('#pmpro_billing_address_fields #bphone');
 
     function buildEmail(aadharValue) {
       return aadharValue ? aadharValue + '@nbstup.com' : '';
@@ -181,7 +186,12 @@ jQuery(document).ready(function ($) {
 
     function syncFromMemberDetails() {
       var aadharValue = $.trim($aadhar.val()).replace(/\D+/g, '');
+      var fullName = $.trim($memberName.val() || '');
+      var phoneValue = $.trim($memberPhone.val() || '');
       var passwordValue = $memberPassword.val() || '';
+      var nameParts = fullName ? fullName.split(/\s+/) : [];
+      var firstName = nameParts.length ? nameParts[0] : '';
+      var lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
       if ($username.length) {
         $username.val(aadharValue);
@@ -199,9 +209,18 @@ jQuery(document).ready(function ($) {
       if ($bconfirm.length) {
         $bconfirm.val(emailValue);
       }
+      if ($bfirstname.length) {
+        $bfirstname.val(firstName);
+      }
+      if ($blastname.length) {
+        $blastname.val(lastName);
+      }
+      if ($bphone.length) {
+        $bphone.val(phoneValue);
+      }
     }
 
-    $memberDetails.on('input change', '#aadhar_number, #member_password', syncFromMemberDetails);
+    $memberDetails.on('input change', '#aadhar_number, #member_password, #member_name, #phone_no', syncFromMemberDetails);
     syncFromMemberDetails();
   }
 
