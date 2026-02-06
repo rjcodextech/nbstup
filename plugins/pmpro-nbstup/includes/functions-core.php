@@ -74,6 +74,26 @@ function pmpronbstup_enqueue_frontend_assets()
 add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
 
 /**
+ * Map pmpro_level to level for PMPro URLs.
+ */
+function pmpronbstup_map_pmpro_level_query_var() {
+    if ( is_admin() ) {
+        return;
+    }
+
+    if ( ! isset( $_REQUEST['level'] ) && isset( $_REQUEST['pmpro_level'] ) ) {
+        $_REQUEST['level'] = $_REQUEST['pmpro_level'];
+        if ( isset( $_GET['pmpro_level'] ) ) {
+            $_GET['level'] = $_GET['pmpro_level'];
+        }
+        if ( isset( $_POST['pmpro_level'] ) ) {
+            $_POST['level'] = $_POST['pmpro_level'];
+        }
+    }
+}
+add_action( 'init', 'pmpronbstup_map_pmpro_level_query_var', 5 );
+
+/**
  * Default checkout level to 1 when no level is provided.
  */
 function pmpronbstup_default_checkout_level() {

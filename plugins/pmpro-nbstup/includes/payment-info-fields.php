@@ -32,7 +32,7 @@ function pmpro_add_member_details_fields() {
 	$user_id = get_current_user_id();
 
 	$values = array(
-		'name' => $user_id ? get_user_meta( $user_id, 'name', true ) : '',
+		'member_name' => $user_id ? get_user_meta( $user_id, 'name', true ) : '',
 		'phone_no' => $user_id ? get_user_meta( $user_id, 'phone_no', true ) : '',
 		'aadhar_number' => $user_id ? get_user_meta( $user_id, 'aadhar_number', true ) : '',
 		'father_husband_name' => $user_id ? get_user_meta( $user_id, 'father_husband_name', true ) : '',
@@ -45,11 +45,7 @@ function pmpro_add_member_details_fields() {
 
 	foreach ( $values as $key => $value ) {
 		if ( isset( $_REQUEST[ $key ] ) ) {
-			if ( $key === 'join_blood_donation' ) {
-				$values[ $key ] = sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
-			} else {
-				$values[ $key ] = sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
-			}
+			$values[ $key ] = sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) );
 		}
 	}
 
@@ -83,8 +79,8 @@ function pmpro_add_member_details_fields() {
 				<div class="pmpro_form_fields">
 
 					<!-- Name -->
-					<div id="name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-name pmpro_form_field-required">
-						<label class="pmpro_form_label" for="name">
+					<div id="member_name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-member_name pmpro_form_field-required">
+						<label class="pmpro_form_label" for="member_name">
 							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
 								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
@@ -92,13 +88,13 @@ function pmpro_add_member_details_fields() {
 						</label>
 						<input
 							type="text"
-							id="name"
-							name="name"
+							id="member_name"
+							name="member_name"
 							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-name pmpro_form_input-required"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-member_name pmpro_form_input-required"
 							aria-required="true"
 							required
-							value="<?php echo esc_attr( $values['name'] ); ?>"
+							value="<?php echo esc_attr( $values['member_name'] ); ?>"
 						/>
 					</div>
 
@@ -576,30 +572,30 @@ function pmpro_save_member_details_fields( $user_id, $order ) {
 	}
 
 	$fields = array(
-		'name' => 'text',
-		'phone_no' => 'text',
-		'aadhar_number' => 'text',
-		'father_husband_name' => 'text',
-		'dob' => 'text',
-		'gender' => 'text',
-		'Occupation' => 'text',
+		'member_name' => 'name',
+		'phone_no' => 'phone_no',
+		'aadhar_number' => 'aadhar_number',
+		'father_husband_name' => 'father_husband_name',
+		'dob' => 'dob',
+		'gender' => 'gender',
+		'Occupation' => 'Occupation',
 	);
 
-	foreach ( $fields as $key => $type ) {
-		if ( isset( $_POST[ $key ] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
-			if ( $key === 'aadhar_number' || $key === 'phone_no' ) {
+	foreach ( $fields as $request_key => $meta_key ) {
+		if ( isset( $_POST[ $request_key ] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST[ $request_key ] ) );
+			if ( $meta_key === 'aadhar_number' || $meta_key === 'phone_no' ) {
 				$value = preg_replace( '/\D+/', '', $value );
 			}
 			if ( $value !== '' ) {
-				update_user_meta( $user_id, $key, $value );
+				update_user_meta( $user_id, $meta_key, $value );
 				if ( ! empty( $order ) ) {
-					update_post_meta( $order->id, $key, $value );
+					update_post_meta( $order->id, $meta_key, $value );
 				}
 			} else {
-				delete_user_meta( $user_id, $key );
+				delete_user_meta( $user_id, $meta_key );
 				if ( ! empty( $order ) ) {
-					delete_post_meta( $order->id, $key );
+					delete_post_meta( $order->id, $meta_key );
 				}
 			}
 		}
@@ -660,7 +656,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	$errors = array();
 
 	$required_fields = array(
-		'name' => __( 'Name', 'pmpro-nbstup' ),
+		'member_name' => __( 'Name', 'pmpro-nbstup' ),
 		'phone_no' => __( 'Phone Number', 'pmpro-nbstup' ),
 		'aadhar_number' => __( 'Aadhar Number', 'pmpro-nbstup' ),
 		'father_husband_name' => __( 'Father / Husband Name', 'pmpro-nbstup' ),
@@ -687,7 +683,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		}
 	}
 
-	$name = isset( $_REQUEST['name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['name'] ) ) ) : '';
+	$name = isset( $_REQUEST['member_name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['member_name'] ) ) ) : '';
 	if ( $name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $name ) ) {
 		$errors[] = __( 'Name should contain only letters and valid characters.', 'pmpro-nbstup' );
 	}
@@ -822,72 +818,6 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	}
 
 	return $continue;
-}
-
-/**
- * Create dummy email and login using Aadhar number
- */
-add_filter( 'pmpro_checkout_new_user_array', 'pmpro_nbstup_set_dummy_email_on_checkout', 10, 2 );
-function pmpro_nbstup_set_dummy_email_on_checkout( $user, $order ) {
-	$aadhar = isset( $_REQUEST['aadhar_number'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['aadhar_number'] ) ) : '';
-	$aadhar = preg_replace( '/\D+/', '', $aadhar );
-
-	if ( empty( $aadhar ) ) {
-		return $user;
-	}
-
-	$dummy_email = pmpro_nbstup_build_dummy_email( $aadhar );
-	if ( $dummy_email ) {
-		$user['user_email'] = $dummy_email;
-	}
-
-	$user['user_login'] = pmpro_nbstup_unique_login( $aadhar );
-
-	return $user;
-}
-
-add_action( 'pmpro_after_checkout', 'pmpro_nbstup_update_dummy_email', 15, 2 );
-function pmpro_nbstup_update_dummy_email( $user_id, $order ) {
-	if ( empty( $user_id ) ) {
-		return;
-	}
-
-	$aadhar = get_user_meta( $user_id, 'aadhar_number', true );
-	$aadhar = preg_replace( '/\D+/', '', (string) $aadhar );
-	if ( empty( $aadhar ) ) {
-		return;
-	}
-
-	$dummy_email = pmpro_nbstup_build_dummy_email( $aadhar, $user_id );
-	if ( empty( $dummy_email ) ) {
-		return;
-	}
-
-	$current_user = get_userdata( $user_id );
-	if ( $current_user && strtolower( $current_user->user_email ) !== strtolower( $dummy_email ) ) {
-		wp_update_user(
-			array(
-				'ID' => $user_id,
-				'user_email' => $dummy_email,
-			)
-		);
-	}
-}
-
-function pmpro_nbstup_build_dummy_email( $aadhar, $user_id = 0 ) {
-	$aadhar = preg_replace( '/\D+/', '', (string) $aadhar );
-	if ( empty( $aadhar ) ) {
-		return '';
-	}
-
-	$email = $aadhar . '@nbstup.com';
-
-	$existing_user_id = email_exists( $email );
-	if ( $existing_user_id && (int) $existing_user_id !== (int) $user_id ) {
-		$email = $aadhar . '-' . (int) $user_id . '@nbstup.com';
-	}
-
-	return is_email( $email ) ? $email : '';
 }
 
 function pmpro_nbstup_unique_login( $base_login ) {
