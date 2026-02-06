@@ -3,7 +3,7 @@
         'name' => 'elementor/elementor',
         'pretty_version' => '3.35.x-dev',
         'version' => '3.35.9999999.9999999-dev',
-        'reference' => 'b505449fbba487f8581d399ae3a7a37c4a8c49b9',
+        'reference' => '770bdcca3e8b95160427ed00c298dde1ce6a4c82',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'elementor/elementor' => array(
             'pretty_version' => '3.35.x-dev',
             'version' => '3.35.9999999.9999999-dev',
-            'reference' => 'b505449fbba487f8581d399ae3a7a37c4a8c49b9',
+            'reference' => '770bdcca3e8b95160427ed00c298dde1ce6a4c82',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

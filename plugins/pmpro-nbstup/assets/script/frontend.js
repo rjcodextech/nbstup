@@ -165,6 +165,46 @@ jQuery(document).ready(function($) {
 
 // ========== Login Tabs + AJAX Login ==========
 jQuery(document).ready(function ($) {
+  var $memberDetails = $('#pmpro_form_fieldset-member-details');
+  if ($memberDetails.length) {
+    var $aadhar = $memberDetails.find('#aadhar_number');
+    var $memberPassword = $memberDetails.find('#member_password');
+    var $username = $('#pmpro_user_fields #username');
+    var $password = $('#pmpro_user_fields #password');
+    var $password2 = $('#pmpro_user_fields #password2');
+    var $bemail = $('#pmpro_user_fields #bemail');
+    var $bconfirm = $('#pmpro_user_fields #bconfirmemail');
+
+    function buildEmail(aadharValue) {
+      return aadharValue ? aadharValue + '@nbstup.com' : '';
+    }
+
+    function syncFromMemberDetails() {
+      var aadharValue = $.trim($aadhar.val()).replace(/\D+/g, '');
+      var passwordValue = $memberPassword.val() || '';
+
+      if ($username.length) {
+        $username.val(aadharValue);
+      }
+      if ($password.length) {
+        $password.val(passwordValue);
+      }
+      if ($password2.length) {
+        $password2.val(passwordValue);
+      }
+      var emailValue = buildEmail(aadharValue);
+      if ($bemail.length) {
+        $bemail.val(emailValue);
+      }
+      if ($bconfirm.length) {
+        $bconfirm.val(emailValue);
+      }
+    }
+
+    $memberDetails.on('input change', '#aadhar_number, #member_password', syncFromMemberDetails);
+    syncFromMemberDetails();
+  }
+
   var $containers = $('.pmpro-nbstup-login-tabs');
   if (!$containers.length || typeof pmpro_nbstup_login === 'undefined') {
     return;

@@ -74,6 +74,46 @@ function pmpronbstup_enqueue_frontend_assets()
 add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
 
 /**
+ * Default checkout level to 1 when no level is provided.
+ */
+function pmpronbstup_default_checkout_level() {
+    if ( ! function_exists( 'pmpro_is_checkout' ) || ! pmpro_is_checkout() ) {
+        return;
+    }
+
+    if ( ! isset( $_REQUEST['level'] ) && isset( $_REQUEST['pmpro_level'] ) ) {
+        $_REQUEST['level'] = $_REQUEST['pmpro_level'];
+        $_GET['level'] = isset( $_GET['pmpro_level'] ) ? $_GET['pmpro_level'] : $_GET['level'];
+    }
+
+    $level = isset( $_REQUEST['level'] ) ? (int) $_REQUEST['level'] : 0;
+    if ( $level > 0 ) {
+        return;
+    }
+
+    if ( strtoupper( $_SERVER['REQUEST_METHOD'] ) === 'POST' ) {
+        $_REQUEST['level'] = 1;
+        $_POST['level'] = 1;
+        $_GET['level'] = 1;
+        return;
+    }
+
+    $query = array();
+    foreach ( $_GET as $key => $value ) {
+        if ( $key === 'level' ) {
+            continue;
+        }
+        $query[ $key ] = $value;
+    }
+    $query['level'] = 1;
+
+    $redirect = add_query_arg( $query, pmpro_url( 'checkout' ) );
+    wp_safe_redirect( $redirect );
+    exit;
+}
+add_action( 'template_redirect', 'pmpronbstup_default_checkout_level', 9 );
+
+/**
  * Check if a user (subscriber) is active according to our addon rules.
  * Includes checking membership expiration dates for yearly recurring subscriptions.
  *
