@@ -56,6 +56,7 @@ function pmpro_add_member_details_fields() {
 	);
 
 	$occupation_options = array(
+		'Self Employed' => __( 'Self Employed', 'pmpro-nbstup' ),
 		'Government Job' => __( 'Government Job', 'pmpro-nbstup' ),
 		'Private Job' => __( 'Private Job', 'pmpro-nbstup' ),
 		'Business' => __( 'Business', 'pmpro-nbstup' ),
@@ -306,7 +307,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Nominee Name 1 -->
 					<div id="nominee_name_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_1">
 						<label class="pmpro_form_label" for="nominee_name_1">
-							<?php esc_html_e( 'Nominee Name 1', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 1 का नाम', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -321,7 +322,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Relation With Nominee 1 -->
 					<div id="relation_with_nominee_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_1">
 						<label class="pmpro_form_label" for="relation_with_nominee_1">
-							<?php esc_html_e( 'Relation With Nominee 1', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 1 से संबंध', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -336,7 +337,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Nominee 1 Mobile -->
 					<div id="nominee_1_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_1_mobile">
 						<label class="pmpro_form_label" for="nominee_1_mobile">
-							<?php esc_html_e( 'Nominee 1 Mobile', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 1 का मोबाइल नंबर', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -351,7 +352,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Nominee Name 2 -->
 					<div id="nominee_name_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_2">
 						<label class="pmpro_form_label" for="nominee_name_2">
-							<?php esc_html_e( 'Nominee Name 2', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 2 का नाम', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -366,7 +367,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Relation With Nominee 2 -->
 					<div id="relation_with_nominee_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_2">
 						<label class="pmpro_form_label" for="relation_with_nominee_2">
-							<?php esc_html_e( 'Relation With Nominee 2', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 2 से संबंध', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -381,7 +382,7 @@ function pmpro_add_nominee_details_fields() {
 					<!-- Nominee 2 Mobile -->
 					<div id="nominee_2_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_2_mobile">
 						<label class="pmpro_form_label" for="nominee_2_mobile">
-							<?php esc_html_e( 'Nominee 2 Mobile', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नॉमिनी 2 का मोबाइल नंबर', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -771,6 +772,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 
 	$occupation = isset( $_REQUEST['Occupation'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['Occupation'] ) ) : '';
 	$occupation_options = array(
+		'Self Employed',
 		'Government Job',
 		'Private Job',
 		'Business',
