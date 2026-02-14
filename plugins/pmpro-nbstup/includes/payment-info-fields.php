@@ -242,6 +242,7 @@ function pmpro_add_member_details_fields() {
 						</div>
 					</div>
 
+
 					<!-- Password -->
 					<div id="member_password_wrap" class="pmpro_form_field pmpro_form_field-password pmpro_form_field-member_password pmpro_form_field-required">
 						<label class="pmpro_form_label" for="member_password">
@@ -407,6 +408,11 @@ function pmpro_add_nominee_details_fields() {
  */
 add_action( 'pmpro_checkout_after_payment_information_fields', 'pmpro_add_address_fields', 5 );
 function pmpro_add_address_fields() {
+	$user_id = get_current_user_id();
+	$declaration_accept = $user_id ? (int) get_user_meta( $user_id, 'declaration_accept', true ) : 0;
+	if ( isset( $_REQUEST['declaration_accept'] ) ) {
+		$declaration_accept = (int) sanitize_text_field( wp_unslash( $_REQUEST['declaration_accept'] ) );
+	}
 	?>
 	<fieldset id="pmpro_form_fieldset-address" class="pmpro_form_fieldset">
 		<div class="pmpro_card">
@@ -509,6 +515,23 @@ function pmpro_add_address_fields() {
 						/>
 					</div>
 
+					<!-- Declaration -->
+					<div id="declaration_accept_wrap" class="pmpro_form_field pmpro_form_field-checkbox pmpro_form_field-declaration_accept pmpro_form_field-required">
+						<label class="pmpro_form_label" for="declaration_accept">
+							<input
+								type="checkbox"
+								id="declaration_accept"
+								name="declaration_accept"
+								value="1"
+								class="pmpro_form_input pmpro_form_input-checkbox pmpro_form_input-declaration_accept pmpro_form_input-required"
+								aria-required="true"
+								required
+								<?php checked( $declaration_accept, 1 ); ?>
+							/>
+							<?php esc_html_e( 'घोषणा - मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूं यदि मैं नियम विरुद्ध कृत्य करता हूं तो मैं यह मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा', 'pmpro-nbstup' ); ?>
+						</label>
+					</div>
+
 				</div><!-- .pmpro_form_fields -->
 
 			</div><!-- .pmpro_card_content -->
@@ -605,6 +628,9 @@ function pmpro_save_member_details_fields( $user_id, $order ) {
 	$join_blood = ! empty( $_POST['join_blood_donation'] ) ? 1 : 0;
 	update_user_meta( $user_id, 'join_blood_donation', $join_blood );
 
+	$declaration_accept = ! empty( $_POST['declaration_accept'] ) ? 1 : 0;
+	update_user_meta( $user_id, 'declaration_accept', $declaration_accept );
+
 	if ( ! empty( $_POST['member_password'] ) ) {
 		$password = wp_unslash( $_POST['member_password'] );
 		wp_update_user(
@@ -664,6 +690,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		'dob' => __( 'Date of Birth', 'pmpro-nbstup' ),
 		'gender' => __( 'Gender', 'pmpro-nbstup' ),
 		'Occupation' => __( 'Occupation', 'pmpro-nbstup' ),
+		'declaration_accept' => __( 'घोषणा - मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूं यदि मैं नियम विरुद्ध कृत्य करता हूं तो मैं यह मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा', 'pmpro-nbstup' ),
 		'member_password' => __( 'Password', 'pmpro-nbstup' ),
 		'user_state' => __( 'State', 'pmpro-nbstup' ),
 		'user_district' => __( 'District', 'pmpro-nbstup' ),
