@@ -1102,3 +1102,36 @@ fieldset#pmpro_payment_information_fields,
 fieldset#pmpro_user_fields {
   display: none;
 }
+
+// ============================================================================
+// Checkout Form Tweaks
+// ============================================================================
+
+#pmpro_form_fieldset-nominee-details {
+  .pmpro_form_field-nominee-group {
+    margin: $spacing-lg 0 $spacing-sm;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .pmpro_form_label {
+      color: $color-gray-900;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+  }
+}
+
+.pmpro_form_field-error {
+  .pmpro_form_input {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 2px rgba($color-danger, 0.15);
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    outline: 2px solid rgba($color-danger, 0.35);
+    outline-offset: 2px;
+  }
+}

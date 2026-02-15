@@ -12,7 +12,18 @@
 
   // Smooth scroll for in-page anchor links inside the NBSTUP menu.
   sidebar.addEventListener('click', function (event) {
-    var link = event.target.closest('a[href^="#"]');
+    var link = null;
+    var node = event.target;
+    while (node && node !== sidebar) {
+      if (node.tagName && node.tagName.toLowerCase() === 'a') {
+        var href = node.getAttribute('href') || '';
+        if (href.indexOf('#') === 0) {
+          link = node;
+          break;
+        }
+      }
+      node = node.parentElement;
+    }
     if (!link) {
       return;
     }
@@ -25,10 +36,15 @@
 
     event.preventDefault();
 
-    window.scrollTo({
-      top: target.getBoundingClientRect().top + window.pageYOffset - 80,
-      behavior: 'smooth'
-    });
+    var targetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
+    if ('scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+    } else {
+      window.scrollTo(0, targetTop);
+    }
   });
 
   // Function to update active navigation link based on scroll position
@@ -36,7 +52,8 @@
     var navLinks = sidebar.querySelectorAll('.pmpro-nbstup-account-nav a[href^="#"]');
     var scrollPosition = window.pageYOffset + 100; // Offset for header
 
-    navLinks.forEach(function(link) {
+    for (var i = 0; i < navLinks.length; i++) {
+      var link = navLinks[i];
       var targetId = link.getAttribute('href').slice(1);
       var target = document.getElementById(targetId);
       if (target) {
@@ -49,7 +66,7 @@
           link.classList.remove('active');
         }
       }
-    });
+    }
   }
 
   // Update active link on scroll and on load

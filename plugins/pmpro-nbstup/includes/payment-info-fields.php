@@ -19,6 +19,35 @@ if ( ! function_exists( 'pmpronbstup_bank_transfer_fields_enabled' ) ) {
 	}
 }
 
+if ( ! function_exists( 'pmpronbstup_set_invalid_checkout_fields' ) ) {
+	function pmpronbstup_set_invalid_checkout_fields( $fields ) {
+		$fields = is_array( $fields ) ? $fields : array();
+		$fields = array_filter( $fields, 'strlen' );
+		$GLOBALS['pmpronbstup_invalid_checkout_fields'] = array_values( array_unique( $fields ) );
+	}
+}
+
+if ( ! function_exists( 'pmpronbstup_is_invalid_checkout_field' ) ) {
+	function pmpronbstup_is_invalid_checkout_field( $field ) {
+		$fields = isset( $GLOBALS['pmpronbstup_invalid_checkout_fields'] )
+			? (array) $GLOBALS['pmpronbstup_invalid_checkout_fields']
+			: array();
+		return in_array( $field, $fields, true );
+	}
+}
+
+if ( ! function_exists( 'pmpronbstup_checkout_field_error_class' ) ) {
+	function pmpronbstup_checkout_field_error_class( $field ) {
+		return pmpronbstup_is_invalid_checkout_field( $field ) ? ' pmpro_form_field-error' : '';
+	}
+}
+
+if ( ! function_exists( 'pmpronbstup_checkout_input_aria_invalid' ) ) {
+	function pmpronbstup_checkout_input_aria_invalid( $field ) {
+		return pmpronbstup_is_invalid_checkout_field( $field ) ? ' aria-invalid="true"' : '';
+	}
+}
+
 /**
  * Enable file upload on PMPro checkout form
  */
@@ -80,7 +109,7 @@ function pmpro_add_member_details_fields() {
 				<div class="pmpro_form_fields">
 
 					<!-- Name -->
-					<div id="member_name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-member_name pmpro_form_field-required">
+					<div id="member_name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-member_name pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'member_name' ) ); ?>">
 						<label class="pmpro_form_label" for="member_name">
 							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -94,13 +123,14 @@ function pmpro_add_member_details_fields() {
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-member_name pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'member_name' ); ?>
 							required
 							value="<?php echo esc_attr( $values['member_name'] ); ?>"
 						/>
 					</div>
 
 					<!-- Phone Number -->
-					<div id="phone_no_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-phone_no pmpro_form_field-required">
+					<div id="phone_no_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-phone_no pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'phone_no' ) ); ?>">
 						<label class="pmpro_form_label" for="phone_no">
 							<?php esc_html_e( 'फ़ोन नंबर', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -114,13 +144,14 @@ function pmpro_add_member_details_fields() {
 							size="20"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-phone_no pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'phone_no' ); ?>
 							required
 							value="<?php echo esc_attr( $values['phone_no'] ); ?>"
 						/>
 					</div>
 
 					<!-- Aadhar Number -->
-					<div id="aadhar_number_wrap" class="pmpro_form_field pmpro_form_field-number pmpro_form_field-aadhar_number pmpro_form_field-required">
+					<div id="aadhar_number_wrap" class="pmpro_form_field pmpro_form_field-number pmpro_form_field-aadhar_number pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'aadhar_number' ) ); ?>">
 						<label class="pmpro_form_label" for="aadhar_number">
 							<?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -134,13 +165,14 @@ function pmpro_add_member_details_fields() {
 							size="20"
 							class="pmpro_form_input pmpro_form_input-number pmpro_form_input-aadhar_number pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'aadhar_number' ); ?>
 							required
 							value="<?php echo esc_attr( $values['aadhar_number'] ); ?>"
 						/>
 					</div>
 
 					<!-- Father / Husband Name -->
-					<div id="father_husband_name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-father_husband_name pmpro_form_field-required">
+					<div id="father_husband_name_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-father_husband_name pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'father_husband_name' ) ); ?>">
 						<label class="pmpro_form_label" for="father_husband_name">
 							<?php esc_html_e( 'पिता / पति का नाम', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -154,13 +186,14 @@ function pmpro_add_member_details_fields() {
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-father_husband_name pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'father_husband_name' ); ?>
 							required
 							value="<?php echo esc_attr( $values['father_husband_name'] ); ?>"
 						/>
 					</div>
 
 					<!-- Date of Birth -->
-					<div id="dob_wrap" class="pmpro_form_field pmpro_form_field-date pmpro_form_field-dob pmpro_form_field-required">
+					<div id="dob_wrap" class="pmpro_form_field pmpro_form_field-date pmpro_form_field-dob pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'dob' ) ); ?>">
 						<label class="pmpro_form_label" for="dob">
 							<?php esc_html_e( 'जन्म तिथि (आधार कार्ड के अनुसार)', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -173,13 +206,14 @@ function pmpro_add_member_details_fields() {
 							name="dob"
 							class="pmpro_form_input pmpro_form_input-date pmpro_form_input-dob pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'dob' ); ?>
 							required
 							value="<?php echo esc_attr( $values['dob'] ); ?>"
 						/>
 					</div>
 
 					<!-- Gender -->
-					<div id="gender_wrap" class="pmpro_form_field pmpro_form_field-select pmpro_form_field-gender pmpro_form_field-required">
+					<div id="gender_wrap" class="pmpro_form_field pmpro_form_field-select pmpro_form_field-gender pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'gender' ) ); ?>">
 						<label class="pmpro_form_label" for="gender">
 							<?php esc_html_e( 'जेंडर', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -191,6 +225,7 @@ function pmpro_add_member_details_fields() {
 							name="gender"
 							class="pmpro_form_input pmpro_form_input-select pmpro_form_input-gender pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'gender' ); ?>
 							required>
 							<option value=""><?php esc_html_e( 'Select', 'pmpro-nbstup' ); ?></option>
 							<?php foreach ( $gender_options as $value => $label ) : ?>
@@ -217,7 +252,7 @@ function pmpro_add_member_details_fields() {
 					</div>
 
 					<!-- Occupation -->
-					<div id="Occupation_wrap" class="pmpro_form_field pmpro_form_field-radio pmpro_form_field-Occupation pmpro_form_field-required">
+					<div id="Occupation_wrap" class="pmpro_form_field pmpro_form_field-radio pmpro_form_field-Occupation pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'Occupation' ) ); ?>">
 						<span class="pmpro_form_label">
 							<?php esc_html_e( 'कार्य / व्यवसाय (Occupation)', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -233,6 +268,7 @@ function pmpro_add_member_details_fields() {
 										name="Occupation"
 										value="<?php echo esc_attr( $value ); ?>"
 										required
+										<?php echo pmpronbstup_checkout_input_aria_invalid( 'Occupation' ); ?>
 										<?php checked( $values['Occupation'], $value ); ?>
 									/>
 									<?php echo esc_html( $label ); ?>
@@ -244,7 +280,7 @@ function pmpro_add_member_details_fields() {
 
 
 					<!-- Password -->
-					<div id="member_password_wrap" class="pmpro_form_field pmpro_form_field-password pmpro_form_field-member_password pmpro_form_field-required">
+					<div id="member_password_wrap" class="pmpro_form_field pmpro_form_field-password pmpro_form_field-member_password pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'member_password' ) ); ?>">
 						<label class="pmpro_form_label" for="member_password">
 							<?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
 							<span class="pmpro_asterisk">
@@ -258,6 +294,7 @@ function pmpro_add_member_details_fields() {
 							size="30"
 							class="pmpro_form_input pmpro_form_input-password pmpro_form_input-member_password pmpro_form_input-required"
 							aria-required="true"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'member_password' ); ?>
 							required
 							value=""
 						/>
@@ -305,10 +342,16 @@ function pmpro_add_nominee_details_fields() {
 
 				<div class="pmpro_form_fields">
 
+					<div class="pmpro_form_field pmpro_form_field-nominee-group">
+						<span class="pmpro_form_label">
+							<?php esc_html_e( 'नॉमिनी 1', 'pmpro-nbstup' ); ?>
+						</span>
+					</div>
+
 					<!-- Nominee Name 1 -->
-					<div id="nominee_name_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_1">
+					<div id="nominee_name_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_1<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_1' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_name_1">
-							<?php esc_html_e( 'नॉमिनी 1 का नाम', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -316,14 +359,15 @@ function pmpro_add_nominee_details_fields() {
 							name="nominee_name_1"
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_1"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_name_1' ); ?>
 							value="<?php echo esc_attr( $values['nominee_name_1'] ); ?>"
 						/>
 					</div>
 
 					<!-- Relation With Nominee 1 -->
-					<div id="relation_with_nominee_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_1">
+					<div id="relation_with_nominee_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_1<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_1' ) ); ?>">
 						<label class="pmpro_form_label" for="relation_with_nominee_1">
-							<?php esc_html_e( 'नॉमिनी 1 से संबंध', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'संबंध', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -331,14 +375,15 @@ function pmpro_add_nominee_details_fields() {
 							name="relation_with_nominee_1"
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_1"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'relation_with_nominee_1' ); ?>
 							value="<?php echo esc_attr( $values['relation_with_nominee_1'] ); ?>"
 						/>
 					</div>
 
 					<!-- Nominee 1 Mobile -->
-					<div id="nominee_1_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_1_mobile">
+					<div id="nominee_1_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_1_mobile<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_1_mobile' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_1_mobile">
-							<?php esc_html_e( 'नॉमिनी 1 का मोबाइल नंबर', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'मोबाइल नंबर', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -346,14 +391,21 @@ function pmpro_add_nominee_details_fields() {
 							name="nominee_1_mobile"
 							size="20"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_1_mobile"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_1_mobile' ); ?>
 							value="<?php echo esc_attr( $values['nominee_1_mobile'] ); ?>"
 						/>
 					</div>
 
+					<div class="pmpro_form_field pmpro_form_field-nominee-group">
+						<span class="pmpro_form_label">
+							<?php esc_html_e( 'नॉमिनी 2', 'pmpro-nbstup' ); ?>
+						</span>
+					</div>
+
 					<!-- Nominee Name 2 -->
-					<div id="nominee_name_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_2">
+					<div id="nominee_name_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_2<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_2' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_name_2">
-							<?php esc_html_e( 'नॉमिनी 2 का नाम', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -361,14 +413,15 @@ function pmpro_add_nominee_details_fields() {
 							name="nominee_name_2"
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_2"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_name_2' ); ?>
 							value="<?php echo esc_attr( $values['nominee_name_2'] ); ?>"
 						/>
 					</div>
 
 					<!-- Relation With Nominee 2 -->
-					<div id="relation_with_nominee_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_2">
+					<div id="relation_with_nominee_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_2<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_2' ) ); ?>">
 						<label class="pmpro_form_label" for="relation_with_nominee_2">
-							<?php esc_html_e( 'नॉमिनी 2 से संबंध', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'संबंध', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -376,14 +429,15 @@ function pmpro_add_nominee_details_fields() {
 							name="relation_with_nominee_2"
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_2"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'relation_with_nominee_2' ); ?>
 							value="<?php echo esc_attr( $values['relation_with_nominee_2'] ); ?>"
 						/>
 					</div>
 
 					<!-- Nominee 2 Mobile -->
-					<div id="nominee_2_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_2_mobile">
+					<div id="nominee_2_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_2_mobile<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_2_mobile' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_2_mobile">
-							<?php esc_html_e( 'नॉमिनी 2 का मोबाइल नंबर', 'pmpro-nbstup' ); ?>
+							<?php esc_html_e( 'मोबाइल नंबर', 'pmpro-nbstup' ); ?>
 						</label>
 						<input
 							type="text"
@@ -391,6 +445,7 @@ function pmpro_add_nominee_details_fields() {
 							name="nominee_2_mobile"
 							size="20"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_2_mobile"
+							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_2_mobile' ); ?>
 							value="<?php echo esc_attr( $values['nominee_2_mobile'] ); ?>"
 						/>
 					</div>
@@ -428,7 +483,7 @@ function pmpro_add_address_fields() {
 
 					<!-- State -->
 					<div id="user_state_wrap"
-						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_state pmpro_form_field-required">
+						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_state pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'user_state' ) ); ?>">
 
 						<label class="pmpro_form_label" for="user_state">
 							<?php esc_html_e( 'State', 'pmpro-nbstup' ); ?>
@@ -441,7 +496,7 @@ function pmpro_add_address_fields() {
 							id="user_state"
 							name="user_state"
 							class="pmpro_form_input pmpro_form_input-select pmpro_form_input-user_state pmpro_form_input-required"
-							aria-required="true">
+							aria-required="true"<?php echo pmpronbstup_checkout_input_aria_invalid( 'user_state' ); ?>>
 							<option value=""><?php esc_html_e( 'Select State', 'pmpro-nbstup' ); ?></option>
 							<?php
 							$states = pmpro_nbstup_get_all_states();
@@ -454,7 +509,7 @@ function pmpro_add_address_fields() {
 
 					<!-- District -->
 					<div id="user_district_wrap"
-						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_district pmpro_form_field-required">
+						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_district pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'user_district' ) ); ?>">
 
 						<label class="pmpro_form_label" for="user_district">
 							<?php esc_html_e( 'District', 'pmpro-nbstup' ); ?>
@@ -467,7 +522,7 @@ function pmpro_add_address_fields() {
 							id="user_district"
 							name="user_district"
 							class="pmpro_form_input pmpro_form_input-select pmpro_form_input-user_district pmpro_form_input-required"
-							aria-required="true"
+							aria-required="true"<?php echo pmpronbstup_checkout_input_aria_invalid( 'user_district' ); ?>
 							disabled>
 							<option value=""><?php esc_html_e( 'Select State First', 'pmpro-nbstup' ); ?></option>
 						</select>
@@ -475,7 +530,7 @@ function pmpro_add_address_fields() {
 
 					<!-- Block -->
 					<div id="user_block_wrap"
-						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_block pmpro_form_field-required">
+						class="pmpro_form_field pmpro_form_field-select pmpro_form_field-user_block pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'user_block' ) ); ?>">
 
 						<label class="pmpro_form_label" for="user_block">
 							<?php esc_html_e( 'Block', 'pmpro-nbstup' ); ?>
@@ -488,7 +543,7 @@ function pmpro_add_address_fields() {
 							id="user_block"
 							name="user_block"
 							class="pmpro_form_input pmpro_form_input-select pmpro_form_input-user_block pmpro_form_input-required"
-							aria-required="true"
+							aria-required="true"<?php echo pmpronbstup_checkout_input_aria_invalid( 'user_block' ); ?>
 							disabled>
 							<option value=""><?php esc_html_e( 'Select District First', 'pmpro-nbstup' ); ?></option>
 						</select>
@@ -496,7 +551,7 @@ function pmpro_add_address_fields() {
 
 					<!-- Address -->
 					<div id="user_address_wrap"
-						class="pmpro_form_field pmpro_form_field-text pmpro_form_field-user_address pmpro_form_field-required">
+						class="pmpro_form_field pmpro_form_field-text pmpro_form_field-user_address pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'user_address' ) ); ?>">
 
 						<label class="pmpro_form_label" for="user_address">
 							<?php esc_html_e( 'Address', 'pmpro-nbstup' ); ?>
@@ -511,12 +566,12 @@ function pmpro_add_address_fields() {
 							name="user_address"
 							size="30"
 							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-user_address pmpro_form_input-required"
-							aria-required="true"
+							aria-required="true"<?php echo pmpronbstup_checkout_input_aria_invalid( 'user_address' ); ?>
 						/>
 					</div>
 
 					<!-- Declaration -->
-					<div id="declaration_accept_wrap" class="pmpro_form_field pmpro_form_field-checkbox pmpro_form_field-declaration_accept pmpro_form_field-required">
+					<div id="declaration_accept_wrap" class="pmpro_form_field pmpro_form_field-checkbox pmpro_form_field-declaration_accept pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'declaration_accept' ) ); ?>">
 						<label class="pmpro_form_label" for="declaration_accept">
 							<input
 								type="checkbox"
@@ -524,7 +579,7 @@ function pmpro_add_address_fields() {
 								name="declaration_accept"
 								value="1"
 								class="pmpro_form_input pmpro_form_input-checkbox pmpro_form_input-declaration_accept pmpro_form_input-required"
-								aria-required="true"
+								aria-required="true"<?php echo pmpronbstup_checkout_input_aria_invalid( 'declaration_accept' ); ?>
 								required
 								<?php checked( $declaration_accept, 1 ); ?>
 							/>
@@ -681,6 +736,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	global $pmpro_msg, $pmpro_msgt;
 
 	$errors = array();
+	$invalid_fields = array();
 
 	$required_fields = array(
 		'member_name' => __( 'Name', 'pmpro-nbstup' ),
@@ -708,29 +764,34 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 		$value = isset( $_REQUEST[ $key ] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST[ $key ] ) ) ) : '';
 		if ( $value === '' ) {
 			$errors[] = sprintf( __( '%s is required.', 'pmpro-nbstup' ), $label );
+			$invalid_fields[] = $key;
 		}
 	}
 
 	$name = isset( $_REQUEST['member_name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['member_name'] ) ) ) : '';
 	if ( $name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $name ) ) {
 		$errors[] = __( 'Name should contain only letters and valid characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'member_name';
 	}
 
 	$father_name = isset( $_REQUEST['father_husband_name'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['father_husband_name'] ) ) ) : '';
 	if ( $father_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $father_name ) ) {
 		$errors[] = __( 'Father / Husband Name should contain only letters and valid characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'father_husband_name';
 	}
 
 	$phone = isset( $_REQUEST['phone_no'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['phone_no'] ) ) : '';
 	$phone = preg_replace( '/\D+/', '', $phone );
 	if ( $phone !== '' && ! preg_match( '/^\d{10}$/', $phone ) ) {
 		$errors[] = __( 'Phone Number must be 10 digits.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'phone_no';
 	}
 
 	$aadhar = isset( $_REQUEST['aadhar_number'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['aadhar_number'] ) ) : '';
 	$aadhar = preg_replace( '/\D+/', '', $aadhar );
 	if ( $aadhar !== '' && ! preg_match( '/^\d{12}$/', $aadhar ) ) {
-		$errors[] = __( 'Aadhar Number must be 12 digits.', 'pmpro-nbstup' );
+		$errors[] = __( 'Aadhar Number must be 12 digits only.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'aadhar_number';
 	}
 
 	if ( $aadhar !== '' && preg_match( '/^\d{12}$/', $aadhar ) ) {
@@ -747,6 +808,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 			$current_id = get_current_user_id();
 			if ( $current_id <= 0 || $existing_id !== $current_id ) {
 				$errors[] = __( 'This Aadhar Number is already registered.', 'pmpro-nbstup' );
+				$invalid_fields[] = 'aadhar_number';
 			}
 		}
 	}
@@ -755,39 +817,59 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	$nominee_1_mobile = preg_replace( '/\D+/', '', $nominee_1_mobile );
 	if ( $nominee_1_mobile !== '' && ! preg_match( '/^\d{10}$/', $nominee_1_mobile ) ) {
 		$errors[] = __( 'Nominee 1 Mobile must be 10 digits.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'nominee_1_mobile';
 	}
 
 	$nominee_2_mobile = isset( $_REQUEST['nominee_2_mobile'] ) ? preg_replace( '/\s+/', '', wp_unslash( $_REQUEST['nominee_2_mobile'] ) ) : '';
 	$nominee_2_mobile = preg_replace( '/\D+/', '', $nominee_2_mobile );
 	if ( $nominee_2_mobile !== '' && ! preg_match( '/^\d{10}$/', $nominee_2_mobile ) ) {
 		$errors[] = __( 'Nominee 2 Mobile must be 10 digits.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'nominee_2_mobile';
 	}
 
 	$nominee_1_name = isset( $_REQUEST['nominee_name_1'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['nominee_name_1'] ) ) ) : '';
 	if ( $nominee_1_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $nominee_1_name ) ) {
 		$errors[] = __( 'Nominee Name 1 should contain only letters and valid characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'nominee_name_1';
 	}
 
 	$nominee_2_name = isset( $_REQUEST['nominee_name_2'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['nominee_name_2'] ) ) ) : '';
 	if ( $nominee_2_name !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $nominee_2_name ) ) {
 		$errors[] = __( 'Nominee Name 2 should contain only letters and valid characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'nominee_name_2';
 	}
 
 	$relation_1 = isset( $_REQUEST['relation_with_nominee_1'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['relation_with_nominee_1'] ) ) ) : '';
 	if ( $relation_1 !== '' && strlen( $relation_1 ) < 2 ) {
 		$errors[] = __( 'Relation With Nominee 1 must be at least 2 characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'relation_with_nominee_1';
 	}
 
 	$relation_2 = isset( $_REQUEST['relation_with_nominee_2'] ) ? trim( sanitize_text_field( wp_unslash( $_REQUEST['relation_with_nominee_2'] ) ) ) : '';
 	if ( $relation_2 !== '' && strlen( $relation_2 ) < 2 ) {
 		$errors[] = __( 'Relation With Nominee 2 must be at least 2 characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'relation_with_nominee_2';
 	}
 
 	$dob = isset( $_REQUEST['dob'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['dob'] ) ) : '';
 	if ( $dob !== '' ) {
-		$date = DateTime::createFromFormat( 'Y-m-d', $dob );
+		$timezone = wp_timezone();
+		$date = DateTimeImmutable::createFromFormat( 'Y-m-d', $dob, $timezone );
 		if ( ! $date || $date->format( 'Y-m-d' ) !== $dob ) {
 			$errors[] = __( 'Date of Birth must be a valid date.', 'pmpro-nbstup' );
+			$invalid_fields[] = 'dob';
+		} else {
+			$today = new DateTimeImmutable( 'now', $timezone );
+			if ( $date > $today ) {
+				$errors[] = __( 'Date of Birth cannot be in the future.', 'pmpro-nbstup' );
+				$invalid_fields[] = 'dob';
+			} else {
+				$age = $today->diff( $date )->y;
+				if ( $age < 18 || $age > 55 ) {
+					$errors[] = __( 'Age must be between 18 and 55 years.', 'pmpro-nbstup' );
+					$invalid_fields[] = 'dob';
+				}
+			}
 		}
 	}
 
@@ -795,6 +877,7 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	$gender_options = array( 'male', 'female', 'other' );
 	if ( $gender !== '' && ! in_array( $gender, $gender_options, true ) ) {
 		$errors[] = __( 'Please select a valid Gender.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'gender';
 	}
 
 	$occupation = isset( $_REQUEST['Occupation'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['Occupation'] ) ) : '';
@@ -811,40 +894,49 @@ function pmpro_nbstup_validate_checkout_fields( $continue ) {
 	);
 	if ( $occupation !== '' && ! in_array( $occupation, $occupation_options, true ) ) {
 		$errors[] = __( 'Please select a valid Occupation.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'Occupation';
 	}
 
 	$member_password = isset( $_REQUEST['member_password'] ) ? wp_unslash( $_REQUEST['member_password'] ) : '';
 	if ( $member_password !== '' && strlen( $member_password ) < 6 ) {
 		$errors[] = __( 'Password must be at least 6 characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'member_password';
 	}
 
 	$address = isset( $_REQUEST['user_address'] ) ? trim( sanitize_textarea_field( wp_unslash( $_REQUEST['user_address'] ) ) ) : '';
 	if ( $address !== '' && strlen( $address ) < 5 ) {
 		$errors[] = __( 'Address must be at least 5 characters.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'user_address';
 	}
 
 	$state_id = isset( $_REQUEST['user_state'] ) ? intval( $_REQUEST['user_state'] ) : 0;
 	if ( $state_id <= 0 ) {
 		$errors[] = __( 'State is required.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'user_state';
 	}
 
 	$district_id = isset( $_REQUEST['user_district'] ) ? intval( $_REQUEST['user_district'] ) : 0;
 	if ( $district_id <= 0 ) {
 		$errors[] = __( 'District is required.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'user_district';
 	}
 
 	$block_id = isset( $_REQUEST['user_block'] ) ? intval( $_REQUEST['user_block'] ) : 0;
 	if ( $block_id <= 0 ) {
 		$errors[] = __( 'Block is required.', 'pmpro-nbstup' );
+		$invalid_fields[] = 'user_block';
 	}
 
 	// Bank transfer validation removed from checkout per requirements.
 
 	if ( ! empty( $errors ) ) {
+		pmpronbstup_set_invalid_checkout_fields( $invalid_fields );
 		$pmpro_msg  = implode( '<br />', array_unique( $errors ) );
 		$pmpro_msgt = 'pmpro_error';
 		return false;
 	}
+
+	pmpronbstup_set_invalid_checkout_fields( array() );
 
 	return $continue;
 }
