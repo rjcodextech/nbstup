@@ -1129,9 +1129,13 @@ fieldset#pmpro_user_fields {
     box-shadow: 0 0 0 2px rgba($color-danger, 0.15);
   }
 
-  input[type='checkbox'],
-  input[type='radio'] {
+  input[type="checkbox"],
+  input[type="radio"] {
     outline: 2px solid rgba($color-danger, 0.35);
     outline-offset: 2px;
   }
+}
+
+div#declaration_accept_wrap label {
+  line-height: 1.8;
 }

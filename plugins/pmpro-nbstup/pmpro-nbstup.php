@@ -24,7 +24,7 @@
  * - Daughter wedding contribution system
  * - Contribution payment system when members pass away or have daughter weddings
  * - Automated email notifications
- * - Checkout fields for transaction ID and payment receipt collection
+ * - Checkout fields for member, nominee, and address collection
  * - User listing shortcode with search and pagination
  *
  * @package PMProNBSTUP
@@ -121,7 +121,7 @@ function pmpronbstup_run_migration()
  * - Authentication and login restrictions
  * - Admin interface and CSV import
  * - User profile fields
- * - Checkout payment fields
+ * - Checkout and PMPro member data display fields
  *
  * @return void
  */
@@ -144,7 +144,7 @@ function pmpronbstup_load_files()
     // User profile fields for membership and contribution status.
     require_once $includes_dir . 'functions-user-profile.php';
 
-    // Checkout form fields for transaction ID and payment receipt collection.
+    // Checkout fields (member/nominee/address) and PMPro member-page display.
     require_once $includes_dir . 'payment-info-fields.php';
 
     // Location management (States, Districts, Blocks).

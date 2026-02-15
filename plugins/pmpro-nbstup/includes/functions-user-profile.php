@@ -175,51 +175,47 @@ function pmpronbstup_user_profile_fields($user)
         </tr>
     </table>
 
-    <h2><?php esc_html_e('Bank Transfer Details', 'pmpro-nbstup'); ?></h2>
-    <?php
-    $bank_transaction_id = get_user_meta($user->ID, 'bank_transaction_id', true);
-    $bank_payment_receipt = get_user_meta($user->ID, 'bank_payment_receipt', true);
-    ?>
-    <table class="form-table" role="presentation">
-        <tr>
-            <th scope="row">
-                <label for="bank_transaction_id"><?php esc_html_e('Transaction ID', 'pmpro-nbstup'); ?></label>
-            </th>
-            <td>
-                <input type="text" name="bank_transaction_id" id="bank_transaction_id" value="<?php echo esc_attr($bank_transaction_id); ?>" class="regular-text" />
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><?php esc_html_e('Payment Receipt', 'pmpro-nbstup'); ?></th>
-            <td>
-                <?php if ($bank_payment_receipt) : ?>
-                    <p>
-                        <a href="<?php echo esc_url($bank_payment_receipt); ?>" target="_blank">
-                            <?php esc_html_e('View Receipt', 'pmpro-nbstup'); ?>
-                        </a>
-                    </p>
-                    <label>
-                        <input type="text" name="bank_payment_receipt" id="bank_payment_receipt" value="<?php echo esc_attr($bank_payment_receipt); ?>" class="regular-text" />
-                        <p class="description"><?php esc_html_e('Enter receipt URL or leave blank to keep current', 'pmpro-nbstup'); ?></p>
-                    </label>
-                <?php else : ?>
-                    <input type="text" name="bank_payment_receipt" id="bank_payment_receipt" value="" class="regular-text" placeholder="<?php esc_attr_e('Enter receipt URL', 'pmpro-nbstup'); ?>" />
-                    <p class="description"><?php esc_html_e('No receipt uploaded yet', 'pmpro-nbstup'); ?></p>
-                <?php endif; ?>
-            </td>
-        </tr>
-    </table>
-
     <h2><?php esc_html_e('Contribution Payment Status', 'pmpro-nbstup'); ?></h2>
-    
+    <?php
+    $contribution_deceased_required = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', true);
+    $contribution_deceased_paid     = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', true);
+    $contribution_deceased_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_deadline', true);
+    $contribution_wedding_required  = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_required', true);
+    $contribution_wedding_paid      = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
+    $contribution_wedding_deadline  = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_deadline', true);
+    $bank_transaction_id            = get_user_meta($user->ID, 'bank_transaction_id', true);
+    $bank_payment_receipt           = get_user_meta($user->ID, 'bank_payment_receipt', true);
+    ?>
+
+    <?php if ((int) $contribution_deceased_required === 1 || (int) $contribution_wedding_required === 1) : ?>
+        <h3><?php esc_html_e('Contribution Bank Details', 'pmpro-nbstup'); ?></h3>
+        <table class="form-table" role="presentation">
+            <tr>
+                <th scope="row"><label for="bank_transaction_id"><?php esc_html_e('Bank Transaction ID', 'pmpro-nbstup'); ?></label></th>
+                <td>
+                    <input type="text" name="bank_transaction_id" id="bank_transaction_id" value="<?php echo esc_attr($bank_transaction_id); ?>" class="regular-text" />
+                    <p class="description"><?php esc_html_e('Used for deceased/wedding contribution verification.', 'pmpro-nbstup'); ?></p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="bank_payment_receipt"><?php esc_html_e('Bank Payment Receipt URL', 'pmpro-nbstup'); ?></label></th>
+                <td>
+                    <?php if (! empty($bank_payment_receipt)) : ?>
+                        <p>
+                            <a href="<?php echo esc_url($bank_payment_receipt); ?>" target="_blank" rel="noopener noreferrer">
+                                <?php esc_html_e('View Receipt', 'pmpro-nbstup'); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
+                    <input type="text" name="bank_payment_receipt" id="bank_payment_receipt" value="<?php echo esc_attr($bank_payment_receipt); ?>" class="regular-text" />
+                </td>
+            </tr>
+        </table>
+    <?php endif; ?>
+
     <!-- Deceased Contribution Section -->
     <h3><?php esc_html_e('Deceased Member Contribution', 'pmpro-nbstup'); ?></h3>
     <table class="form-table" role="presentation">
-        <?php
-        $contribution_deceased_required = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', true);
-        $contribution_deceased_paid     = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', true);
-        $contribution_deceased_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_deadline', true);
-        ?>
         <tr>
             <th scope="row"><?php esc_html_e('Contribution Required', 'pmpro-nbstup'); ?></th>
             <td>
@@ -248,11 +244,6 @@ function pmpronbstup_user_profile_fields($user)
     <!-- Wedding Contribution Section -->
     <h3><?php esc_html_e('Daughter Wedding Contribution', 'pmpro-nbstup'); ?></h3>
     <table class="form-table" role="presentation">
-        <?php
-        $contribution_wedding_required = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_required', true);
-        $contribution_wedding_paid     = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
-        $contribution_wedding_deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_deadline', true);
-        ?>
         <tr>
             <th scope="row"><?php esc_html_e('Contribution Required', 'pmpro-nbstup'); ?></th>
             <td>
@@ -314,19 +305,6 @@ function pmpronbstup_save_user_profile_fields($user_id)
         update_user_meta($user_id, 'user_address', $address);
     }
 
-    // Save Bank Transfer fields
-    if (isset($_POST['bank_transaction_id'])) {
-        $transaction_id = sanitize_text_field($_POST['bank_transaction_id']);
-        update_user_meta($user_id, 'bank_transaction_id', $transaction_id);
-    }
-
-    if (isset($_POST['bank_payment_receipt'])) {
-        $receipt_url = esc_url_raw($_POST['bank_payment_receipt']);
-        if (!empty($receipt_url)) {
-            update_user_meta($user_id, 'bank_payment_receipt', $receipt_url);
-        }
-    }
-
     $current_deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
     $deceased = isset($_POST['pmpronbstup_deceased']) ? 1 : 0;
     update_user_meta($user_id, 'pmpronbstup_deceased', $deceased);
@@ -366,16 +344,42 @@ function pmpronbstup_save_user_profile_fields($user_id)
 
     // Save deceased contribution paid status if contribution is required
     $contribution_deceased_required = get_user_meta($user_id, 'pmpronbstup_contribution_deceased_required', true);
+    $contribution_wedding_required = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
+    if ((int) $contribution_deceased_required === 1 || (int) $contribution_wedding_required === 1) {
+        if (isset($_POST['bank_transaction_id'])) {
+            $transaction_id = sanitize_text_field(wp_unslash($_POST['bank_transaction_id']));
+            if ($transaction_id !== '') {
+                update_user_meta($user_id, 'bank_transaction_id', $transaction_id);
+            } else {
+                delete_user_meta($user_id, 'bank_transaction_id');
+            }
+        }
+
+        if (isset($_POST['bank_payment_receipt'])) {
+            $receipt_url = esc_url_raw(wp_unslash($_POST['bank_payment_receipt']));
+            if (! empty($receipt_url)) {
+                update_user_meta($user_id, 'bank_payment_receipt', $receipt_url);
+            } else {
+                delete_user_meta($user_id, 'bank_payment_receipt');
+            }
+        }
+    }
+
     if ((int) $contribution_deceased_required === 1) {
         $contribution_deceased_paid = isset($_POST['pmpronbstup_contribution_deceased_paid']) ? 1 : 0;
         update_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', $contribution_deceased_paid);
+        if ($contribution_deceased_paid === 1) {
+            pmpronbstup_reactivate_user_if_eligible($user_id, __('Deceased contribution marked paid from user profile', 'pmpro-nbstup'));
+        }
     }
 
     // Save wedding contribution paid status if contribution is required
-    $contribution_wedding_required = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
     if ((int) $contribution_wedding_required === 1) {
         $contribution_wedding_paid = isset($_POST['pmpronbstup_contribution_wedding_paid']) ? 1 : 0;
         update_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', $contribution_wedding_paid);
+        if ($contribution_wedding_paid === 1) {
+            pmpronbstup_reactivate_user_if_eligible($user_id, __('Wedding contribution marked paid from user profile', 'pmpro-nbstup'));
+        }
     }
 
     // Send notification if deceased status changed from not deceased to deceased
@@ -439,9 +443,11 @@ function pmpronbstup_admin_user_profile_scripts($hook) {
     }
     
     wp_enqueue_script('jquery');
+    $ajax_nonce = wp_create_nonce('pmpro_nbstup_ajax');
     
     wp_add_inline_script('jquery', "
         jQuery(document).ready(function($) {
+            var pmproNbstupAdminNonce = '" . esc_js($ajax_nonce) . "';
             var stateSelect = $('#user_state');
             var districtSelect = $('#user_district');
             var blockSelect = $('#user_block');
@@ -465,7 +471,8 @@ function pmpronbstup_admin_user_profile_scripts($hook) {
                     type: 'POST',
                     data: {
                         action: 'pmpro_nbstup_get_districts',
-                        state_id: stateId
+                        state_id: stateId,
+                        nonce: pmproNbstupAdminNonce
                     },
                     success: function(response) {
                         if (response.success && response.data.length > 0) {
@@ -502,7 +509,8 @@ function pmpronbstup_admin_user_profile_scripts($hook) {
                     type: 'POST',
                     data: {
                         action: 'pmpro_nbstup_get_blocks',
-                        district_id: districtId
+                        district_id: districtId,
+                        nonce: pmproNbstupAdminNonce
                     },
                     success: function(response) {
                         if (response.success && response.data.length > 0) {

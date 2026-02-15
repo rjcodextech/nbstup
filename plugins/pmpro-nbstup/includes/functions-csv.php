@@ -77,6 +77,11 @@ function pmpronbstup_handle_csv_upload()
             continue;
         }
 
+        if (! isset($data[$transaction_id_col])) {
+            $skipped++;
+            continue;
+        }
+
         $csv_transaction_id = trim($data[$transaction_id_col]);
 
         if ('' === $csv_transaction_id) {
@@ -234,6 +239,11 @@ function pmpronbstup_handle_contribution_csv_upload()
             continue;
         }
 
+        if (! isset($data[$transaction_id_col])) {
+            $skipped++;
+            continue;
+        }
+
         $csv_transaction_id = trim($data[$transaction_id_col]);
 
         if ('' === $csv_transaction_id) {
@@ -274,6 +284,7 @@ function pmpronbstup_handle_contribution_csv_upload()
         // Mark contribution as paid
         update_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', 1);
         update_user_meta($user_id, 'pmpronbstup_contribution_deceased_transaction_id', $csv_transaction_id);
+        pmpronbstup_reactivate_user_if_eligible($user_id, __('Deceased contribution verified via CSV import', 'pmpro-nbstup'));
 
         // Send confirmation email
         pmpronbstup_send_contribution_confirmation_email($user_id, 'deceased');
@@ -361,6 +372,11 @@ function pmpronbstup_handle_contribution_wedding_csv_upload()
             continue;
         }
 
+        if (! isset($data[$transaction_id_col])) {
+            $skipped++;
+            continue;
+        }
+
         $csv_transaction_id = trim($data[$transaction_id_col]);
 
         if ('' === $csv_transaction_id) {
@@ -401,6 +417,7 @@ function pmpronbstup_handle_contribution_wedding_csv_upload()
         // Mark contribution as paid
         update_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', 1);
         update_user_meta($user_id, 'pmpronbstup_contribution_wedding_transaction_id', $csv_transaction_id);
+        pmpronbstup_reactivate_user_if_eligible($user_id, __('Wedding contribution verified via CSV import', 'pmpro-nbstup'));
 
         // Send confirmation email
         pmpronbstup_send_contribution_confirmation_email($user_id, 'wedding');

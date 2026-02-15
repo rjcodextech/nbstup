@@ -1,0 +1,117 @@
+.pmpro-nbstup-contrib-wrap {
+  max-width: 1280px;
+}
+
+.pmpro-nbstup-contrib-wrap h1 {
+  margin-bottom: 16px;
+}
+
+.pmpro-nbstup-contrib-log,
+.pmpro-nbstup-contrib-filters,
+.pmpro-nbstup-contrib-quick-actions {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin: 16px 0;
+  padding: 16px;
+}
+
+.pmpro-nbstup-contrib-log h2 {
+  margin-top: 0;
+}
+
+.pmpro-nbstup-table-wrap {
+  overflow-x: auto;
+}
+
+.pmpro-nbstup-contrib-stats {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 16px 0;
+}
+
+.pmpro-nbstup-contrib-stat {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-left: 4px solid #2271b1;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.pmpro-nbstup-contrib-stat.is-danger {
+  border-left-color: #d63638;
+}
+
+.pmpro-nbstup-contrib-stat.is-success {
+  border-left-color: #00a32a;
+}
+
+.pmpro-nbstup-contrib-stat-value {
+  color: #2271b1;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pmpro-nbstup-contrib-stat-value.is-danger {
+  color: #d63638;
+}
+
+.pmpro-nbstup-contrib-stat-value.is-success {
+  color: #00a32a;
+}
+
+.pmpro-nbstup-contrib-stat-label {
+  color: #50575e;
+  margin-top: 8px;
+}
+
+.pmpro-nbstup-contrib-filters-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pmpro-nbstup-contrib-filter-select,
+.pmpro-nbstup-contrib-filter-search {
+  min-height: 32px;
+}
+
+.pmpro-nbstup-contrib-filter-search {
+  min-width: 260px;
+}
+
+.pmpro-nbstup-status-icon {
+  margin-right: 4px;
+}
+
+.pmpro-nbstup-status-paid {
+  color: #008a20;
+}
+
+.pmpro-nbstup-status-unpaid {
+  color: #b32d2e;
+}
+
+.pmpro-nbstup-status-empty {
+  color: #787c82;
+}
+
+.pmpro-nbstup-contrib-wrap .wp-list-table td,
+.pmpro-nbstup-contrib-wrap .wp-list-table th {
+  vertical-align: top;
+}
+
+.pmpro-nbstup-contrib-wrap .wp-list-table .button {
+  margin: 0 6px 6px 0;
+}
+
+@media (max-width: 782px) {
+  .pmpro-nbstup-contrib-filter-search {
+    min-width: 100%;
+    width: 100%;
+  }
+}

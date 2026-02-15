@@ -87,7 +87,9 @@ function pmpronbstup_default_checkout_level() {
 
     if ( ! isset( $_REQUEST['level'] ) && isset( $_REQUEST['pmpro_level'] ) ) {
         $_REQUEST['level'] = $_REQUEST['pmpro_level'];
-        $_GET['level'] = isset( $_GET['pmpro_level'] ) ? $_GET['pmpro_level'] : $_GET['level'];
+        if ( isset( $_GET['pmpro_level'] ) ) {
+            $_GET['level'] = $_GET['pmpro_level'];
+        }
     }
 
     $level = isset( $_REQUEST['level'] ) ? (int) $_REQUEST['level'] : 0;
@@ -273,6 +275,132 @@ function pmpronbstup_deactivate_user($user_id)
 {
     return update_user_meta($user_id, 'pmpronbstup_active', 0);
 }
+
+/**
+ * Reactivate a subscriber when contribution requirements are fully satisfied.
+ *
+ * @param int    $user_id User ID to evaluate.
+ * @param string $reason  Optional reason for audit logging.
+ * @return bool True if user was (or is now) active, false otherwise.
+ */
+function pmpronbstup_reactivate_user_if_eligible($user_id, $reason = '')
+{
+    $user = get_userdata($user_id);
+    if (! $user || ! in_array('subscriber', (array) $user->roles, true)) {
+        return false;
+    }
+
+    $deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
+    if ((int) $deceased === 1) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if (! empty($expiry_date) && strtotime($expiry_date) < time()) {
+        return false;
+    }
+
+    $deceased_required = (int) get_user_meta($user_id, 'pmpronbstup_contribution_deceased_required', true);
+    $deceased_paid = (int) get_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', true);
+    if ($deceased_required === 1 && $deceased_paid !== 1) {
+        return false;
+    }
+
+    $wedding_required = (int) get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
+    $wedding_paid = (int) get_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', true);
+    if ($wedding_required === 1 && $wedding_paid !== 1) {
+        return false;
+    }
+
+    $was_active = (int) get_user_meta($user_id, 'pmpronbstup_active', true) === 1;
+    update_user_meta($user_id, 'pmpronbstup_active', 1);
+
+    $status = get_user_meta($user_id, 'pmpronbstup_renewal_status', true);
+    if ($status === 'contribution_overdue') {
+        update_user_meta($user_id, 'pmpronbstup_renewal_status', 'active');
+    }
+
+    if (! $was_active) {
+        $log_reason = ! empty($reason) ? $reason : __('Eligibility checks passed after contribution verification', 'pmpro-nbstup');
+        pmpronbstup_log_reactivation_event($user_id, $log_reason);
+    }
+
+    return true;
+}
+
+/**
+ * Store a rolling log of automatic account reactivations.
+ *
+ * @param int    $user_id User ID.
+ * @param string $reason  Why the reactivation happened.
+ * @return void
+ */
+function pmpronbstup_log_reactivation_event($user_id, $reason = '')
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return;
+    }
+
+    $log = get_option('pmpronbstup_reactivation_log', array());
+    if (! is_array($log)) {
+        $log = array();
+    }
+
+    $entry = array(
+        'timestamp' => current_time('mysql'),
+        'user_id'   => (int) $user_id,
+        'email'     => $user->user_email,
+        'name'      => $user->display_name,
+        'reason'    => $reason,
+    );
+
+    array_unshift($log, $entry);
+    $log = array_slice($log, 0, 50);
+    update_option('pmpronbstup_reactivation_log', $log, false);
+
+    if (is_admin() && current_user_can('manage_options')) {
+        $notice_key = 'pmpronbstup_reactivation_notice_' . get_current_user_id();
+        $notices = get_transient($notice_key);
+        if (! is_array($notices)) {
+            $notices = array();
+        }
+
+        $notices[] = sprintf(
+            /* translators: 1: user display name, 2: user email */
+            __('Account auto-reactivated: %1$s (%2$s).', 'pmpro-nbstup'),
+            $user->display_name,
+            $user->user_email
+        );
+
+        set_transient($notice_key, array_slice($notices, -5), 5 * MINUTE_IN_SECONDS);
+    }
+}
+
+/**
+ * Display queued admin notices for recent auto-reactivations.
+ *
+ * @return void
+ */
+function pmpronbstup_show_reactivation_admin_notices()
+{
+    if (! is_admin() || ! current_user_can('manage_options')) {
+        return;
+    }
+
+    $notice_key = 'pmpronbstup_reactivation_notice_' . get_current_user_id();
+    $notices = get_transient($notice_key);
+    if (empty($notices) || ! is_array($notices)) {
+        return;
+    }
+
+    delete_transient($notice_key);
+
+    foreach ($notices as $notice) {
+        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($notice) . '</p></div>';
+    }
+}
+add_action('admin_notices', 'pmpronbstup_show_reactivation_admin_notices');
 
 /**
  * Check if a user's membership has expired and auto-deactivate if needed.
@@ -466,17 +594,20 @@ function pmpronbstup_account_two_column_shortcode()
         return do_shortcode('[pmpro_account]');
     }
 
+
+    $account_url = pmpro_url("account");
+
+
     ob_start();
     ?>
     <div class="pmpro-nbstup-account-layout">
         <aside class="pmpro-nbstup-account-sidebar">
             <nav class="pmpro-nbstup-account-nav" aria-label="<?php esc_attr_e('Membership account navigation', 'pmpro-nbstup'); ?>">
                 <ul>
-                    <li><a href="#pmpro_account-profile"><?php esc_html_e('Account Overview', 'pmpro-nbstup'); ?></a></li>
-                    <li><a href="#pmpro_account-membership"><?php esc_html_e('My Memberships', 'pmpro-nbstup'); ?></a></li>
-                    <li><a href="#pmpro_account-orders"><?php esc_html_e('Order / Invoice History', 'pmpro-nbstup'); ?></a></li>
-                    <!-- <li><a href="#pmpro_account-links"><?php //esc_html_e('Member Links', 'pmpro-nbstup'); ?></a></li> -->
-                    <li><a href="?view=contribution"><?php esc_html_e('Contribution', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-profile"><?php esc_html_e('Account Overview', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-membership"><?php esc_html_e('My Memberships', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-orders"><?php esc_html_e('Order / Invoice History', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>?view=contribution"><?php esc_html_e('Contribution', 'pmpro-nbstup'); ?></a></li>
                 </ul>
             </nav>
         </aside>
@@ -1193,6 +1324,32 @@ function pmpronbstup_users_list_shortcode($atts)
 
     // Get search query
     $search = isset($_GET['user_search']) ? sanitize_text_field($_GET['user_search']) : '';
+    $selected_state = isset($_GET['user_state']) ? absint($_GET['user_state']) : 0;
+    $selected_district = isset($_GET['user_district']) ? absint($_GET['user_district']) : 0;
+    $selected_block = isset($_GET['user_block']) ? absint($_GET['user_block']) : 0;
+
+    // Location options for filters.
+    $states = function_exists('pmpro_nbstup_get_all_states') ? pmpro_nbstup_get_all_states() : array();
+    $districts = array();
+    $blocks = array();
+
+    if ($selected_state > 0 && function_exists('pmpro_nbstup_get_districts')) {
+        $districts = pmpro_nbstup_get_districts($selected_state);
+    } elseif ($selected_district > 0 && function_exists('pmpro_nbstup_get_district') && function_exists('pmpro_nbstup_get_districts')) {
+        $selected_district_obj = pmpro_nbstup_get_district($selected_district);
+        if (!empty($selected_district_obj->state_id)) {
+            $districts = pmpro_nbstup_get_districts((int) $selected_district_obj->state_id);
+        }
+    }
+
+    if ($selected_district > 0 && function_exists('pmpro_nbstup_get_blocks')) {
+        $blocks = pmpro_nbstup_get_blocks($selected_district);
+    } elseif ($selected_block > 0 && function_exists('pmpro_nbstup_get_block') && function_exists('pmpro_nbstup_get_blocks')) {
+        $selected_block_obj = pmpro_nbstup_get_block($selected_block);
+        if (!empty($selected_block_obj->district_id)) {
+            $blocks = pmpro_nbstup_get_blocks((int) $selected_block_obj->district_id);
+        }
+    }
 
     // Build user query arguments
     $args = array(
@@ -1207,6 +1364,33 @@ function pmpronbstup_users_list_shortcode($atts)
     if (!empty($search)) {
         $args['search'] = '*' . $search . '*';
         $args['search_columns'] = array('user_login', 'user_email', 'display_name');
+    }
+
+    $meta_query = array();
+    if ($selected_state > 0) {
+        $meta_query[] = array(
+            'key' => 'user_state',
+            'value' => (string) $selected_state,
+            'compare' => '=',
+        );
+    }
+    if ($selected_district > 0) {
+        $meta_query[] = array(
+            'key' => 'user_district',
+            'value' => (string) $selected_district,
+            'compare' => '=',
+        );
+    }
+    if ($selected_block > 0) {
+        $meta_query[] = array(
+            'key' => 'user_block',
+            'value' => (string) $selected_block,
+            'compare' => '=',
+        );
+    }
+    if (!empty($meta_query)) {
+        $meta_query['relation'] = 'AND';
+        $args['meta_query'] = $meta_query;
     }
 
     // Get users
@@ -1225,22 +1409,71 @@ function pmpronbstup_users_list_shortcode($atts)
         <!-- Search Form -->
         <form method="get" class="pmpro-nbstup-search-form">
             <?php
-            // Preserve all GET parameters except user_page and user_search
+            // Preserve all GET parameters except pagination/filter controls.
             foreach ($_GET as $key => $value) {
-                if ($key !== 'user_page' && $key !== 'user_search') {
+                if (
+                    $key !== 'user_page' &&
+                    $key !== 'user_search' &&
+                    $key !== 'user_state' &&
+                    $key !== 'user_district' &&
+                    $key !== 'user_block'
+                ) {
                     echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '" />';
                 }
             }
             ?>
             <input type="text" name="user_search" placeholder="<?php esc_attr_e('Search users by name, email, or username...', 'pmpro-nbstup'); ?>" value="<?php echo esc_attr($search); ?>" />
+            <select id="user_state" name="user_state">
+                <option value=""><?php esc_html_e('All States', 'pmpro-nbstup'); ?></option>
+                <?php foreach ($states as $state) : ?>
+                    <option value="<?php echo esc_attr($state->id); ?>" <?php selected($selected_state, (int) $state->id); ?>>
+                        <?php echo esc_html($state->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <select id="user_district" name="user_district" <?php disabled($selected_state <= 0 && $selected_district <= 0); ?>>
+                <?php if ($selected_state <= 0 && $selected_district <= 0) : ?>
+                    <option value=""><?php esc_html_e('Select State First', 'pmpro-nbstup'); ?></option>
+                <?php else : ?>
+                    <option value=""><?php esc_html_e('All Districts', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($districts as $district) : ?>
+                        <option value="<?php echo esc_attr($district->id); ?>" <?php selected($selected_district, (int) $district->id); ?>>
+                            <?php echo esc_html($district->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+            <select id="user_block" name="user_block" <?php disabled($selected_district <= 0 && $selected_block <= 0); ?>>
+                <?php if ($selected_district <= 0 && $selected_block <= 0) : ?>
+                    <option value=""><?php esc_html_e('Select District First', 'pmpro-nbstup'); ?></option>
+                <?php else : ?>
+                    <option value=""><?php esc_html_e('All Blocks', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($blocks as $block) : ?>
+                        <option value="<?php echo esc_attr($block->id); ?>" <?php selected($selected_block, (int) $block->id); ?>>
+                            <?php echo esc_html($block->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
             <button type="submit"><?php esc_html_e('Search', 'pmpro-nbstup'); ?></button>
-            <?php if (!empty($search)) : ?>
-                <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear', 'pmpro-nbstup'); ?></a>
+            <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+                <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_state', 'user_district', 'user_block', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear', 'pmpro-nbstup'); ?></a>
             <?php endif; ?>
         </form>
 
-        <?php if (!empty($search)) : ?>
-            <p><strong><?php printf(__('Search results for: %s', 'pmpro-nbstup'), esc_html($search)); ?></strong> (<?php printf(__('%d users found', 'pmpro-nbstup'), $total_users); ?>)</p>
+        <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+            <p>
+                <strong>
+                    <?php
+                    if (!empty($search)) {
+                        printf(__('Search results for: %s', 'pmpro-nbstup'), esc_html($search));
+                    } else {
+                        esc_html_e('Filtered results', 'pmpro-nbstup');
+                    }
+                    ?>
+                </strong>
+                (<?php printf(__('%d users found', 'pmpro-nbstup'), $total_users); ?>)
+            </p>
         <?php endif; ?>
 
         <?php if (empty($users)) : ?>

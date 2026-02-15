@@ -1,7 +1,6 @@
 <?php
 /**
- * PMPro Bank Transfer Fields
- * Transaction ID + Payment Receipt
+ * PMPro NBSTUP Checkout and Member Info Fields
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -489,7 +488,7 @@ function pmpro_add_nominee_details_fields() {
 }
 
 /**
- * Add address fields before Bank Transfer section
+ * Add address fields in checkout flow
  */
 add_action( 'pmpro_checkout_after_payment_information_fields', 'pmpro_add_address_fields', 5 );
 function pmpro_add_address_fields() {
@@ -626,8 +625,7 @@ function pmpro_add_address_fields() {
 }
 
 /**
- * Save Bank Transfer data after checkout
- * (User meta + Order meta)
+ * Bank transfer save at checkout is intentionally disabled.
  */
 // Bank transfer data save removed from checkout per requirements.
 
@@ -1096,39 +1094,133 @@ function pmpro_nbstup_block_member_username_login( $user, $username, $password )
 }
 
 /**
- * Show Bank Transfer details in Member Dashboard (Order History)
+ * Show custom checkout user fields on PMPro Member Edit -> User Info panel.
+ *
+ * @param WP_User $user User object for the member being viewed.
+ * @return void
  */
-add_action( 'pmpro_member_order_details_after', 'pmpro_show_bank_details_to_member', 10, 1 );
-function pmpro_show_bank_details_to_member( $order ) {
-
-	$txn_id  = get_post_meta( $order->id, 'bank_transaction_id', true );
-	$receipt = get_post_meta( $order->id, 'bank_payment_receipt', true );
-
-	if ( empty( $txn_id ) && empty( $receipt ) ) {
+function pmpronbstup_render_pmpro_member_custom_user_info( $user ) {
+	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
 		return;
 	}
+
+	if ( ! ( $user instanceof WP_User ) ) {
+		return;
+	}
+
+	$user_id = (int) $user->ID;
+	if ( $user_id <= 0 ) {
+		return;
+	}
+
+	$state_id    = (int) get_user_meta( $user_id, 'user_state', true );
+	$district_id = (int) get_user_meta( $user_id, 'user_district', true );
+	$block_id    = (int) get_user_meta( $user_id, 'user_block', true );
+
+	$values = array(
+		'member_name'             => get_user_meta( $user_id, 'name', true ),
+		'phone_no'                => get_user_meta( $user_id, 'phone_no', true ),
+		'aadhar_number'           => get_user_meta( $user_id, 'aadhar_number', true ),
+		'father_husband_name'     => get_user_meta( $user_id, 'father_husband_name', true ),
+		'dob'                     => get_user_meta( $user_id, 'dob', true ),
+		'gender'                  => get_user_meta( $user_id, 'gender', true ),
+		'Occupation'              => get_user_meta( $user_id, 'Occupation', true ),
+		'join_blood_donation'     => (int) get_user_meta( $user_id, 'join_blood_donation', true ),
+		'nominee_name_1'          => get_user_meta( $user_id, 'nominee_name_1', true ),
+		'relation_with_nominee_1' => get_user_meta( $user_id, 'relation_with_nominee_1', true ),
+		'nominee_1_mobile'        => get_user_meta( $user_id, 'nominee_1_mobile', true ),
+		'nominee_name_2'          => get_user_meta( $user_id, 'nominee_name_2', true ),
+		'relation_with_nominee_2' => get_user_meta( $user_id, 'relation_with_nominee_2', true ),
+		'nominee_2_mobile'        => get_user_meta( $user_id, 'nominee_2_mobile', true ),
+		'user_address'            => get_user_meta( $user_id, 'user_address', true ),
+		'declaration_accept'      => (int) get_user_meta( $user_id, 'declaration_accept', true ),
+		'state_name'              => $state_id ? pmpro_nbstup_get_state_name( $state_id ) : '',
+		'district_name'           => $district_id ? pmpro_nbstup_get_district_name( $district_id ) : '',
+		'block_name'              => $block_id ? pmpro_nbstup_get_block_name( $block_id ) : '',
+	);
 	?>
-	<div class="pmpro_box pmpro_box-bank-transfer">
-		<h3><?php esc_html_e( 'Bank Transfer Details', 'pmpro-nbstup' ); ?></h3>
-
-		<?php if ( $txn_id ) : ?>
-			<p>
-				<strong><?php esc_html_e( 'Transaction ID:', 'pmpro-nbstup' ); ?></strong>
-				<?php echo esc_html( $txn_id ); ?>
-			</p>
-		<?php endif; ?>
-
-		<?php if ( $receipt ) : ?>
-			<p>
-				<strong><?php esc_html_e( 'Payment Receipt:', 'pmpro-nbstup' ); ?></strong>
-				<a href="<?php echo esc_url( $receipt ); ?>" target="_blank">
-					<?php esc_html_e( 'View Receipt', 'pmpro-nbstup' ); ?>
-				</a>
-			</p>
-		<?php endif; ?>
-	</div>
+	<h2><?php esc_html_e( 'NBSTUP Custom Checkout Fields', 'pmpro-nbstup' ); ?></h2>
+	<table class="form-table">
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Member Name', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['member_name'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Phone Number', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['phone_no'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Aadhar Number', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['aadhar_number'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Father / Husband Name', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['father_husband_name'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Date of Birth', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['dob'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Gender', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['gender'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Occupation', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['Occupation'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Join Blood Donation Team', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['join_blood_donation'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Nominee 1 Name', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['nominee_name_1'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Relation With Nominee 1', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['relation_with_nominee_1'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Nominee 1 Mobile', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['nominee_1_mobile'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Nominee 2 Name', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['nominee_name_2'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Relation With Nominee 2', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['relation_with_nominee_2'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Nominee 2 Mobile', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['nominee_2_mobile'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'State', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['state_name'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'District', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['district_name'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Block', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['block_name'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Address', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['user_address'] ?: '-' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php esc_html_e( 'Declaration Accepted', 'pmpro-nbstup' ); ?></th>
+			<td><?php echo esc_html( $values['declaration_accept'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?></td>
+		</tr>
+	</table>
 	<?php
 }
+add_action( 'pmpro_after_membership_level_profile_fields', 'pmpronbstup_render_pmpro_member_custom_user_info', 10, 1 );
 
 /**
  * Show Address details in Member Dashboard (Order History)
@@ -1180,43 +1272,6 @@ function pmpro_show_address_to_member( $order ) {
 			</p>
 		<?php endif; ?>
 	</div>
-	<?php
-}
-
-/**
- * Show Bank Transfer details in WP-Admin Order screen
- */
-add_action( 'pmpro_order_details_after', 'pmpro_show_bank_details_in_admin', 10, 1 );
-function pmpro_show_bank_details_in_admin( $order ) {
-
-	$txn_id  = get_post_meta( $order->id, 'bank_transaction_id', true );
-	$receipt = get_post_meta( $order->id, 'bank_payment_receipt', true );
-
-	if ( empty( $txn_id ) && empty( $receipt ) ) {
-		return;
-	}
-	?>
-	<tr>
-		<td colspan="2">
-			<h3><?php esc_html_e( 'Bank Transfer Details', 'pmpro-nbstup' ); ?></h3>
-
-			<?php if ( $txn_id ) : ?>
-				<p>
-					<strong><?php esc_html_e( 'Transaction ID:', 'pmpro-nbstup' ); ?></strong>
-					<?php echo esc_html( $txn_id ); ?>
-				</p>
-			<?php endif; ?>
-
-			<?php if ( $receipt ) : ?>
-				<p>
-					<strong><?php esc_html_e( 'Payment Receipt:', 'pmpro-nbstup' ); ?></strong>
-					<a href="<?php echo esc_url( $receipt ); ?>" target="_blank">
-						<?php esc_html_e( 'View Receipt', 'pmpro-nbstup' ); ?>
-					</a>
-				</p>
-			<?php endif; ?>
-		</td>
-	</tr>
 	<?php
 }
 
@@ -1286,7 +1341,6 @@ function pmpro_nbstup_add_members_list_columns( $columns ) {
 		$columns = array();
 	}
 	
-	$columns['transaction_id'] = 'Transaction ID';
 	$columns['state']          = 'State';
 	$columns['district']       = 'District';
 	$columns['block']          = 'Block';
@@ -1307,9 +1361,6 @@ function pmpro_nbstup_members_list_column_values( $values, $user ) {
 	
 	// Get user ID
 	$user_id = is_object( $user ) ? $user->ID : $user;
-	
-	// Transaction ID
-	$values['transaction_id'] = get_user_meta( $user_id, 'bank_transaction_id', true );
 	
 	// State
 	$state_id = get_user_meta( $user_id, 'user_state', true );
