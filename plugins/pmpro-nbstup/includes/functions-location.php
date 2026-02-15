@@ -12,6 +12,123 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Normalize location names to avoid duplicate variants.
+ *
+ * @param string $name Raw name.
+ * @return string
+ */
+function pmpro_nbstup_normalize_location_name( $name ) {
+	$name = sanitize_text_field( $name );
+	$name = preg_replace( '/\s+/', ' ', trim( (string) $name ) );
+	return $name;
+}
+
+/**
+ * Get state ID by normalized name.
+ *
+ * @param string $name       State name.
+ * @param int    $exclude_id Optional state ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_state_id_by_name( $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$name
+		)
+	);
+}
+
+/**
+ * Get district ID by normalized name under a state.
+ *
+ * @param int    $state_id   State ID.
+ * @param string $name       District name.
+ * @param int    $exclude_id Optional district ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_district_id_by_name( $state_id, $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $state_id <= 0 || $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE state_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$state_id,
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE state_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$state_id,
+			$name
+		)
+	);
+}
+
+/**
+ * Get block ID by normalized name under a district.
+ *
+ * @param int    $district_id District ID.
+ * @param string $name        Block name.
+ * @param int    $exclude_id  Optional block ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_block_id_by_name( $district_id, $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $district_id <= 0 || $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE district_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$district_id,
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE district_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$district_id,
+			$name
+		)
+	);
+}
+
+/**
  * Create tables for states, districts, and blocks
  */
 function pmpro_nbstup_create_location_tables() {
@@ -106,10 +223,14 @@ function pmpro_nbstup_get_state_name( $id ) {
 function pmpro_nbstup_add_state( $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $name === '' || pmpro_nbstup_find_state_id_by_name( $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
-		array( 'name' => sanitize_text_field( $name ) ),
+		array( 'name' => $name ),
 		array( '%s' )
 	);
 	
@@ -122,10 +243,14 @@ function pmpro_nbstup_add_state( $name ) {
 function pmpro_nbstup_update_state( $id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $name === '' || pmpro_nbstup_find_state_id_by_name( $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
-		array( 'name' => sanitize_text_field( $name ) ),
+		array( 'name' => $name ),
 		array( 'id' => $id ),
 		array( '%s' ),
 		array( '%d' )
@@ -195,12 +320,17 @@ function pmpro_nbstup_get_district_name( $id ) {
 function pmpro_nbstup_add_district( $state_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$state_id = intval( $state_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $state_id <= 0 || $name === '' || pmpro_nbstup_find_district_id_by_name( $state_id, $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'state_id' => intval( $state_id ),
-			'name'     => sanitize_text_field( $name ),
+			'state_id' => $state_id,
+			'name'     => $name,
 		),
 		array( '%d', '%s' )
 	);
@@ -214,12 +344,18 @@ function pmpro_nbstup_add_district( $state_id, $name ) {
 function pmpro_nbstup_update_district( $id, $state_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$id = intval( $id );
+	$state_id = intval( $state_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $state_id <= 0 || $name === '' || pmpro_nbstup_find_district_id_by_name( $state_id, $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
 		array(
-			'state_id' => intval( $state_id ),
-			'name'     => sanitize_text_field( $name ),
+			'state_id' => $state_id,
+			'name'     => $name,
 		),
 		array( 'id' => $id ),
 		array( '%d', '%s' ),
@@ -283,12 +419,17 @@ function pmpro_nbstup_get_block_name( $id ) {
 function pmpro_nbstup_add_block( $district_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$district_id = intval( $district_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $district_id <= 0 || $name === '' || pmpro_nbstup_find_block_id_by_name( $district_id, $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'district_id' => intval( $district_id ),
-			'name'        => sanitize_text_field( $name ),
+			'district_id' => $district_id,
+			'name'        => $name,
 		),
 		array( '%d', '%s' )
 	);
@@ -302,12 +443,18 @@ function pmpro_nbstup_add_block( $district_id, $name ) {
 function pmpro_nbstup_update_block( $id, $district_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$id = intval( $id );
+	$district_id = intval( $district_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $district_id <= 0 || $name === '' || pmpro_nbstup_find_block_id_by_name( $district_id, $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
 		array(
-			'district_id' => intval( $district_id ),
-			'name'        => sanitize_text_field( $name ),
+			'district_id' => $district_id,
+			'name'        => $name,
 		),
 		array( 'id' => $id ),
 		array( '%d', '%s' ),
