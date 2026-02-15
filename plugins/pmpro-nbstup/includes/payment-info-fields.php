@@ -349,49 +349,64 @@ function pmpro_add_nominee_details_fields() {
 					</div>
 
 					<!-- Nominee Name 1 -->
-					<div id="nominee_name_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_1<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_1' ) ); ?>">
+					<div id="nominee_name_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_1 pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_1' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_name_1">
 							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="nominee_name_1"
 							name="nominee_name_1"
 							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_1"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_1 pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_name_1' ); ?>
+							required
 							value="<?php echo esc_attr( $values['nominee_name_1'] ); ?>"
 						/>
 					</div>
 
 					<!-- Relation With Nominee 1 -->
-					<div id="relation_with_nominee_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_1<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_1' ) ); ?>">
+					<div id="relation_with_nominee_1_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_1 pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_1' ) ); ?>">
 						<label class="pmpro_form_label" for="relation_with_nominee_1">
 							<?php esc_html_e( 'संबंध', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="relation_with_nominee_1"
 							name="relation_with_nominee_1"
 							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_1"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_1 pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'relation_with_nominee_1' ); ?>
+							required
 							value="<?php echo esc_attr( $values['relation_with_nominee_1'] ); ?>"
 						/>
 					</div>
 
 					<!-- Nominee 1 Mobile -->
-					<div id="nominee_1_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_1_mobile<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_1_mobile' ) ); ?>">
+					<div id="nominee_1_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_1_mobile pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_1_mobile' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_1_mobile">
 							<?php esc_html_e( 'मोबाइल नंबर', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="nominee_1_mobile"
 							name="nominee_1_mobile"
 							size="20"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_1_mobile"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_1_mobile pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_1_mobile' ); ?>
+							required
 							value="<?php echo esc_attr( $values['nominee_1_mobile'] ); ?>"
 						/>
 					</div>
@@ -403,49 +418,64 @@ function pmpro_add_nominee_details_fields() {
 					</div>
 
 					<!-- Nominee Name 2 -->
-					<div id="nominee_name_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_2<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_2' ) ); ?>">
+					<div id="nominee_name_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_name_2 pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_name_2' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_name_2">
 							<?php esc_html_e( 'नाम', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="nominee_name_2"
 							name="nominee_name_2"
 							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_2"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_name_2 pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_name_2' ); ?>
+							required
 							value="<?php echo esc_attr( $values['nominee_name_2'] ); ?>"
 						/>
 					</div>
 
 					<!-- Relation With Nominee 2 -->
-					<div id="relation_with_nominee_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_2<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_2' ) ); ?>">
+					<div id="relation_with_nominee_2_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-relation_with_nominee_2 pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'relation_with_nominee_2' ) ); ?>">
 						<label class="pmpro_form_label" for="relation_with_nominee_2">
 							<?php esc_html_e( 'संबंध', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="relation_with_nominee_2"
 							name="relation_with_nominee_2"
 							size="30"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_2"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-relation_with_nominee_2 pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'relation_with_nominee_2' ); ?>
+							required
 							value="<?php echo esc_attr( $values['relation_with_nominee_2'] ); ?>"
 						/>
 					</div>
 
 					<!-- Nominee 2 Mobile -->
-					<div id="nominee_2_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_2_mobile<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_2_mobile' ) ); ?>">
+					<div id="nominee_2_mobile_wrap" class="pmpro_form_field pmpro_form_field-text pmpro_form_field-nominee_2_mobile pmpro_form_field-required<?php echo esc_attr( pmpronbstup_checkout_field_error_class( 'nominee_2_mobile' ) ); ?>">
 						<label class="pmpro_form_label" for="nominee_2_mobile">
 							<?php esc_html_e( 'मोबाइल नंबर', 'pmpro-nbstup' ); ?>
+							<span class="pmpro_asterisk">
+								<abbr title="<?php esc_attr_e( 'Required Field', 'pmpro-nbstup' ); ?>">*</abbr>
+							</span>
 						</label>
 						<input
 							type="text"
 							id="nominee_2_mobile"
 							name="nominee_2_mobile"
 							size="20"
-							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_2_mobile"
+							class="pmpro_form_input pmpro_form_input-text pmpro_form_input-nominee_2_mobile pmpro_form_input-required"
+							aria-required="true"
 							<?php echo pmpronbstup_checkout_input_aria_invalid( 'nominee_2_mobile' ); ?>
+							required
 							value="<?php echo esc_attr( $values['nominee_2_mobile'] ); ?>"
 						/>
 					</div>
@@ -694,6 +724,40 @@ function pmpro_save_member_details_fields( $user_id, $order ) {
 				'user_pass' => $password,
 			)
 		);
+	}
+}
+
+/**
+ * Automatically activate user after successful checkout/payment
+ * This runs after payment is processed via Razorpay or other gateway
+ */
+add_action( 'pmpro_after_checkout', 'pmpronbstup_auto_activate_user_after_payment', 5, 2 );
+function pmpronbstup_auto_activate_user_after_payment( $user_id, $order ) {
+	if ( empty( $user_id ) || empty( $order ) ) {
+		return;
+	}
+
+	// Only activate if the order status is 'success'
+	if ( isset( $order->status ) && $order->status === 'success' ) {
+		// Activate the user
+		update_user_meta( $user_id, 'pmpronbstup_active', 1 );
+
+		// Set membership start and expiry dates if not already set
+		$start_date = get_user_meta( $user_id, 'pmpronbstup_membership_start_date', true );
+		if ( empty( $start_date ) ) {
+			$today = current_time( 'Y-m-d' );
+			update_user_meta( $user_id, 'pmpronbstup_membership_start_date', $today );
+
+			// Set expiry to 1 year from now
+			$expiry_date = date( 'Y-m-d', strtotime( $today . ' +1 year' ) );
+			update_user_meta( $user_id, 'pmpronbstup_membership_expiry_date', $expiry_date );
+			update_user_meta( $user_id, 'pmpronbstup_renewal_status', 'active' );
+		}
+
+		// Log activation in order notes if the function exists
+		if ( function_exists( 'pmpro_add_order_note' ) ) {
+			pmpro_add_order_note( $order->id, 'User automatically activated after successful payment.' );
+		}
 	}
 }
 

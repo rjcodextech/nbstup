@@ -425,3 +425,270 @@ jQuery(document).ready(function ($) {
       });
   });
 });
+
+// ========== Checkout Form Validation ==========
+jQuery(document).ready(function ($) {
+  'use strict';
+
+  // Only run on PMPro checkout page
+  if (!$('#pmpro_form').length) {
+    return;
+  }
+
+  // Validation rules and messages
+  var validationRules = {
+    member_name: {
+      required: true,
+      pattern: /^[\p{L}][\p{L}\s.\-]{1,60}$/u,
+      message: 'Name should contain only letters and valid characters (2-60 chars)'
+    },
+    phone_no: {
+      required: true,
+      pattern: /^\d{10}$/,
+      message: 'Phone number must be exactly 10 digits'
+    },
+    aadhar_number: {
+      required: true,
+      pattern: /^\d{12}$/,
+      message: 'Aadhar number must be exactly 12 digits'
+    },
+    father_husband_name: {
+      required: true,
+      pattern: /^[\p{L}][\p{L}\s.\-]{1,60}$/u,
+      message: 'Father/Husband name should contain only letters and valid characters'
+    },
+    dob: {
+      required: true,
+      custom: function(value) {
+        if (!value) return 'Date of birth is required';
+        var dob = new Date(value);
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+        var monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+          age--;
+        }
+        if (dob > today) return 'Date of birth cannot be in the future';
+        if (age < 18) return 'You must be at least 18 years old';
+        if (age > 55) return 'Age must not exceed 55 years';
+        return null;
+      }
+    },
+    gender: {
+      required: true,
+      message: 'Please select a gender'
+    },
+    Occupation: {
+      required: true,
+      message: 'Please select an occupation'
+    },
+    member_password: {
+      required: true,
+      minLength: 6,
+      message: 'Password must be at least 6 characters'
+    },
+    user_state: {
+      required: true,
+      message: 'Please select a state'
+    },
+    user_district: {
+      required: true,
+      message: 'Please select a district'
+    },
+    user_block: {
+      required: true,
+      message: 'Please select a block'
+    },
+    user_address: {
+      required: true,
+      minLength: 5,
+      message: 'Address must be at least 5 characters'
+    },
+    declaration_accept: {
+      required: true,
+      checked: true,
+      message: 'You must accept the declaration to proceed'
+    },
+    nominee_name_1: {
+      required: true,
+      pattern: /^[\p{L}][\p{L}\s.\-]{1,60}$/u,
+      message: 'Nominee 1 name should contain only letters and valid characters'
+    },
+    relation_with_nominee_1: {
+      required: true,
+      minLength: 2,
+      message: 'Relation with nominee 1 is required (min 2 characters)'
+    },
+    nominee_1_mobile: {
+      required: true,
+      pattern: /^\d{10}$/,
+      message: 'Nominee 1 mobile must be exactly 10 digits'
+    },
+    nominee_name_2: {
+      required: true,
+      pattern: /^[\p{L}][\p{L}\s.\-]{1,60}$/u,
+      message: 'Nominee 2 name should contain only letters and valid characters'
+    },
+    relation_with_nominee_2: {
+      required: true,
+      minLength: 2,
+      message: 'Relation with nominee 2 is required (min 2 characters)'
+    },
+    nominee_2_mobile: {
+      required: true,
+      pattern: /^\d{10}$/,
+      message: 'Nominee 2 mobile must be exactly 10 digits'
+    }
+  };
+
+  // Helper function to show field error
+  function showFieldError($field, message) {
+    var $wrap = $field.closest('.pmpro_form_field');
+    $wrap.addClass('pmpro_form_field-error');
+    
+    // Remove existing error message
+    $wrap.find('.pmpro-nbstup-validation-error').remove();
+    
+    // Add new error message
+    var $error = $('<span class="pmpro-nbstup-validation-error" style="color: #dc3232; font-size: 13px; display: block; margin-top: 5px;"></span>').text(message);
+    $field.after($error);
+    $field.attr('aria-invalid', 'true');
+  }
+
+  // Helper function to clear field error
+  function clearFieldError($field) {
+    var $wrap = $field.closest('.pmpro_form_field');
+    $wrap.removeClass('pmpro_form_field-error');
+    $wrap.find('.pmpro-nbstup-validation-error').remove();
+    $field.removeAttr('aria-invalid');
+  }
+
+  // Validate a single field
+  function validateField($field) {
+    var fieldName = $field.attr('name');
+    var rule = validationRules[fieldName];
+    
+    if (!rule) return true;
+
+    var value = $field.val();
+    var fieldType = $field.attr('type');
+    
+    // Check required
+    if (rule.required) {
+      if (fieldType === 'checkbox') {
+        if (!$field.is(':checked')) {
+          showFieldError($field, rule.message);
+          return false;
+        }
+      } else if (fieldType === 'radio') {
+        var radioGroup = $('input[name="' + fieldName + '"]');
+        if (!radioGroup.is(':checked')) {
+          showFieldError(radioGroup.first(), rule.message);
+          return false;
+        }
+      } else if (!value || $.trim(value) === '') {
+        showFieldError($field, rule.message || fieldName + ' is required');
+        return false;
+      }
+    }
+
+    // Clean value for validation
+    if (fieldName === 'phone_no' || fieldName === 'aadhar_number' || fieldName === 'nominee_1_mobile' || fieldName === 'nominee_2_mobile') {
+      value = value.replace(/\D+/g, '');
+    } else {
+      value = $.trim(value);
+    }
+
+    // Check minLength
+    if (rule.minLength && value.length < rule.minLength) {
+      showFieldError($field, rule.message);
+      return false;
+    }
+
+    // Check pattern
+    if (rule.pattern && value !== '' && !rule.pattern.test(value)) {
+      showFieldError($field, rule.message);
+      return false;
+    }
+
+    // Check custom validation
+    if (rule.custom && typeof rule.custom === 'function') {
+      var customError = rule.custom(value);
+      if (customError) {
+        showFieldError($field, customError);
+        return false;
+      }
+    }
+
+    clearFieldError($field);
+    return true;
+  }
+
+  // Real-time validation on blur
+  $.each(validationRules, function(fieldName) {
+    var $field = $('[name="' + fieldName + '"]');
+    if ($field.length) {
+      $field.on('blur change', function() {
+        validateField($(this));
+      });
+      
+      // Clear error on input
+      $field.on('input', function() {
+        clearFieldError($(this));
+      });
+    }
+  });
+
+  // Validate form on submit
+  $('#pmpro_form').on('submit', function(e) {
+    var isValid = true;
+    var $firstError = null;
+
+    // Validate all fields
+    $.each(validationRules, function(fieldName) {
+      var $field = $('[name="' + fieldName + '"]');
+      if ($field.length) {
+        if (!validateField($field)) {
+          isValid = false;
+          if (!$firstError) {
+            $firstError = $field;
+          }
+        }
+      }
+    });
+
+    if (!isValid) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      
+      // Scroll to first error
+      if ($firstError) {
+        $('html, body').animate({
+          scrollTop: $firstError.closest('.pmpro_form_field').offset().top - 100
+        }, 300);
+        $firstError.focus();
+      }
+      
+      // Show general error message
+      var $messageDiv = $('#pmpro_message');
+      if (!$messageDiv.length) {
+        $messageDiv = $('<div id="pmpro_message" class="pmpro_message pmpro_error"></div>');
+        $('#pmpro_form').prepend($messageDiv);
+      }
+      $messageDiv.html('Please correct the highlighted errors before submitting.').show();
+      
+      return false;
+    }
+  });
+
+  // Format phone numbers and aadhar as user types
+  $('[name="phone_no"], [name="nominee_1_mobile"], [name="nominee_2_mobile"]').on('input', function() {
+    var value = $(this).val().replace(/\D+/g, '').slice(0, 10);
+    $(this).val(value);
+  });
+
+  $('[name="aadhar_number"]').on('input', function() {
+    var value = $(this).val().replace(/\D+/g, '').slice(0, 12);
+    $(this).val(value);
+  });
+});

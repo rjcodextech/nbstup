@@ -1,6 +1,6 @@
-# PMPro NBSTUP Bank Import Addon
+# PMPro NBSTUP Addon
 
-**Complete Plugin Documentation - All Features & Processes**
+**Complete WordPress Membership Management System**
 
 ---
 
@@ -8,39 +8,246 @@
 
 1. [Overview](#overview)
 2. [Core Features](#core-features)
-3. [User Activation Feature](#user-activation-feature)
-4. [Membership Management](#membership-management)
-5. [Deceased Member Handling](#deceased-member-handling)
-6. [Daughter Wedding Contribution](#daughter-wedding-contribution)
-7. [Contribution Verification Feature](#contribution-verification-feature)
-8. [Users List Shortcode](#users-list-shortcode)
-9. [Email Configuration](#email-configuration)
+3. [Payment & Activation](#payment--activation)
+4. [Form Validation](#form-validation)
+5. [Membership Management](#membership-management)
+6. [Deceased Member Handling](#deceased-member-handling)
+7. [Daughter Wedding Contribution](#daughter-wedding-contribution)
+8. [Location Management](#location-management)
+9. [Checkout Fields & Validation](#checkout-fields--validation)
 10. [Admin Interface](#admin-interface)
-11. [User Profile Fields](#user-profile-fields)
-12. [Checkout Fields](#checkout-fields)
+11. [Email Configuration](#email-configuration)
+12. [Shortcodes](#shortcodes)
 13. [Email Notifications](#email-notifications)
 14. [Scheduled Events](#scheduled-events)
 15. [Technical Details](#technical-details)
-16. [Installation & Deployment](#installation--deployment)
+16. [Installation & Setup](#installation--setup)
 17. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Overview
 
-**PMPro NBSTUP** is a custom addon for **Paid Memberships Pro** that manages **yearly recurring subscriptions** with bank transfer payments. It includes:
+**PMPro NBSTUP** is a comprehensive addon for **Paid Memberships Pro** that manages yearly recurring memberships with multiple payment methods, advanced validation, and contribution management.
 
-✅ **User Activation** - Verify payments via CSV import  
+### Key Features
+
+✅ **Automatic Activation** - Razorpay payments activate users instantly  
+✅ **CSV Import Support** - Verify bank transfers via CSV import  
+✅ **JavaScript Validation** - Real-time form validation with error messages  
 ✅ **Yearly Membership** - Auto-set 1-year membership duration  
-✅ **Auto-Deactivation** - Disable accounts when membership expires  
+✅ **Auto-Deactivation** - Disable expired accounts automatically  
+✅ **Location Management** - States, Districts, Blocks hierarchy  
 ✅ **Deceased Members** - Mark and manage deceased members  
-✅ **Daughter Wedding** - Request contributions for daughter weddings (multiple times)  
-✅ **Contribution System** - Require contribution when member dies or has wedding  
-✅ **Contributions Management** - Dedicated admin page to monitor and manage all contributions  
-✅ **Users List Shortcode** - Display all users with search & pagination  
-✅ **Email Notifications** - Automated emails for all events (fully configurable)  
-✅ **Admin Notifications** - Daily summary of overdue contributions  
-✅ **Checkout Fields** - Collect transaction IDs and receipts  
+✅ **Wedding Contributions** - Request contributions for daughter weddings  
+✅ **Contributions Management** - Dedicated admin page for tracking  
+✅ **Email System** - Fully configurable email templates  
+✅ **Member Dashboard** - Custom account pages with navigation  
+✅ **Security** - Nonce verification, input sanitization, ARIA support  
+
+### What's New (February 2026)
+
+🆕 **Automatic User Activation** - Users paying via Razorpay are activated immediately  
+🆕 **Comprehensive JavaScript Validation** - Real-time validation for all form fields  
+🆕 **Required Field Enforcement** - HTML5 required attributes on all mandatory fields  
+🆕 **Auto-formatting** - Phone numbers and Aadhar auto-format as users type  
+🆕 **Age Validation** - Validates age between 18-55 years  
+🆕 **Enhanced UX** - Scroll to errors, clear messages, instant feedback  
+
+---
+
+---
+
+## Payment & Activation
+
+### Two Methods of Activation
+
+**1. Automatic Activation (Razorpay) - NEW! ⭐**
+
+When users pay via Razorpay or other online payment gateways:
+
+```
+User completes checkout with Razorpay
+         ↓
+Payment processes successfully
+         ↓
+System automatically (within seconds):
+├─ Activates user account (pmpronbstup_active = 1)
+├─ Sets membership start date = today
+├─ Sets membership expiry date = today + 1 year  
+├─ Sets renewal status = "active"
+└─ Logs activation in order notes
+
+User can log in immediately!
+```
+
+**Benefits:**
+- ✅ Instant access - no waiting for admin approval
+- ✅ No manual CSV import needed
+- ✅ Automatic membership date tracking
+- ✅ Better user experience
+
+**2. CSV Import Activation (Bank Transfers)**
+
+For bank transfers and offline payments:
+
+```
+User makes bank transfer
+         ↓
+Gets transaction ID from bank
+         ↓
+Admin uploads CSV with transaction IDs
+         ↓
+System matches and activates:
+├─ Finds user with matching transaction ID
+├─ Activates account
+├─ Sets membership dates
+└─ Sends activation email
+```
+
+### How Automatic Activation Works
+
+**Trigger:** Runs on `pmpro_after_checkout` hook with priority 5
+
+**Conditions:**
+- Order status must be 'success'
+- User ID and Order object must exist
+
+**Actions Performed:**
+```php
+✓ Sets pmpronbstup_active = 1
+✓ Sets pmpronbstup_membership_start_date = current date
+✓ Sets pmpronbstup_membership_expiry_date = start + 1 year
+✓ Sets pmpronbstup_renewal_status = 'active'
+✓ Adds note to order: "User automatically activated after successful payment"
+```
+
+**Result:** User can log in immediately without any manual intervention!
+
+### CSV Import for Bank Transfers
+
+**Location:** Paid Memberships Pro > User Approval > User Activation tab
+
+**CSV Format:**
+```csv
+transaction_id
+BANK-2026-001
+BANK-2026-002
+BANK-2026-003
+```
+
+**Process:**
+1. Upload CSV file
+2. System matches transaction IDs with `bank_transaction_id` user meta
+3. Activates matching users for 1 year
+4. Sends activation emails
+5. Reports results (activated, skipped, not found)
+
+**For Renewals:**
+- If user already has expiry date → extends by 1 year
+- Sends renewal confirmation email
+- Updates last renewal date
+
+---
+
+## Form Validation
+
+### Comprehensive JavaScript Validation
+
+**All checkout form fields have real-time validation** with immediate feedback to users.
+
+#### Validation Features
+
+✅ **Real-time Validation** - Triggers on blur/change events  
+✅ **Visual Feedback** - Red error messages  below invalid fields  
+✅ **Form Submission Block** - Cannot submit with errors  
+✅ **Auto-formatting** - Phone & Aadhar numbers format automatically  
+✅ **Scroll to Error** - Automatically scrolls to first error  
+✅ **Clear Messages** - User-friendly error descriptions  
+✅ **HTML5 Backup** - Browser native validation as fallback  
+✅ **Accessibility** - ARIA attributes for screen readers  
+
+#### Validated Fields
+
+**Member Details:**
+| Field | Validation Rules |
+|-------|------------------|
+| Name | Required, letters only, 2-60 characters |
+| Phone Number | Required, exactly 10 digits, auto-formats |
+| Aadhar Number | Required, exactly 12 digits, auto-formats |
+| Father/Husband Name | Required, letters only |
+| Date of Birth | Required, age 18-55 years, cannot be future |
+| Gender | Required selection (Male/Female/Other) |
+| Occupation | Required selection from predefined list |
+| Password | Required, minimum 6 characters |
+
+**Address Information:**
+| Field | Validation Rules |
+|-------|------------------|
+| State | Required selection from dropdown |
+| District | Required, loads based on state selection |
+| Block | Required, loads based on district selection |
+| Address | Required, minimum 5 characters |
+| Declaration | Required checkbox agreement |
+
+**Nominee Details:**
+| Field | Validation Rules |
+|-------|------------------|
+| Nominee 1 Name | Required, letters only |
+| Nominee 1 Relation | Required, minimum 2 characters |
+| Nominee 1 Mobile | Required, exactly 10 digits |
+| Nominee 2 Name | Required, letters only |
+| Nominee 2 Relation | Required, minimum 2 characters |
+| Nominee 2 Mobile | Required, exactly 10 digits |
+
+#### Auto-Formatting Examples
+
+**Phone Numbers:**
+```
+User types: abc123456xxxx7890
+Auto-formats to: 1234567890 (removes non-digits, max 10)
+```
+
+**Aadhar Numbers:**
+```
+User types: 12 34 56 78 90 12 xxx
+Auto-formats to: 123456789012 (removes non-digits, max 12)
+```
+
+#### Validation Messages
+
+**Example Error Messages:**
+- "Name should contain only letters and valid characters (2-60 chars)"
+- "Phone number must be exactly 10 digits"
+- "Aadhar number must be exactly 12 digits"
+- "You must be at least 18 years old"
+- "Age must not exceed 55 years"
+- "Please select a state"
+- "Address must be at least 5 characters"
+
+#### How Validation Works
+
+```javascript
+User fills field → Moves to next field (blur event)
+         ↓
+JavaScript validates the value
+         ↓
+If invalid:
+├─ Shows red error message below field
+├─ Adds red border to field
+└─ Sets aria-invalid="true"
+
+If valid:
+├─ Removes error message
+├─ Removes red border  
+└─ Removes aria-invalid
+
+On form submit:
+├─ Validates ALL fields
+├─ If any errors → blocks submission
+├─ Scrolls to first error
+└─ Shows general error message
+```
 
 ---
 
@@ -335,6 +542,287 @@ BANK-2026-CONTRIB-003,5000,2026-02-15
 
 ---
 
+---
+
+## Location Management
+
+### Hierarchical Location System
+
+The plugin includes a three-tier location management system:
+
+**Structure:**
+```
+States (राज्य)
+  └─ Districts (जिला)
+       └─ Blocks (ब्लॉक/तहसील)
+```
+
+### Admin Interface
+
+**Location:** Paid Memberships Pro > Location Management
+
+**Features:**
+- Add/Edit/Delete States
+- Add/Edit/Delete Districts (assigned to states)
+- Add/Edit/Delete Blocks (assigned to districts)
+- Hierarchical relationship management
+- Bulk management interface
+
+### Frontend Behavior
+
+**Cascading Dropdowns on Checkout:**
+
+1. **State Dropdown**
+   - Shows all available states
+   - Required selection
+
+2. **District Dropdown**
+   - Disabled until state selected
+   - Loads districts via AJAX when state changes
+   - Shows "Select State First" when disabled
+
+3. **Block Dropdown**
+   - Disabled until district selected
+   - Loads blocks via AJAX when district changes
+   - Shows "Select District First" when disabled
+
+**AJAX Loading:**
+```
+User selects State
+         ↓
+JavaScript AJAX request
+         ↓
+Server returns districts for that state
+         ↓
+District dropdown populated
+         ↓
+User selects District
+         ↓
+Blocks loaded similarly
+```
+
+### Data Storage
+
+**User Meta:**
+- `user_state` - State ID (integer)
+- `user_district` - District ID (integer)
+- `user_block` - Block ID (integer)
+- `user_address` - Full address (text)
+
+**Order Meta:**
+- Same fields stored in order for historical reference
+
+### API Endpoints
+
+**AJAX Actions:**
+- `pmpro_nbstup_get_districts` - Get districts by state ID
+- `pmpro_nbstup_get_blocks` - Get blocks by district ID
+
+**Security:**
+- Nonce verification required
+- Capability checks
+- Sanitized input/output
+
+---
+
+## Checkout Fields & Validation
+
+### Complete Field List
+
+**Section 1: PMPro User Fields (Auto-populated)**
+- Username (generated from Aadhar)
+- Email (generated as aadhar@nbstup.com)
+- Password (copied from member password)
+- Confirm Password (copied from member password)
+
+**Section 2: PMPro Billing Fields (Auto-populated)**
+- First Name (from member name - first word)
+- Last Name (from member name - remaining words)
+- Phone (from member phone)
+
+**Section 3: Member Details** ⭐
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| नाम (Name) | Text | Yes | Letters only, 2-60 chars, Unicode support |
+| फ़ोन नंबर (Phone) | Text | Yes | 10 digits, auto-formats |
+| आधार कार्ड नंबर (Aadhar) | Number | Yes | 12 digits, unique, auto-formats |
+| पिता/पति का नाम | Text | Yes | Letters only, 2-60 chars |
+| जन्म तिथि (DOB) | Date | Yes | Age 18-55, cannot be future |
+| जेंडर (Gender) | Select | Yes | Male/Female/Other |
+| रक्तदान टीम (Blood Donation) | Checkbox | No | Voluntary opt-in |
+| व्यवसाय (Occupation) | Radio | Yes | 9 predefined options |
+| Password | Password | Yes | Minimum 6 characters |
+
+**Section 4: Nominee Details** ⭐
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| Nominee 1 Name | Text | Yes | Letters only |
+| Nominee 1 Relation | Text | Yes | Min 2 chars |
+| Nominee 1 Mobile | Text | Yes | 10 digits |
+| Nominee 2 Name | Text | Yes | Letters only |
+| Nominee 2 Relation | Text | Yes | Min 2 chars |
+| Nominee 2 Mobile | Text | Yes | 10 digits |
+
+**Section 5: Address Information** ⭐
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| State | Select | Yes | Must select from dropdown |
+| District | Select | Yes | Loads based on state |
+| Block | Select | Yes | Loads based on district |
+| Address | Text | Yes | Min 5 characters |
+| Declaration | Checkbox | Yes | Must accept terms |
+
+### Field Auto-population
+
+**Smart Field Mapping:**
+```javascript
+Member Details (User Input)
+         ↓
+Auto-populates hidden PMPro fields:
+├─ Aadhar → Username & Email
+├─ Member Name → First/Last Name
+├─ Phone → Billing Phone
+└─ Password → Password & Confirm Password
+```
+
+**Benefits:**
+- Single data entry by user
+- Consistent data across system
+- Reduced errors
+- Better UX - less fields to fill
+
+### Validation Enforcement
+
+**Three Layers of Validation:**
+
+1. **JavaScript (Client-side)**
+   - Real-time validation
+   - Instant feedback
+   - Auto-formatting
+   - Best user experience
+
+2. **HTML5 (Browser native)**
+   - Required attributes
+   - Pattern matching
+   - Fallback if JS disabled
+   - Additional security layer
+
+3. **PHP (Server-side)**
+   - Final validation before processing
+   - Security enforcement
+   - Data sanitization
+   - Database protection
+
+**Cannot Submit Without:**
+- All required fields filled
+- All validations passing
+- Declaration checkbox checked
+- Valid formats (phone, Aadhar, age)
+
+---
+
+## Shortcodes
+
+### 1. Member Account Dashboard
+
+**Shortcode:** `[pmpro_account_nbstup]`
+
+**Description:** Two-column layout with navigation sidebar and content area
+
+**Features:**
+- Left sidebar navigation
+- Account overview
+- Membership status
+- Order history
+- Contribution information
+- Smooth scrolling
+
+**Usage:**
+```php
+// On account page
+[pmpro_account_nbstup]
+```
+
+### 2. Member Login Form
+
+**Shortcode:** `[pmpro_nbstup_member_login]`
+
+**Description:** Custom login form with Aadhar + Password
+
+**Parameters:**
+- `redirect` - URL to redirect after login (optional)
+
+**Features:**
+- Login with Aadhar number (12 digits)
+- Password authentication
+- "Remember me" option
+- AJAX form submission
+- Error message display
+- Validation before submission
+
+**Usage:**
+```php
+// Basic login form
+[pmpro_nbstup_member_login]
+
+// With redirect
+[pmpro_nbstup_member_login redirect="/dashboard/"]
+```
+
+### 3. Users List
+
+**Shortcode:** `[pmpro_nbstup_users_list]`
+
+**Description:** Displays all users with search, filters, and pagination
+
+**Parameters:**
+- `per_page` - Number of users per page (default: 20)
+
+**Features:**
+- Search by username, email, display name
+- Pagination controls
+- Sortable columns
+- Status badges (Active/Inactive, Paid/Unpaid)
+- Responsive table design
+
+**Displayed Columns:**
+- User ID
+- Name
+- Email
+- Username
+- Active Status
+- Deceased Status
+- Wedding Status
+- Membership Status
+- Expiry Date
+- Deceased Contribution Status
+- Wedding Contribution Status
+
+**Usage:**
+```php
+// Default
+[pmpro_nbstup_users_list]
+
+// Custom items per page
+[pmpro_nbstup_users_list per_page="50"]
+```
+
+**Example Output:**
+```
+┌─────────────────────────────────────────┐
+│ Search: [_________] [Search Button]    │
+├─────┬──────┬────────┬──────┬──────────┤
+│ ID  │ Name │ Email  │ Status│ Expiry  │
+├─────┼──────┼────────┼──────┼──────────┤
+│ 123 │ John │ j@...  │ ✓     │ 2027-01 │
+│ 124 │ Jane │ jane@..│ ✗     │ Expired │
+└─────┴──────┴────────┴──────┴──────────┘
+         « Previous | Next »
+       Showing 1-20 of 150 users
+```
+
+---
+
 ## Daughter Wedding Contribution
 
 **Feature:** Request contributions from all active members when a member has a daughter wedding. **This can be triggered multiple times** for different weddings.
@@ -387,78 +875,6 @@ Unlike deceased contributions, **wedding contributions can be requested multiple
 2. Under "Daughter Wedding Contribution" section
 3. Check "Mark contribution as paid"
 4. Click "Update Profile"
-
----
-
-## Users List Shortcode
-
-**Display all users with search and pagination on any page.**
-
-### Usage
-
-```
-[pmpro_nbstup_users_list]
-```
-
-**With custom items per page:**
-```
-[pmpro_nbstup_users_list per_page="30"]
-```
-
-### Features
-
-- **Search**: Search by username, email, or display name
-- **Pagination**: Navigate through pages with customizable items per page
-- **Responsive**: Mobile-friendly table design
-- **Sortable**: Users ordered by display name
-
-### Displayed Information
-
-| Column | Description |
-|--------|-------------|
-| ID | User ID |
-| Name | Display name |
-| Email | User email |
-| Username | Login username |
-| Active | Active/Inactive status badge |
-| Deceased | Yes/No badge |
-| Wedding | Yes/No badge |
-| Membership Status | active, renewal, expired, etc. |
-| Expiry Date | Membership expiry date |
-| Deceased Contribution | Paid/Pending/- |
-| Wedding Contribution | Paid/Pending/- |
-
-### Search Functionality
-
-- Case-insensitive wildcard search
-- Searches in: username, email, display name
-- Results count displayed
-- Clear search button
-- Preserves pagination
-
-### Status Badges
-
-**Color-coded for easy identification:**
-- **Green badges**: Active, Yes, Paid
-- **Red badges**: Inactive, No, Pending
-- **Gray**: N/A or none
-
-### Examples
-
-**On a members page:**
-```
-[pmpro_nbstup_users_list]
-```
-
-**With custom pagination:**
-```
-[pmpro_nbstup_users_list per_page="50"]
-```
-
-**In template files:**
-```php
-<?php echo do_shortcode('[pmpro_nbstup_users_list per_page="25"]'); ?>
-```
 
 ---
 
@@ -1227,19 +1643,111 @@ For detailed information, refer to plugin settings and user profiles.
 
 **Plugin Features:**
 - ✅ User activation via CSV import
+- ✅ **Automatic user activation with Razorpay payments** (NEW)
 - ✅ Membership renewal support
 - ✅ Auto-deactivation on expiry
 - ✅ Email notifications for all events
 - ✅ Deceased member handling
 - ✅ Contribution verification system
 - ✅ Contribution auto-enforcement
+- ✅ Daughter wedding contribution support
+- ✅ **Comprehensive JavaScript form validation** (NEW)
 - ✅ Checkout transaction ID collection
 - ✅ Payment receipt storage
-- ✅ Member dashboard
-- ✅ Admin controls
-- ✅ Security features
+- ✅ Hierarchical location management (State/District/Block)
+- ✅ Cascading dropdown fields with AJAX
+- ✅ Member dashboard with custom shortcode
+- ✅ Users list with search and filters
+- ✅ Custom login form with Aadhar authentication
+- ✅ Admin controls and bulk actions
+- ✅ Comprehensive contribution management interface
+- ✅ Configurable email templates
+- ✅ Security features (nonces, sanitization, capability checks)
+- ✅ Scheduled events for automation
 
-**Version:** 0.1.0  
+**Version:** 1.0.0  
 **Last Updated:** January 19, 2026  
 **Status:** Production Ready
 
+---
+
+## Recent Changes
+
+### Version 1.0.0 (January 19, 2026)
+
+**✨ New Features:**
+
+1. **Automatic User Activation for Razorpay Payments**
+   - Users are automatically activated when payment order status is "success"
+   - No need for CSV import for online payments
+   - Membership dates set automatically (start date + 1 year expiry)
+   - Order notes updated with activation status
+   - Works seamlessly with existing bank transfer CSV workflow
+
+2. **Comprehensive JavaScript Form Validation**
+   - Real-time validation on all checkout form fields (20+ validation rules)
+   - Instant feedback as users fill the form
+   - Auto-formatting for phone numbers (10 digits) and Aadhar cards (12 digits)
+   - Age validation (18-55 years)
+   - Pattern matching for names (letters only, Unicode support)
+   - Prevents form submission if any validation fails
+   - Auto-scrolls to first error field
+   - Accessible error messages with ARIA attributes
+
+**🔧 Technical Improvements:**
+- Enhanced payment processing workflow
+- Better UX with instant validation feedback
+- Reduced form submission errors
+- Improved data quality with auto-formatting
+
+---
+
+## Developer Notes
+
+### Manual Configuration Required
+
+**Address Field HTML5 Validation:**
+
+Four address fields in [includes/payment-info-fields.php](includes/payment-info-fields.php) need manual `required` attribute addition:
+
+1. **Line ~529:** `user_state` select field
+2. **Line ~555:** `user_district` select field  
+3. **Line ~576:** `user_block` select field
+4. **Line ~599:** `user_address` textarea
+
+Add `'required' => true` to the field array for each field.
+
+**Note:** JavaScript validation already enforces these fields, so this is only for HTML5 fallback support.
+
+### Build Process
+
+**JavaScript Compilation:**
+```powershell
+# Install dependencies
+npm install
+
+# Compile assets (SCSS + JS)
+gulp scripts
+
+# Watch for changes during development
+gulp watch
+```
+
+**Source Files:**
+- JavaScript: `assets/script/frontend.js` → Compiles to → `assets/js/frontend.js`
+- Styles: `assets/scss/frontend.scss` → Compiles to → `assets/css/frontend.css`
+
+### Key Functions Added
+
+**Auto-Activation Function:**
+- `pmpronbstup_auto_activate_user_after_payment()` in [includes/payment-info-fields.php](includes/payment-info-fields.php)
+- Hooked to: `pmpro_after_checkout` (priority 5)
+- Activates user when order status is 'success'
+
+**JavaScript Validation:**
+- `validateField()` function with 20+ custom validation rules
+- Real-time event handlers on blur/change
+- Form submit prevention with error scrolling
+- See [assets/script/frontend.js](assets/script/frontend.js) for implementation details
+
+---
