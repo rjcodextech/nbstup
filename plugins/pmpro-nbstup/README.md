@@ -116,8 +116,21 @@ Configurable templates for:
 
 ### 12. Authentication and Access Control
 - Validates member login restrictions by status.
-- Blocks inappropriate login paths.
+- Blocks inappropriate login paths with safe logout passthrough.
 - Supports Aadhar-based authentication flow where configured.
+- Disables default wp-login.php while allowing logout action.
+
+### 13. Unique Member ID Generation
+- Auto-generates unique ID for each member: `NBST` + Last 4 digits of Aadhar card.
+- Example: Member with Aadhar ending in 1234 gets ID `NBST1234`.
+- Handles collisions with numeric suffix: `NBST1234-1`, `NBST1234-2`, etc.
+- Assigned during checkout, CSV import, and user activation.
+- Stored in `pmpronbstup_unique_id` user meta.
+
+### 14. Members List CSV Export
+- Export members list with custom columns (State, District, Block, Address).
+- Proper callback functions for data retrieval and formatting.
+- Integrates with PMPro's built-in member list functionality.
 
 ---
 
@@ -149,6 +162,12 @@ Configurable templates for:
 4. Verified users are reactivated if eligible.
 5. Overdue logic applies through scheduled checks.
 
+### E. Logout Flow
+1. User clicks logout link (wp-login.php?action=logout).
+2. Plugin allows this specific action to pass through (not redirected).
+3. WordPress handles logout normally.
+4. User is logged out and redirected appropriately.
+
 ---
 
 ## Scheduled Automation
@@ -170,6 +189,7 @@ Membership/meta examples:
 - Active flag.
 - Deceased and wedding flags/dates.
 - Membership start/expiry/renewal status.
+- Unique member ID (NBST+Last 4 Aadhar digits).
 
 Contribution/meta examples:
 - Required flags.
@@ -212,9 +232,13 @@ Current scope:
 
 ---
 
-## Current Sync Notes
+## Current Sync Notes (March 2026)
 
-This README is synchronized with the current plugin state where:
+This README is synchronized with the current plugin state:
 - Checkout does not include bank transaction or receipt fields.
 - Bank fields are handled in contribution context and CSV matching workflows.
 - PMPro member User Info custom section excludes bank fields.
+- **Logout functionality** allows wp-login.php?action=logout to proceed without redirection.
+- **Unique ID system** generates NBST+Last4Aadhar format for each member.
+- **CSV export** includes State, District, Block, and Address columns with proper callbacks.
+- Aadhar-based member authentication is fully functional.

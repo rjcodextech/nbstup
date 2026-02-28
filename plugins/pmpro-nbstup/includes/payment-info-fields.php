@@ -1335,20 +1335,70 @@ function pmpro_show_address_in_admin( $order ) {
 
 /**
  * Add custom columns to Members List
+ * 
+ * For CSV export: Return array of column names with callback functions
  */
 add_filter( 'pmpro_members_list_csv_extra_columns', 'pmpro_nbstup_add_members_list_columns' );
-add_filter( 'pmpro_memberslist_extra_cols_header', 'pmpro_nbstup_add_members_list_columns' );
+add_filter( 'pmpro_memberslist_extra_cols_header', 'pmpro_nbstup_add_members_list_columns_header' );
 function pmpro_nbstup_add_members_list_columns( $columns ) {
-	// Ensure $columns is an array
+	// For CSV export, return associative array with callback functions
 	if ( ! is_array( $columns ) ) {
 		$columns = array();
 	}
 	
-	$columns['state']          = 'State';
-	$columns['district']       = 'District';
-	$columns['block']          = 'Block';
-	$columns['address']        = 'Address';
+	$columns['state']          = 'pmpro_nbstup_csv_get_state_name';
+	$columns['district']       = 'pmpro_nbstup_csv_get_district_name';
+	$columns['block']          = 'pmpro_nbstup_csv_get_block_name';
+	$columns['address']        = 'pmpro_nbstup_csv_get_address';
 	return $columns;
+}
+
+function pmpro_nbstup_add_members_list_columns_header( $columns ) {
+	// For HTML display, return associative array with display names
+	if ( ! is_array( $columns ) ) {
+		$columns = array();
+	}
+	
+	$columns['state']          = __( 'State', 'pmpro-nbstup' );
+	$columns['district']       = __( 'District', 'pmpro-nbstup' );
+	$columns['block']          = __( 'Block', 'pmpro-nbstup' );
+	$columns['address']        = __( 'Address', 'pmpro-nbstup' );
+	return $columns;
+}
+
+/**
+ * Callback functions for CSV column values
+ */
+function pmpro_nbstup_csv_get_state_name( $user ) {
+	$user_id = is_object( $user ) ? $user->ID : $user;
+	$state_id = get_user_meta( $user_id, 'user_state', true );
+	if ( ! $state_id || ! function_exists( 'pmpro_nbstup_get_state_name' ) ) {
+		return '';
+	}
+	return pmpro_nbstup_get_state_name( $state_id );
+}
+
+function pmpro_nbstup_csv_get_district_name( $user ) {
+	$user_id = is_object( $user ) ? $user->ID : $user;
+	$district_id = get_user_meta( $user_id, 'user_district', true );
+	if ( ! $district_id || ! function_exists( 'pmpro_nbstup_get_district_name' ) ) {
+		return '';
+	}
+	return pmpro_nbstup_get_district_name( $district_id );
+}
+
+function pmpro_nbstup_csv_get_block_name( $user ) {
+	$user_id = is_object( $user ) ? $user->ID : $user;
+	$block_id = get_user_meta( $user_id, 'user_block', true );
+	if ( ! $block_id || ! function_exists( 'pmpro_nbstup_get_block_name' ) ) {
+		return '';
+	}
+	return pmpro_nbstup_get_block_name( $block_id );
+}
+
+function pmpro_nbstup_csv_get_address( $user ) {
+	$user_id = is_object( $user ) ? $user->ID : $user;
+	return get_user_meta( $user_id, 'user_address', true );
 }
 
 /**
