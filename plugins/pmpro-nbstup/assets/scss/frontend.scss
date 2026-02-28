@@ -321,7 +321,7 @@ $breakpoint-sm: 480px;
 .pmpro-nbstup-search-form {
   @include card; // use card mixin for consistent look
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; // keep dropdowns and button on a single line
   gap: 12px; // slightly more breathing room
   align-items: center;
   padding: 12px 20px;
@@ -379,70 +379,7 @@ $breakpoint-sm: 480px;
     @include button-secondary;
   }
 
-  button:hover {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb);
-    border-color: #1d4ed8;
-  }
-
-  .button:hover {
-    background: #f3f4f6;
-  }
-
-  button:active,
-  .button:active {
-    transform: translateY(1px);
-  }
-}
-
-// filter summary notice
-.pmpro-nbstup-filter-summary {
-  margin-bottom: 20px;
-  padding: 12px;
-  background: #e7f3ff;
-  border-left: 4px solid #007cba;
-  border-radius: 4px;
-}
-
-  select {
-    padding: 10px 12px;
-    padding-right: 36px; // space for arrow
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236b7280' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 12px center;
-    font-size: 14px;
-    cursor: pointer;
-    min-width: 180px;
-    appearance: none;
-    -webkit-appearance: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-    &:hover:not(:disabled),
-    &:focus {
-      border-color: #007cba;
-      box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
-      outline: none;
-    }
-
-    &:disabled {
-      background-color: #f5f5f5;
-      color: #999;
-      cursor: not-allowed;
-    }
-  }
-
-  button,
-  .button {
-    @include button-base;
-    @include button-primary;
-    padding: 6px 18px;
-    border-radius: 8px;
-    min-width: 100px;
-    text-align: center;
-  }
-
-  .button {
-    @include button-secondary;
-  }
+  // ensure selects and buttons stay on one line by default (nowrap above)
 
   button:hover {
     background: linear-gradient(135deg, #1d4ed8, #2563eb);
@@ -459,12 +396,15 @@ $breakpoint-sm: 480px;
   }
 }
 
+// small screens: allow wrapping so form doesn’t overflow
 @media (max-width: 600px) {
   .pmpro-nbstup-search-form {
+    flex-wrap: wrap;
     padding: 10px;
 
-    input[type="text"] {
-      flex-basis: 100%;
+    select {
+      flex: 1 1 100%;
+      min-width: auto;
     }
 
     button,
@@ -475,152 +415,13 @@ $breakpoint-sm: 480px;
   }
 }
 
-.pmpro-nbstup-users-table {
-  width: 100%;
-  border-collapse: collapse;
+// filter summary notice
+.pmpro-nbstup-filter-summary {
   margin-bottom: 20px;
-  background: $color-white;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid $color-gray-200;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-
-  th,
-  td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-    color: $color-gray-700;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  tr:hover {
-    background-color: #f0f0f0;
-  }
-}
-
-.pmpro-nbstup-pagination {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  a,
-  span {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    text-decoration: none;
-    border-radius: 8px;
-  }
-
-  a:hover {
-    background-color: #f0f0f0;
-  }
-
-  .current {
-    background-color: #0073aa;
-    color: white;
-    border-color: #0073aa;
-  }
-}
-
-.pmpro-nbstup-pagination-summary {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.status-active,
-.status-yes {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-inactive,
-.status-no {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-// ============================================================================
-// Contributions Admin Page Styles
-// ============================================================================
-
-.pmpro-nbstup-contrib-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.pmpro-nbstup-contrib-stat {
-  background: #fff;
-  border-left: 4px solid #2271b1;
-  padding: 15px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  border-radius: $radius-md;
-
-  &.is-danger {
-    border-left-color: #d63638;
-  }
-
-  &.is-success {
-    border-left-color: #00a32a;
-  }
-}
-
-.pmpro-nbstup-contrib-stat-value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2271b1;
-
-  &.is-danger {
-    color: #d63638;
-  }
-
-  &.is-success {
-    color: #00a32a;
-  }
-}
-
-.pmpro-nbstup-contrib-stat-label {
-  color: #646970;
-}
-
-.pmpro-nbstup-contrib-filters {
-  background: #fff;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: $radius-md;
-  border: 1px solid $color-gray-200;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-
-.pmpro-nbstup-contrib-filters-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.pmpro-nbstup-contrib-filter-select {
-  min-width: 150px;
+  padding: 12px;
+  background: #e7f3ff;
+  border-left: 4px solid #007cba;
+  border-radius: 4px;
 }
 
 .pmpro-nbstup-contrib-filter-search {
