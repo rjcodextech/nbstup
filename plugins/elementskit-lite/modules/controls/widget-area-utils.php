@@ -57,10 +57,13 @@ class Widget_Area_Utils {
 		?>
 
 		<div class="widgetarea_warper widgetarea_warper_editable" data-elementskit-widgetarea-key="<?php echo esc_attr( $extract_key ); ?>"  data-elementskit-widgetarea-index="<?php echo esc_attr( $tab_id ); ?>">
-			<div class="widgetarea_warper_edit" data-elementskit-widgetarea-key="<?php echo esc_attr( $extract_key ); ?>" data-elementskit-widgetarea-index="<?php echo esc_attr( $tab_id ); ?>">
-				<i class="eicon-edit" aria-hidden="true"></i>
-				<span><?php esc_html_e( 'Edit Content', 'elementskit-lite' ); ?></span>
-			</div>
+			
+			<?php if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) : ?>
+				<div class="widgetarea_warper_edit" data-elementskit-widgetarea-key="<?php echo esc_attr( $extract_key ); ?>" data-elementskit-widgetarea-index="<?php echo esc_attr( $tab_id ); ?>">
+					<i class="eicon-edit" aria-hidden="true"></i>
+					<span><?php esc_html_e( 'Edit Content', 'elementskit-lite' ); ?></span>
+				</div>
+			<?php endif; ?>
 
 			<?php
 				$builder_post_title = 'dynamic-content-widget-' . $extract_key . '-' . $tab_id;

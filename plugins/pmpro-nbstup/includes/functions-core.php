@@ -1367,6 +1367,15 @@ function pmpronbstup_users_list_shortcode($atts)
     }
 
     $meta_query = array();
+    
+    // Filter for active members only
+    $meta_query[] = array(
+        'key' => 'pmpronbstup_active',
+        'value' => '1',
+        'compare' => '=',
+        'type' => 'NUMERIC',
+    );
+    
     if ($selected_state > 0) {
         $meta_query[] = array(
             'key' => 'user_state',
@@ -1406,7 +1415,7 @@ function pmpronbstup_users_list_shortcode($atts)
     ob_start();
     ?>
     <div class="pmpro-nbstup-users-list">
-        <!-- Search Form -->
+        <!-- Filter Form -->
         <form method="get" class="pmpro-nbstup-search-form">
             <?php
             // Preserve all GET parameters except pagination/filter controls.
@@ -1422,7 +1431,6 @@ function pmpronbstup_users_list_shortcode($atts)
                 }
             }
             ?>
-            <input type="text" name="user_search" placeholder="<?php esc_attr_e('Search users by name, email, or username...', 'pmpro-nbstup'); ?>" value="<?php echo esc_attr($search); ?>" />
             <select id="user_state" name="user_state">
                 <option value=""><?php esc_html_e('All States', 'pmpro-nbstup'); ?></option>
                 <?php foreach ($states as $state) : ?>
@@ -1455,22 +1463,16 @@ function pmpronbstup_users_list_shortcode($atts)
                     <?php endforeach; ?>
                 <?php endif; ?>
             </select>
-            <button type="submit"><?php esc_html_e('Search', 'pmpro-nbstup'); ?></button>
-            <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
-                <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_state', 'user_district', 'user_block', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear', 'pmpro-nbstup'); ?></a>
+            <button type="submit"><?php esc_html_e('Filter', 'pmpro-nbstup'); ?></button>
+            <?php if ($selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+                <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_state', 'user_district', 'user_block', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear Filters', 'pmpro-nbstup'); ?></a>
             <?php endif; ?>
         </form>
 
-        <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
-            <p>
+        <?php if ($selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+            <p class="pmpro-nbstup-filter-summary">
                 <strong>
-                    <?php
-                    if (!empty($search)) {
-                        printf(__('Search results for: %s', 'pmpro-nbstup'), esc_html($search));
-                    } else {
-                        esc_html_e('Filtered results', 'pmpro-nbstup');
-                    }
-                    ?>
+                    <?php esc_html_e('Filtered results', 'pmpro-nbstup'); ?>
                 </strong>
                 (<?php printf(__('%d users found', 'pmpro-nbstup'), $total_users); ?>)
             </p>

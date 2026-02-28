@@ -429,4 +429,36 @@ class Utils {
 	public static function remove_special_chars($string) {
 		return preg_replace('/[^A-Za-z0-9 ]/', '', $string);
 	}
+
+	/**
+	 * Check whether a specific plugin is active.
+	 *
+	 * Works for both single-site and multisite installations
+	 * (including network-activated plugins).
+	 *
+	 * @since 3.7.8
+	 *
+	 * @param string $plugin_file Plugin file path relative to the plugins directory.
+	 *                            Example: 'elementskit/elementskit.php'.
+	 *
+	 * @return bool True if the plugin is active, false otherwise.
+	 */
+	public static function ekit_is_plugin_active( string $plugin_file ): bool {
+		$active_plugins = (array) apply_filters(
+			'active_plugins',
+			get_option( 'active_plugins', [] )
+		);
+
+		// Include network-activated plugins for multisite installs.
+		if ( is_multisite() ) {
+			$network_plugins = array_keys(
+				(array) get_site_option( 'active_sitewide_plugins', [] )
+			);
+
+			$active_plugins = array_merge( $active_plugins, $network_plugins );
+		}
+
+		return in_array( $plugin_file, $active_plugins, true );
+	}
+
 }

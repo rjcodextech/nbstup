@@ -25,6 +25,11 @@ abstract class Config_List {
 			return ( $this->{$data . '_list'}[ $module ] ?? false );
 		}
 
+		// Return all items including pro-disabled for promotion purposes
+		if ( $data === 'all' ) {
+			return $this->full_list;
+		}
+
 		return $this->{$data . '_list'};
 	}
 

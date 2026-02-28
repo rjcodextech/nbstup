@@ -59,9 +59,6 @@
 		}
 
 		?>
-		<a target="_blank" href="https://wpmet.com/plugin/<?php echo esc_attr( $slug ) . esc_attr( $value ); ?>/" class="ekit-admin-demo-tooltip">
-			<i class="fa fa-laptop"></i>
-			<?php esc_html_e( 'View Demo', 'elementskit-lite' ); ?>
-		</a>
+		<a target="_blank" href="https://wpmet.com/plugin/<?php echo esc_attr( $slug ) . esc_attr( $value ); ?>/" class="ekit-admin-demo-tooltip"><?php esc_html_e( 'Live Demo', 'elementskit-lite' ); ?></a>
 	<?php endif; ?>
 </div>
