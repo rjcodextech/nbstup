@@ -217,11 +217,11 @@ function pmpronbstup_get_first_user_meta($user_id, $keys)
 }
 
 /**
- * Assign a 6-digit unique serial ID to a user (only once).
- * Sequential without gaps when assigned.
+ * Assign a unique member ID to a user based on Aadhar number.
+ * Format: NBST+Last 4 digits of Aadhar card (only assigned once).
  *
  * @param int $user_id User ID
- * @return string|false Unique ID or false on failure
+ * @return string|false Unique ID in format NBST+XXXX or false on failure
  */
 function pmpronbstup_assign_unique_id($user_id)
 {
@@ -230,37 +230,58 @@ function pmpronbstup_assign_unique_id($user_id)
         return $existing;
     }
 
-    $last = (int) get_option('pmpronbstup_unique_id_last', 0);
-    $tries = 0;
+    // Get the Aadhar number from user meta
+    $aadhar = get_user_meta($user_id, 'aadhar_number', true);
+    if (empty($aadhar)) {
+        return false; // Cannot assign ID without Aadhar number
+    }
 
+    // Extract last 4 digits of Aadhar
+    $aadhar_clean = preg_replace('/\D+/', '', $aadhar);
+    if (strlen($aadhar_clean) < 4) {
+        return false; // Invalid Aadhar format
+    }
+
+    $last_four = substr($aadhar_clean, -4);
+    $candidate = 'NBST' . $last_four;
+
+    // Verify uniqueness - in case two users somehow have same last 4 digits,
+    // append a numeric suffix to ensure uniqueness
     global $wpdb;
+    $existing_user = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+            'pmpronbstup_unique_id',
+            $candidate
+        )
+    );
 
-    do {
-        $next = $last + 1;
-        $candidate = sprintf('%06d', $next);
+    if (! empty($existing_user)) {
+        // ID already taken, append a numeric suffix
+        $suffix = 1;
+        $tries = 0;
+        do {
+            $candidate = 'NBST' . $last_four . '-' . $suffix;
+            $existing_user = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+                    'pmpronbstup_unique_id',
+                    $candidate
+                )
+            );
+            if (empty($existing_user)) {
+                break;
+            }
+            $suffix++;
+            $tries++;
+        } while ($tries < 100);
 
-        $existing_user = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
-                'pmpronbstup_unique_id',
-                $candidate
-            )
-        );
-
-        if (empty($existing_user)) {
-            break;
+        if ($tries >= 100) {
+            return false;
         }
-
-        $last = $next;
-        $tries++;
-    } while ($tries < 1000);
-
-    if ($tries >= 1000) {
-        return false;
     }
 
     update_user_meta($user_id, 'pmpronbstup_unique_id', $candidate);
-    update_option('pmpronbstup_unique_id_last', $next);
 
     return $candidate;
 }
@@ -323,6 +344,9 @@ function pmpronbstup_reactivate_user_if_eligible($user_id, $reason = '')
     if (! $was_active) {
         $log_reason = ! empty($reason) ? $reason : __('Eligibility checks passed after contribution verification', 'pmpro-nbstup');
         pmpronbstup_log_reactivation_event($user_id, $log_reason);
+
+        // Ensure user has a unique ID assigned
+        pmpronbstup_assign_unique_id($user_id);
     }
 
     return true;
@@ -632,6 +656,13 @@ function pmpronbstup_account_two_column_shortcode()
  * Shortcode: Member login with Aadhar + Password
  * Usage: [pmpro_nbstup_member_login redirect="/account/"]
  */
+/**
+ * Shortcode: [pmpro_nbstup_member_login]
+ * Renders ONLY the member login form (no admin tab)
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string
+ */
 function pmpronbstup_member_login_shortcode( $atts )
 {
     if ( is_user_logged_in() ) {
@@ -641,133 +672,147 @@ function pmpronbstup_member_login_shortcode( $atts )
 
     $atts = shortcode_atts(
         array(
-            'redirect'       => '',
-            'admin_redirect' => '',
+            'redirect' => '',
         ),
         $atts,
         'pmpro_nbstup_member_login'
     );
 
     $member_redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : '';
-    $admin_redirect = ! empty( $atts['admin_redirect'] ) ? $atts['admin_redirect'] : '';
 
     ob_start();
     ?>
-    <div class="pmpro-nbstup-member-login pmpro-nbstup-login-tabs" data-login-tabs>
-        <div class="pmpro-nbstup-login-tabs__header" role="tablist" aria-label="<?php esc_attr_e( 'Login tabs', 'pmpro-nbstup' ); ?>">
-            <button type="button" class="pmpro-nbstup-login-tab is-active" data-tab="member" role="tab" aria-selected="true" aria-controls="pmpro-nbstup-login-panel-member" id="pmpro-nbstup-login-tab-member">
-                <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
-            </button>
-            <button type="button" class="pmpro-nbstup-login-tab" data-tab="admin" role="tab" aria-selected="false" aria-controls="pmpro-nbstup-login-panel-admin" id="pmpro-nbstup-login-tab-admin">
-                <?php esc_html_e( 'Admin Login', 'pmpro-nbstup' ); ?>
-            </button>
-        </div>
+    <div class="pmpro-nbstup-member-login">
+        <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
 
-        <div class="pmpro-nbstup-login-panel is-active" data-panel="member" role="tabpanel" id="pmpro-nbstup-login-panel-member" aria-labelledby="pmpro-nbstup-login-tab-member">
-            <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
+        <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="member" data-redirect="<?php echo esc_attr( $member_redirect ); ?>">
+            <div class="pmpro-nbstup-member-login__header">
+                <h2 class="pmpro-nbstup-member-login__title">
+                    <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
+                </h2>
+                <p class="pmpro-nbstup-member-login__subtitle">
+                    <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
+                </p>
+            </div>
 
-            <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="member" data-redirect="<?php echo esc_attr( $member_redirect ); ?>">
-                <div class="pmpro-nbstup-member-login__header">
-                    <h2 class="pmpro-nbstup-member-login__title">
-                        <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
-                    </h2>
-                    <p class="pmpro-nbstup-member-login__subtitle">
-                        <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
-                    </p>
-                </div>
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="text"
+                    id="pmpro_nbstup_aadhar_number"
+                    name="aadhar_number"
+                    class="pmpro-nbstup-member-login__input"
+                    inputmode="numeric"
+                    autocomplete="username"
+                    required
+                />
+            </div>
 
-                <div class="pmpro-nbstup-member-login__field">
-                    <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
-                        <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
-                    </label>
-                    <input
-                        type="text"
-                        id="pmpro_nbstup_aadhar_number"
-                        name="aadhar_number"
-                        class="pmpro-nbstup-member-login__input"
-                        inputmode="numeric"
-                        autocomplete="username"
-                        required
-                    />
-                </div>
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="password"
+                    id="pmpro_nbstup_member_password"
+                    name="member_password"
+                    class="pmpro-nbstup-member-login__input"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
 
-                <div class="pmpro-nbstup-member-login__field">
-                    <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
-                        <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
-                    </label>
-                    <input
-                        type="password"
-                        id="pmpro_nbstup_member_password"
-                        name="member_password"
-                        class="pmpro-nbstup-member-login__input"
-                        autocomplete="current-password"
-                        required
-                    />
-                </div>
+            <div class="pmpro-nbstup-member-login__actions">
+                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+    <?php
 
-                <div class="pmpro-nbstup-member-login__actions">
-                    <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
-                        <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
-                    </button>
-                </div>
-            </form>
-        </div>
+    return ob_get_clean();
+}
 
-        <div class="pmpro-nbstup-login-panel" data-panel="admin" role="tabpanel" id="pmpro-nbstup-login-panel-admin" aria-labelledby="pmpro-nbstup-login-tab-admin">
-            <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
+/**
+ * Shortcode: [pmpro_nbstup_admin_login]
+ * Renders ONLY the admin login form
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string
+ */
+function pmpronbstup_admin_login_shortcode( $atts )
+{
+    if ( is_user_logged_in() ) {
+        return '<p>' . esc_html__( 'You are already logged in.', 'pmpro-nbstup' ) . '</p>';
+    }
 
-            <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="admin" data-redirect="<?php echo esc_attr( $admin_redirect ); ?>">
-                <div class="pmpro-nbstup-member-login__header">
-                    <h2 class="pmpro-nbstup-member-login__title">
-                        <?php esc_html_e( 'Admin Login', 'pmpro-nbstup' ); ?>
-                    </h2>
-                    <p class="pmpro-nbstup-member-login__subtitle">
-                        <?php esc_html_e( 'Login with your WordPress username or email.', 'pmpro-nbstup' ); ?>
-                    </p>
-                </div>
+    $atts = shortcode_atts(
+        array(
+            'redirect' => '',
+        ),
+        $atts,
+        'pmpro_nbstup_admin_login'
+    );
 
-                <div class="pmpro-nbstup-member-login__field">
-                    <label for="pmpro_nbstup_admin_login" class="pmpro-nbstup-member-login__label">
-                        <?php esc_html_e( 'Username or Email', 'pmpro-nbstup' ); ?>
-                    </label>
-                    <input
-                        type="text"
-                        id="pmpro_nbstup_admin_login"
-                        name="user_login"
-                        class="pmpro-nbstup-member-login__input"
-                        autocomplete="username"
-                        required
-                    />
-                </div>
+    $admin_redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : '';
 
-                <div class="pmpro-nbstup-member-login__field">
-                    <label for="pmpro_nbstup_admin_password" class="pmpro-nbstup-member-login__label">
-                        <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
-                    </label>
-                    <input
-                        type="password"
-                        id="pmpro_nbstup_admin_password"
-                        name="user_password"
-                        class="pmpro-nbstup-member-login__input"
-                        autocomplete="current-password"
-                        required
-                    />
-                </div>
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-admin-login">
+        <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
 
-                <div class="pmpro-nbstup-member-login__field pmpro-nbstup-login__checkbox">
+        <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="admin" data-redirect="<?php echo esc_attr( $admin_redirect ); ?>">
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_admin_login" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Email or Username', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="text"
+                    id="pmpro_nbstup_admin_login"
+                    name="user_login"
+                    class="pmpro-nbstup-member-login__input"
+                    placeholder="<?php esc_attr_e( 'Email or Username', 'pmpro-nbstup' ); ?>"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_admin_password" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="password"
+                    id="pmpro_nbstup_admin_password"
+                    name="user_password"
+                    class="pmpro-nbstup-member-login__input"
+                    placeholder="<?php esc_attr_e( 'Enter your password', 'pmpro-nbstup' ); ?>"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+
+            <div class="admin-login-actions-row">
+                <div class="admin-login-remember">
+                    <input type="checkbox" id="pmpro_nbstup_admin_remember" name="remember" value="1" />
                     <label for="pmpro_nbstup_admin_remember">
-                        <input type="checkbox" id="pmpro_nbstup_admin_remember" name="remember" value="1" />
                         <?php esc_html_e( 'Remember me', 'pmpro-nbstup' ); ?>
                     </label>
                 </div>
+                <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" class="admin-login-forgot">
+                    <?php esc_html_e( 'Forgot Password?', 'pmpro-nbstup' ); ?>
+                </a>
+            </div>
 
-                <div class="pmpro-nbstup-member-login__actions">
-                    <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
-                        <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="pmpro-nbstup-member-login__actions">
+                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                </button>
+            </div>
+        </form>
     </div>
     <?php
 
@@ -861,6 +906,7 @@ function pmpronbstup_render_deceased_members_list()
 
 add_shortcode('pmpro_account_nbstup', 'pmpronbstup_account_two_column_shortcode');
 add_shortcode('pmpro_nbstup_member_login', 'pmpronbstup_member_login_shortcode');
+add_shortcode('pmpro_nbstup_admin_login', 'pmpronbstup_admin_login_shortcode');
 
 /**
  * Migrate existing active users to have membership expiry dates
@@ -883,6 +929,9 @@ function pmpronbstup_migrate_existing_users()
             update_user_meta($user->ID, 'pmpronbstup_membership_start_date', date('Y-m-d'));
             update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'active');
         }
+
+        // Assign unique ID to existing users if not already assigned
+        pmpronbstup_assign_unique_id($user->ID);
     }
 }
 

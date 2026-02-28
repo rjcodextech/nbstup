@@ -241,33 +241,37 @@ jQuery(document).ready(function ($) {
     syncFromMemberDetails();
   }
 
+  // Handle login tabs if they exist (legacy support)
   var $containers = $('.pmpro-nbstup-login-tabs');
-  if (!$containers.length || typeof pmpro_nbstup_data === 'undefined') {
-    return;
+  if ($containers.length && typeof pmpro_nbstup_data !== 'undefined') {
+    $containers.each(function () {
+      var $container = $(this);
+      $container.find('.pmpro-nbstup-login-panel').not('.is-active').attr('hidden', true);
+
+      $container.on('click', '.pmpro-nbstup-login-tab', function () {
+        var $tab = $(this);
+        var target = $tab.data('tab');
+        $container.find('.pmpro-nbstup-login-tab')
+          .removeClass('is-active')
+          .attr('aria-selected', 'false');
+        $tab.addClass('is-active').attr('aria-selected', 'true');
+
+        $container.find('.pmpro-nbstup-login-panel')
+          .removeClass('is-active')
+          .attr('hidden', true);
+
+        var $panel = $container.find('.pmpro-nbstup-login-panel[data-panel="' + target + '"]');
+        $panel.addClass('is-active').removeAttr('hidden');
+        $panel.find('.pmpro-nbstup-login-message').attr('hidden', true).text('');
+        clearFieldErrors($panel.find('.pmpro-nbstup-login-form'));
+      });
+    });
   }
 
-  $containers.each(function () {
-    var $container = $(this);
-    $container.find('.pmpro-nbstup-login-panel').not('.is-active').attr('hidden', true);
-
-    $container.on('click', '.pmpro-nbstup-login-tab', function () {
-      var $tab = $(this);
-      var target = $tab.data('tab');
-      $container.find('.pmpro-nbstup-login-tab')
-        .removeClass('is-active')
-        .attr('aria-selected', 'false');
-      $tab.addClass('is-active').attr('aria-selected', 'true');
-
-      $container.find('.pmpro-nbstup-login-panel')
-        .removeClass('is-active')
-        .attr('hidden', true);
-
-      var $panel = $container.find('.pmpro-nbstup-login-panel[data-panel="' + target + '"]');
-      $panel.addClass('is-active').removeAttr('hidden');
-      $panel.find('.pmpro-nbstup-login-message').attr('hidden', true).text('');
-      clearFieldErrors($panel.find('.pmpro-nbstup-login-form'));
-    });
-  });
+  // Only continue if we have login form data available
+  if (typeof pmpro_nbstup_data === 'undefined') {
+    return;
+  }
 
   function showMessage($form, message) {
     var $message = $form.closest('.pmpro-nbstup-login-panel').find('.pmpro-nbstup-login-message');

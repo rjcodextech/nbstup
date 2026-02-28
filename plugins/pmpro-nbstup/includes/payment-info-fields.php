@@ -723,6 +723,9 @@ function pmpro_save_member_details_fields( $user_id, $order ) {
 			)
 		);
 	}
+
+	// Assign unique ID based on Aadhar number (if not already assigned)
+	pmpronbstup_assign_unique_id( $user_id );
 }
 
 /**
