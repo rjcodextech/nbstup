@@ -1360,12 +1360,12 @@ function pmpronbstup_users_list_shortcode($atts)
 {
     // Parse shortcode attributes
     $atts = shortcode_atts(array(
-        'per_page' => 20,
+        'per_page' => 100,
     ), $atts, 'pmpro_nbstup_users_list');
 
     $per_page = intval($atts['per_page']);
     if ($per_page < 1) {
-        $per_page = 20;
+        $per_page = 100;
     }
 
     // Get current page
