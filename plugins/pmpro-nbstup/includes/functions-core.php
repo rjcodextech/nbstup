@@ -46,6 +46,8 @@ function pmpronbstup_enqueue_frontend_assets()
             'ajax_nonce'    => wp_create_nonce( 'pmpro_nbstup_ajax' ),
             'login_nonce'   => wp_create_nonce( 'pmpro_nbstup_login' ),
             'generic_error' => esc_html__( 'Login failed. Please try again.', 'pmpro-nbstup' ),
+            'search_loading' => esc_html__( 'Loading members...', 'pmpro-nbstup' ),
+            'search_error'   => esc_html__( 'Unable to load members right now. Please try again.', 'pmpro-nbstup' ),
             'validation_message'       => esc_html__( 'Please fix the highlighted fields and try again.', 'pmpro-nbstup' ),
             'validation_login'         => esc_html__( 'Please enter your username or email.', 'pmpro-nbstup' ),
             'validation_password'      => esc_html__( 'Please enter your password.', 'pmpro-nbstup' ),
@@ -827,78 +829,29 @@ function pmpronbstup_admin_login_shortcode( $atts )
 function pmpronbstup_render_deceased_members_list()
 {
     $paged = isset($_GET['paged']) ? max(1, (int) $_GET['paged']) : 1;
-    $per_page = 10;
-
-    $query = new WP_User_Query(array(
-        'meta_query' => array(
-            array(
-                'key' => 'pmpronbstup_deceased',
-                'value' => '1',
-                'compare' => '='
-            )
-        ),
-        'number' => $per_page,
-        'offset' => ($paged - 1) * $per_page,
-        'orderby' => 'display_name',
-        'order' => 'ASC'
-    ));
-
-    $users = $query->get_results();
-    $total_users = $query->get_total();
-    $total_pages = ceil($total_users / $per_page);
+    $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+    $data = pmpronbstup_get_deceased_members_data( $search, $paged, 10 );
 
     ob_start();
     ?>
     <strong><?php esc_html_e('Deceased Members - Pay Contribution', 'pmpro-nbstup'); ?></strong>
-    <?php if (empty($users)) : ?>
-        <p><?php esc_html_e('No deceased members found.', 'pmpro-nbstup'); ?></p>
-    <?php else : ?>
-        <table class="pmpro-nbstup-deceased-table">
-            <thead>
-                <tr>
-                    <th><?php esc_html_e('Avatar', 'pmpro-nbstup'); ?></th>
-                    <th><?php esc_html_e('Display Name', 'pmpro-nbstup'); ?></th>
-                    <th><?php esc_html_e('Date of Death', 'pmpro-nbstup'); ?></th>
-                    <th><?php esc_html_e('Action', 'pmpro-nbstup'); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user) : ?>
-                    <tr>
-                        <td><?php echo get_avatar($user->ID, 32); ?></td>
-                        <td><?php echo esc_html($user->display_name); ?></td>
-                        <td>
-                            <?php
-                            $date = get_user_meta($user->ID, 'pmpronbstup_deceased_date', true);
-                            if (! empty($date)) {
-                                echo esc_html(date_i18n(get_option('date_format'), strtotime($date)));
-                            } else {
-                                esc_html_e('N/A', 'pmpro-nbstup');
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <a href="<?php echo esc_url(pmpro_url('checkout') . '?level=1&contribution_for=' . $user->ID); ?>" class="button">
-                                <?php esc_html_e('Pay your contribution', 'pmpro-nbstup'); ?>
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+    <form method="get" class="pmpro-nbstup-search-form" data-ajax="1">
+        <input type="hidden" name="view" value="contribution" />
+        <input
+            type="search"
+            name="s"
+            value="<?php echo esc_attr( $search ); ?>"
+            placeholder="<?php esc_attr_e( 'Search by member ID, name, email or username', 'pmpro-nbstup' ); ?>"
+            aria-label="<?php esc_attr_e( 'Search members', 'pmpro-nbstup' ); ?>"
+        />
+        <button type="submit"><?php esc_html_e( 'Search', 'pmpro-nbstup' ); ?></button>
+        <span class="pmpro-nbstup-search-loading" data-search-loading hidden><?php esc_html_e( 'Loading members...', 'pmpro-nbstup' ); ?></span>
+        <a href="<?php echo esc_url( pmpro_url( 'account' ) . '?view=contribution' ); ?>" class="button"><?php esc_html_e( 'Reset', 'pmpro-nbstup' ); ?></a>
+    </form>
 
-        <?php if ($total_pages > 1) : ?>
-            <div class="pmpro-nbstup-pagination">
-                <?php if ($paged > 1) : ?>
-                    <a href="?view=contribution&paged=<?php echo $paged - 1; ?>" class="button"><?php esc_html_e('Previous', 'pmpro-nbstup'); ?></a>
-                <?php endif; ?>
-                <span><?php printf(__('Page %d of %d', 'pmpro-nbstup'), $paged, $total_pages); ?></span>
-                <?php if ($paged < $total_pages) : ?>
-                    <a href="?view=contribution&paged=<?php echo $paged + 1; ?>" class="button"><?php esc_html_e('Next', 'pmpro-nbstup'); ?></a>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
-    <?php endif; ?>
+    <div class="pmpro-nbstup-users-list" data-search-results>
+        <?php echo pmpronbstup_render_deceased_members_results_markup( $data ); ?>
+    </div>
 
     <?php
     return ob_get_clean();
@@ -907,6 +860,180 @@ function pmpronbstup_render_deceased_members_list()
 add_shortcode('pmpro_account_nbstup', 'pmpronbstup_account_two_column_shortcode');
 add_shortcode('pmpro_nbstup_member_login', 'pmpronbstup_member_login_shortcode');
 add_shortcode('pmpro_nbstup_admin_login', 'pmpronbstup_admin_login_shortcode');
+
+/**
+ * Build a URL for contribution list pagination while preserving search input.
+ *
+ * @param int    $page   Page number.
+ * @param string $search Search keyword.
+ * @return string
+ */
+function pmpronbstup_get_contribution_list_url( $page, $search = '' )
+{
+    $args = array(
+        'view'  => 'contribution',
+        'paged' => max( 1, (int) $page ),
+    );
+
+    if ( $search !== '' ) {
+        $args['s'] = $search;
+    }
+
+    return add_query_arg( $args, pmpro_url( 'account' ) );
+}
+
+/**
+ * Query deceased members for contribution listing.
+ *
+ * @param string $search   Search keyword.
+ * @param int    $paged    Current page.
+ * @param int    $per_page Items per page.
+ * @return array
+ */
+function pmpronbstup_get_deceased_members_data( $search = '', $paged = 1, $per_page = 10 )
+{
+    $paged = max( 1, (int) $paged );
+    $offset = ( $paged - 1 ) * (int) $per_page;
+
+    $query_args = array(
+        'meta_query' => array(
+            array(
+                'key'     => 'pmpronbstup_deceased',
+                'value'   => '1',
+                'compare' => '=',
+            ),
+        ),
+        'number'     => (int) $per_page,
+        'offset'     => $offset,
+        'orderby'    => 'ID',
+        'order'      => 'ASC',
+    );
+
+    $search = trim( (string) $search );
+    if ( $search !== '' ) {
+        if ( ctype_digit( $search ) ) {
+            $query_args['include'] = array( (int) $search );
+        } else {
+            $query_args['search'] = '*' . $search . '*';
+            $query_args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
+        }
+    }
+
+    $query = new WP_User_Query( $query_args );
+    $total_users = (int) $query->get_total();
+    $total_pages = $total_users > 0 ? (int) ceil( $total_users / $per_page ) : 1;
+
+    return array(
+        'users'       => $query->get_results(),
+        'total_users' => $total_users,
+        'total_pages' => $total_pages,
+        'paged'       => $paged,
+        'search'      => $search,
+    );
+}
+
+/**
+ * Render the deceased members table and pagination.
+ *
+ * @param array $data Query data from pmpronbstup_get_deceased_members_data.
+ * @return string
+ */
+function pmpronbstup_render_deceased_members_results_markup( $data )
+{
+    $users = isset( $data['users'] ) && is_array( $data['users'] ) ? $data['users'] : array();
+    $paged = isset( $data['paged'] ) ? max( 1, (int) $data['paged'] ) : 1;
+    $total_pages = isset( $data['total_pages'] ) ? max( 1, (int) $data['total_pages'] ) : 1;
+    $search = isset( $data['search'] ) ? (string) $data['search'] : '';
+
+    ob_start();
+    if ( empty( $users ) ) :
+    ?>
+        <p><?php esc_html_e( 'No deceased members found.', 'pmpro-nbstup' ); ?></p>
+    <?php else : ?>
+        <table class="pmpro-nbstup-deceased-table">
+            <thead>
+                <tr>
+                    <th><?php esc_html_e( 'ID', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Avatar', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Display Name', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Date of Death', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Action', 'pmpro-nbstup' ); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ( $users as $user ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( (string) $user->ID ); ?></td>
+                        <td><?php echo get_avatar( $user->ID, 32 ); ?></td>
+                        <td><?php echo esc_html( $user->display_name ); ?></td>
+                        <td>
+                            <?php
+                            $date = get_user_meta( $user->ID, 'pmpronbstup_deceased_date', true );
+                            if ( ! empty( $date ) ) {
+                                echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $date ) ) );
+                            } else {
+                                esc_html_e( 'N/A', 'pmpro-nbstup' );
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo esc_url( pmpro_url( 'checkout' ) . '?level=1&contribution_for=' . $user->ID ); ?>" class="button">
+                                <?php esc_html_e( 'Pay your contribution', 'pmpro-nbstup' ); ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php if ( $total_pages > 1 ) : ?>
+            <div class="pmpro-nbstup-pagination">
+                <?php if ( $paged > 1 ) : ?>
+                    <a href="<?php echo esc_url( pmpronbstup_get_contribution_list_url( $paged - 1, $search ) ); ?>" class="button" data-page="<?php echo esc_attr( (string) ( $paged - 1 ) ); ?>"><?php esc_html_e( 'Previous', 'pmpro-nbstup' ); ?></a>
+                <?php endif; ?>
+                <span><?php printf( esc_html__( 'Page %1$d of %2$d', 'pmpro-nbstup' ), $paged, $total_pages ); ?></span>
+                <?php if ( $paged < $total_pages ) : ?>
+                    <a href="<?php echo esc_url( pmpronbstup_get_contribution_list_url( $paged + 1, $search ) ); ?>" class="button" data-page="<?php echo esc_attr( (string) ( $paged + 1 ) ); ?>"><?php esc_html_e( 'Next', 'pmpro-nbstup' ); ?></a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    <?php
+    endif;
+
+    return ob_get_clean();
+}
+
+/**
+ * AJAX: Filter/search deceased members list.
+ *
+ * @return void
+ */
+function pmpronbstup_ajax_filter_deceased_members()
+{
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['nonce'] ), 'pmpro_nbstup_ajax' ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Security check failed. Please refresh and try again.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Please log in to view this list.', 'pmpro-nbstup' ) ) );
+    }
+
+    $search = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : '';
+    $paged = isset( $_POST['paged'] ) ? max( 1, (int) $_POST['paged'] ) : 1;
+    $data = pmpronbstup_get_deceased_members_data( $search, $paged, 10 );
+    $html = pmpronbstup_render_deceased_members_results_markup( $data );
+
+    wp_send_json_success(
+        array(
+            'html'        => $html,
+            'total_users' => (int) $data['total_users'],
+            'total_pages' => (int) $data['total_pages'],
+            'paged'       => (int) $data['paged'],
+        )
+    );
+}
+add_action( 'wp_ajax_pmpronbstup_filter_deceased_members', 'pmpronbstup_ajax_filter_deceased_members' );
+add_action( 'wp_ajax_nopriv_pmpronbstup_filter_deceased_members', 'pmpronbstup_ajax_filter_deceased_members' );
 
 /**
  * Migrate existing active users to have membership expiry dates
@@ -1403,7 +1530,7 @@ function pmpronbstup_users_list_shortcode($atts)
     // Build user query arguments
     $args = array(
         'role'    => 'subscriber',
-        'orderby' => 'display_name',
+        'orderby' => 'ID',
         'order'   => 'ASC',
         'number'  => $per_page,
         'offset'  => ($paged - 1) * $per_page,
@@ -1480,6 +1607,13 @@ function pmpronbstup_users_list_shortcode($atts)
                 }
             }
             ?>
+            <input
+                type="search"
+                name="user_search"
+                value="<?php echo esc_attr($search); ?>"
+                placeholder="<?php esc_attr_e('Search by name, username, email', 'pmpro-nbstup'); ?>"
+                aria-label="<?php esc_attr_e('Search users', 'pmpro-nbstup'); ?>"
+            />
             <select id="user_state" name="user_state">
                 <option value=""><?php esc_html_e('All States', 'pmpro-nbstup'); ?></option>
                 <?php foreach ($states as $state) : ?>
@@ -1513,12 +1647,12 @@ function pmpronbstup_users_list_shortcode($atts)
                 <?php endif; ?>
             </select>
             <button type="submit"><?php esc_html_e('Filter', 'pmpro-nbstup'); ?></button>
-            <?php if ($selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+            <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
                 <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_state', 'user_district', 'user_block', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear Filters', 'pmpro-nbstup'); ?></a>
             <?php endif; ?>
         </form>
 
-        <?php if ($selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+        <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
             <p class="pmpro-nbstup-filter-summary">
                 <strong>
                     <?php esc_html_e('Filtered results', 'pmpro-nbstup'); ?>

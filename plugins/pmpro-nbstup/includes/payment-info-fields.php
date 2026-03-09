@@ -48,6 +48,70 @@ if ( ! function_exists( 'pmpronbstup_checkout_input_aria_invalid' ) ) {
 }
 
 /**
+ * Mirror member details into PMPro core account fields on checkout submit.
+ *
+ * This keeps registration working even when frontend JS autofill is blocked
+ * by cache/plugin conflicts or a browser extension.
+ *
+ * @return void
+ */
+function pmpronbstup_sync_checkout_account_fields() {
+	if ( ! function_exists( 'pmpro_is_checkout' ) || ! pmpro_is_checkout() ) {
+		return;
+	}
+
+	$method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( (string) $_SERVER['REQUEST_METHOD'] ) : '';
+	if ( 'POST' !== $method ) {
+		return;
+	}
+
+	$aadhar = isset( $_REQUEST['aadhar_number'] ) ? preg_replace( '/\D+/', '', wp_unslash( $_REQUEST['aadhar_number'] ) ) : '';
+	if ( preg_match( '/^\d{12}$/', $aadhar ) ) {
+		$_REQUEST['username'] = $aadhar;
+		$_POST['username']    = $aadhar;
+
+		$email = $aadhar . '@nbstup.com';
+		$_REQUEST['bemail']        = $email;
+		$_REQUEST['bconfirmemail'] = $email;
+		$_POST['bemail']           = $email;
+		$_POST['bconfirmemail']    = $email;
+	}
+
+	if ( isset( $_REQUEST['member_password'] ) ) {
+		$password = (string) wp_unslash( $_REQUEST['member_password'] );
+		if ( $password !== '' ) {
+			$_REQUEST['password']  = $password;
+			$_REQUEST['password2'] = $password;
+			$_POST['password']     = $password;
+			$_POST['password2']    = $password;
+		}
+	}
+
+	if ( isset( $_REQUEST['member_name'] ) ) {
+		$member_name = trim( sanitize_text_field( wp_unslash( $_REQUEST['member_name'] ) ) );
+		if ( $member_name !== '' ) {
+			$parts      = preg_split( '/\s+/', $member_name );
+			$first_name = ! empty( $parts ) ? $parts[0] : '';
+			$last_name  = count( $parts ) > 1 ? implode( ' ', array_slice( $parts, 1 ) ) : '';
+
+			$_REQUEST['bfirstname'] = $first_name;
+			$_REQUEST['blastname']  = $last_name;
+			$_POST['bfirstname']    = $first_name;
+			$_POST['blastname']     = $last_name;
+		}
+	}
+
+	if ( isset( $_REQUEST['phone_no'] ) ) {
+		$phone = preg_replace( '/\D+/', '', wp_unslash( $_REQUEST['phone_no'] ) );
+		if ( $phone !== '' ) {
+			$_REQUEST['bphone'] = $phone;
+			$_POST['bphone']    = $phone;
+		}
+	}
+}
+add_action( 'init', 'pmpronbstup_sync_checkout_account_fields', 8 );
+
+/**
  * Enable file upload on PMPro checkout form
  */
 // Bank transfer fields removed from checkout per requirements.

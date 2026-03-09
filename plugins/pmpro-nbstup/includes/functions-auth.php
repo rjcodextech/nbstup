@@ -12,6 +12,52 @@ if (! defined('ABSPATH')) {
 }
 
 /**
+ * Map WP signon errors to user-friendly JSON payload.
+ *
+ * @param WP_Error $error      Login error.
+ * @param string   $login_type member|admin.
+ * @return array
+ */
+function pmpronbstup_get_login_error_payload( $error, $login_type = 'member' ) {
+    $code = (string) $error->get_error_code();
+
+    switch ( $code ) {
+        case 'incorrect_password':
+            return array(
+                'error_code' => 'invalid_password',
+                'message'    => esc_html__( 'Invalid password. Please try again.', 'pmpro-nbstup' ),
+            );
+
+        case 'invalid_username':
+            return array(
+                'error_code' => $login_type === 'member' ? 'invalid_aadhar' : 'invalid_login',
+                'message'    => $login_type === 'member'
+                    ? esc_html__( 'Invalid Aadhar number. Please check and try again.', 'pmpro-nbstup' )
+                    : esc_html__( 'Invalid username or email. Please check and try again.', 'pmpro-nbstup' ),
+            );
+
+        case 'empty_password':
+            return array(
+                'error_code' => 'invalid_password',
+                'message'    => esc_html__( 'Password is required.', 'pmpro-nbstup' ),
+            );
+
+        case 'pmpronbstup_inactive':
+        case 'pmpronbstup_contribution_required':
+            return array(
+                'error_code' => $code,
+                'message'    => wp_strip_all_tags( $error->get_error_message( $code ) ),
+            );
+
+        default:
+            return array(
+                'error_code' => 'login_failed',
+                'message'    => esc_html__( 'Login failed. Please verify your details and try again.', 'pmpro-nbstup' ),
+            );
+    }
+}
+
+/**
  * Prevent login for inactive subscriber users or those with expired memberships.
  * Also checks if contribution is required and paid.
  *
@@ -141,9 +187,10 @@ function pmpronbstup_ajax_member_login() {
 
     $user = $users[0];
 
+    // Authenticate members using Aadhar so member-only auth filters can allow the request.
     $signon = wp_signon(
         array(
-            'user_login'    => $user->user_login,
+            'user_login'    => $aadhar,
             'user_password' => $password,
             'remember'      => true,
         ),
@@ -151,7 +198,8 @@ function pmpronbstup_ajax_member_login() {
     );
 
     if ( is_wp_error( $signon ) ) {
-        wp_send_json_error( array( 'message' => $signon->get_error_message() ) );
+        $payload = pmpronbstup_get_login_error_payload( $signon, 'member' );
+        wp_send_json_error( $payload );
     }
 
     if ( user_can( $signon, 'manage_options' ) ) {
@@ -203,7 +251,8 @@ function pmpronbstup_ajax_admin_login() {
     );
 
     if ( is_wp_error( $signon ) ) {
-        wp_send_json_error( array( 'message' => $signon->get_error_message() ) );
+        $payload = pmpronbstup_get_login_error_payload( $signon, 'admin' );
+        wp_send_json_error( $payload );
     }
 
     $default_redirect = admin_url();

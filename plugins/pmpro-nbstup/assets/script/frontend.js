@@ -180,6 +180,89 @@ jQuery(document).ready(function($) {
   });
 });
 
+// ========== Contribution Search + AJAX Pagination ==========
+jQuery(document).ready(function ($) {
+  if (typeof pmpro_nbstup_data === 'undefined') {
+    return;
+  }
+
+  var $searchForm = $('.pmpro-nbstup-search-form[data-ajax="1"]');
+  if (!$searchForm.length) {
+    return;
+  }
+
+  var $results = $('[data-search-results]').first();
+  if (!$results.length) {
+    return;
+  }
+
+  function setSearchLoading(isLoading) {
+    var $submit = $searchForm.find('button[type="submit"]');
+    var $loadingText = $searchForm.find('[data-search-loading]');
+    $submit.prop('disabled', isLoading);
+    $searchForm.toggleClass('is-loading', isLoading);
+
+    if ($loadingText.length) {
+      if (isLoading) {
+        $loadingText.text(pmpro_nbstup_data.search_loading || 'Loading members...');
+        $loadingText.removeAttr('hidden');
+      } else {
+        $loadingText.attr('hidden', true);
+      }
+    }
+  }
+
+  function fetchMembers(page) {
+    var searchValue = $.trim($searchForm.find('input[name="s"]').val() || '');
+
+    setSearchLoading(true);
+    $results.attr('aria-busy', 'true');
+    $results.css('opacity', '0.6');
+
+    $.ajax({
+      url: pmpro_nbstup_data.ajax_url,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'pmpronbstup_filter_deceased_members',
+        nonce: pmpro_nbstup_data.ajax_nonce,
+        s: searchValue,
+        paged: page || 1
+      }
+    })
+      .done(function (response) {
+        if (response && response.success && response.data && typeof response.data.html === 'string') {
+          $results.html(response.data.html);
+        } else {
+          var message = (response && response.data && response.data.message)
+            ? response.data.message
+            : (pmpro_nbstup_data.search_error || 'Unable to load members right now. Please try again.');
+          $results.html('<p class="pmpro_message pmpro_error">' + message + '</p>');
+        }
+      })
+      .fail(function () {
+        var message = pmpro_nbstup_data.search_error || 'Unable to load members right now. Please try again.';
+        $results.html('<p class="pmpro_message pmpro_error">' + message + '</p>');
+      })
+      .always(function () {
+        setSearchLoading(false);
+        $results.removeAttr('aria-busy');
+        $results.css('opacity', '1');
+      });
+  }
+
+  $searchForm.on('submit', function (event) {
+    event.preventDefault();
+    fetchMembers(1);
+  });
+
+  $(document).on('click', '.pmpro-nbstup-pagination a[data-page]', function (event) {
+    event.preventDefault();
+    var page = parseInt($(this).attr('data-page'), 10);
+    fetchMembers(page || 1);
+  });
+});
+
 // ========== Login Tabs + AJAX Login ==========
 jQuery(document).ready(function ($) {
   var $memberDetails = $('#pmpro_form_fieldset-member-details');
@@ -275,6 +358,9 @@ jQuery(document).ready(function ($) {
 
   function showMessage($form, message) {
     var $message = $form.closest('.pmpro-nbstup-login-panel').find('.pmpro-nbstup-login-message');
+    if (!$message.length) {
+      $message = $form.closest('.pmpro-nbstup-member-login, .pmpro-nbstup-admin-login').find('.pmpro-nbstup-login-message').first();
+    }
     $message.removeAttr('hidden').text(message);
   }
 
@@ -418,6 +504,21 @@ jQuery(document).ready(function ($) {
           window.location.href = redirect;
         } else {
           var message = response && response.data && response.data.message ? response.data.message : pmpro_nbstup_data.generic_error;
+          var serverCode = response && response.data && response.data.error_code ? response.data.error_code : '';
+
+          if (type === 'member') {
+            var $serverAadhar = $form.find('input[name="aadhar_number"]');
+            var $serverPassword = $form.find('input[name="member_password"]');
+
+            if (serverCode === 'invalid_aadhar' && $serverAadhar.length) {
+              setFieldError($form, $serverAadhar, message);
+              $serverAadhar.trigger('focus');
+            } else if (serverCode === 'invalid_password' && $serverPassword.length) {
+              setFieldError($form, $serverPassword, message);
+              $serverPassword.trigger('focus');
+            }
+          }
+
           showMessage($form, message);
         }
       })

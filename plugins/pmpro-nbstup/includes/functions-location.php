@@ -188,6 +188,7 @@ function pmpro_nbstup_ensure_location_tables() {
 	}
 }
 add_action( 'admin_init', 'pmpro_nbstup_ensure_location_tables' );
+add_action( 'init', 'pmpro_nbstup_ensure_location_tables', 5 );
 
 // ========== STATE FUNCTIONS ==========
 
