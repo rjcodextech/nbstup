@@ -797,3 +797,80 @@ jQuery(document).ready(function ($) {
     $(this).val(value);
   });
 });
+
+// ========== Password Visibility Toggle ==========
+jQuery(document).ready(function ($) {
+  var passwordSelector = '#pmpro_form input[type="password"], .pmpro-nbstup-login-form input[type="password"]';
+
+  function getEyeIcon(isVisible) {
+    if (isVisible) {
+      return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.53 2.47 2.47 3.53l3.06 3.06A11.3 11.3 0 0 0 1.2 12c1.8 3.3 5.2 6 10.8 6 2.1 0 4-.4 5.6-1.1l2.87 2.87 1.06-1.06ZM12 16.5c-3.2 0-5.7-1.4-7.3-3.6A9.4 9.4 0 0 1 6.7 10l1.73 1.73a4 4 0 0 0 4.84 4.84L15 18.3c-.9.2-1.9.2-3 .2Zm0-9c3.2 0 5.7 1.4 7.3 3.6-.5.8-1.2 1.7-2.2 2.4l1.1 1.1A11.2 11.2 0 0 0 22.8 12c-1.8-3.3-5.2-6-10.8-6-1.7 0-3.2.3-4.5.7l1.27 1.27c1-.3 2-.47 3.23-.47Zm-.06 2.5 4.12 4.12A4 4 0 0 0 11.94 10Z"/></svg>';
+    }
+
+    return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6c5.6 0 9 2.7 10.8 6-1.8 3.3-5.2 6-10.8 6S3 15.3 1.2 12C3 8.7 6.4 6 12 6Zm0 1.5c-3.2 0-5.7 1.4-7.3 3.6 1.6 2.2 4.1 3.6 7.3 3.6s5.7-1.4 7.3-3.6c-1.6-2.2-4.1-3.6-7.3-3.6Zm0 1.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0 1.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg>';
+  }
+
+  function enhancePasswordField($input) {
+    if (!$input.length || $input.data('pmpro-nbstup-toggle-ready')) {
+      return;
+    }
+
+    if ($input.closest('.pmpro-nbstup-password-wrap').length) {
+      $input.data('pmpro-nbstup-toggle-ready', true);
+      return;
+    }
+
+    $input.wrap('<span class="pmpro-nbstup-password-wrap"></span>');
+    var $wrap = $input.parent();
+
+    var $button = $('<button/>', {
+      type: 'button',
+      class: 'pmpro-nbstup-password-toggle',
+      'aria-label': 'Show password',
+      'aria-pressed': 'false'
+    });
+
+    $button.append($('<span/>', {
+      class: 'pmpro-nbstup-password-toggle__icon',
+      'aria-hidden': 'true',
+      html: getEyeIcon(false)
+    }));
+
+    $button.append($('<span/>', {
+      class: 'screen-reader-text',
+      text: 'Show password'
+    }));
+
+    $wrap.append($button);
+    $input.data('pmpro-nbstup-toggle-ready', true);
+  }
+
+  function updatePasswordState($button, showPassword) {
+    var $wrap = $button.closest('.pmpro-nbstup-password-wrap');
+    var $input = $wrap.find('input[type="password"], input[type="text"]').first();
+
+    if (!$input.length) {
+      return;
+    }
+
+    $input.attr('type', showPassword ? 'text' : 'password');
+    $button.attr('aria-pressed', showPassword ? 'true' : 'false');
+    $button.attr('aria-label', showPassword ? 'Hide password' : 'Show password');
+    $button.find('.screen-reader-text').text(showPassword ? 'Hide password' : 'Show password');
+    $button.find('.pmpro-nbstup-password-toggle__icon').html(getEyeIcon(showPassword));
+  }
+
+  $(passwordSelector).each(function () {
+    enhancePasswordField($(this));
+  });
+
+  $(document).on('focusin', passwordSelector, function () {
+    enhancePasswordField($(this));
+  });
+
+  $(document).on('click', '.pmpro-nbstup-password-toggle', function () {
+    var $button = $(this);
+    var showPassword = $button.attr('aria-pressed') !== 'true';
+    updatePasswordState($button, showPassword);
+  });
+});

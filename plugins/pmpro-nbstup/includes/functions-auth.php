@@ -262,3 +262,35 @@ function pmpronbstup_ajax_admin_login() {
 
     wp_send_json_success( array( 'redirect' => $redirect ) );
 }
+
+/**
+ * Disable logged-in state after PMPro checkout confirmation redirect.
+ *
+ * PMPro signs users in during checkout for new registrations. We immediately
+ * end that session and send them to the member login page so access always
+ * requires an explicit post-checkout login.
+ *
+ * @param string $url     Confirmation URL.
+ * @param int    $user_id Checked out user ID.
+ * @return string
+ */
+function pmpronbstup_disable_checkout_auto_login( $url, $user_id ) {
+    $current_user_id = get_current_user_id();
+    if ( empty( $current_user_id ) || (int) $current_user_id !== (int) $user_id ) {
+        return $url;
+    }
+
+    // Never force-logout privileged users during admin-managed operations.
+    if ( current_user_can( 'manage_options' ) ) {
+        return $url;
+    }
+
+    wp_logout();
+
+    if ( function_exists( 'pmpro_login_url' ) ) {
+        return add_query_arg( 'checkout_complete', '1', pmpro_login_url() );
+    }
+
+    return wp_login_url();
+}
+add_filter( 'pmpro_confirmation_url', 'pmpronbstup_disable_checkout_auto_login', 10, 2 );
