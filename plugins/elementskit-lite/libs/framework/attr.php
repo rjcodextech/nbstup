@@ -51,6 +51,7 @@ class Attr {
 	public function enqueue_scripts() {
 		wp_register_style( 'elementskit-admin-global', \ElementsKit_Lite::lib_url() . 'framework/assets/css/admin-global.css', false, \ElementsKit_Lite::version() );
 		wp_enqueue_style( 'elementskit-admin-global' );
+		add_filter('admin_footer_text', [$this, 'elementskit_admin_footer_text']);
 	}
 
 	public function register_settings_menus() {
@@ -67,6 +68,10 @@ class Attr {
 		);
 	}
 
+	public function elementskit_admin_footer_text($text) {
+		$text = '<span class="gutenkit-footer-text"><i>Thank you for creating with <a href="https://wpmet.com/plugin/elementskit/" target="_blank">ElementsKit</a></i></span>';;
+		return $text;
+	}
 
 	public function register_settings_contents__settings() {
 		include self::get_dir() . 'views/init.php';

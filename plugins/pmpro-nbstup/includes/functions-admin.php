@@ -11,6 +11,18 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+if (! function_exists('pmpronbstup_user_activation_csv_enabled')) {
+    function pmpronbstup_user_activation_csv_enabled()
+    {
+        /**
+         * Filter whether user activation CSV import is enabled.
+         *
+         * @param bool $enabled Default false to disable activation from CSV.
+         */
+        return (bool) apply_filters('pmpronbstup_enable_user_activation_csv', false);
+    }
+}
+
 /**
  * Add admin menu page under Paid Memberships Pro.
  */
@@ -52,17 +64,25 @@ function pmpronbstup_render_admin_page()
 
     settings_errors('pmpro-nbstup');
 
+    $user_activation_enabled = pmpronbstup_user_activation_csv_enabled();
+
     // Get current tab
-    $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'user_activation';
+    $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : ($user_activation_enabled ? 'user_activation' : 'contribution_deceased');
+
+    if (! $user_activation_enabled && $tab === 'user_activation') {
+        $tab = 'contribution_deceased';
+    }
 ?>
     <div class="wrap">
         <h1><?php esc_html_e('User Approval', 'pmpro-nbstup'); ?></h1>
 
         <!-- Tab Navigation -->
         <nav class="nav-tab-wrapper">
-            <a href="?page=pmpro-nbstup-user-approval&tab=user_activation" class="nav-tab <?php echo $tab === 'user_activation' ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('User Activation', 'pmpro-nbstup'); ?>
-            </a>
+            <?php if ($user_activation_enabled) : ?>
+                <a href="?page=pmpro-nbstup-user-approval&tab=user_activation" class="nav-tab <?php echo $tab === 'user_activation' ? 'nav-tab-active' : ''; ?>">
+                    <?php esc_html_e('User Activation', 'pmpro-nbstup'); ?>
+                </a>
+            <?php endif; ?>
             <a href="?page=pmpro-nbstup-user-approval&tab=contribution_deceased" class="nav-tab <?php echo $tab === 'contribution_deceased' ? 'nav-tab-active' : ''; ?>">
                 <?php esc_html_e('Deceased Contribution', 'pmpro-nbstup'); ?>
             </a>
@@ -78,7 +98,11 @@ function pmpronbstup_render_admin_page()
             <?php elseif ($tab === 'contribution_wedding') : ?>
                 <?php pmpronbstup_render_contribution_wedding_csv_form(); ?>
             <?php else : ?>
-                <?php pmpronbstup_render_user_activation_csv_form(); ?>
+                <?php if ($user_activation_enabled) : ?>
+                    <?php pmpronbstup_render_user_activation_csv_form(); ?>
+                <?php else : ?>
+                    <?php pmpronbstup_render_contribution_deceased_csv_form(); ?>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
@@ -189,9 +213,6 @@ function pmpronbstup_render_location_admin_page()
     if (! current_user_can('manage_options')) {
         wp_die(esc_html__('You do not have permission to access this page.', 'pmpro-nbstup'));
     }
-
-    // Handle form submissions
-    pmpronbstup_handle_location_forms();
 
     settings_errors('pmpro-nbstup-location');
 
@@ -324,7 +345,45 @@ function pmpronbstup_render_districts_tab()
     if (isset($_GET['edit_district'])) {
         $edit_district = pmpro_nbstup_get_district(intval($_GET['edit_district']));
     }
+
+    $import_state_id = isset($_GET['import_state_id']) ? intval($_GET['import_state_id']) : 0;
+    if ($import_state_id <= 0 && !empty($states)) {
+        $import_state_id = (int) $states[0]->id;
+    }
 ?>
+    <div class="pmpro-nbstup-contrib-filters">
+        <h2><?php esc_html_e('Import Districts and Blocks from CSV', 'pmpro-nbstup'); ?></h2>
+        <form method="post" enctype="multipart/form-data">
+            <?php wp_nonce_field('pmpronbstup_location_import_action', 'pmpronbstup_location_import_nonce'); ?>
+            <input type="hidden" name="action" value="import_district_block_csv" />
+
+            <table class="form-table">
+                <tr>
+                    <th><label for="import_state_id"><?php esc_html_e('State', 'pmpro-nbstup'); ?></label></th>
+                    <td>
+                        <select id="import_state_id" name="import_state_id" required>
+                            <option value=""><?php esc_html_e('Select State', 'pmpro-nbstup'); ?></option>
+                            <?php foreach ($states as $state) : ?>
+                                <option value="<?php echo esc_attr($state->id); ?>" <?php selected($import_state_id, (int) $state->id); ?>>
+                                    <?php echo esc_html($state->name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="pmpronbstup_location_csv_file"><?php esc_html_e('CSV File', 'pmpro-nbstup'); ?></label></th>
+                    <td>
+                        <input type="file" name="pmpronbstup_location_csv_file" id="pmpronbstup_location_csv_file" accept=".csv,text/csv" required />
+                        <p class="description"><?php esc_html_e('Upload CSV with columns: District (or Disctrict) and Block.', 'pmpro-nbstup'); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+            <?php submit_button(__('Import CSV', 'pmpro-nbstup')); ?>
+        </form>
+    </div>
+
     <div class="pmpro-nbstup-admin-split">
         <!-- Add/Edit Form -->
         <div class="pmpro-nbstup-admin-col-fixed">
@@ -525,6 +584,58 @@ function pmpronbstup_render_blocks_tab()
  */
 function pmpronbstup_handle_location_forms()
 {
+    if (!is_admin() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    $is_location_page = isset($_REQUEST['page']) && $_REQUEST['page'] === 'pmpro-nbstup-location-management';
+    if (!$is_location_page) {
+        return;
+    }
+
+    // Handle District/Block CSV import.
+    if (isset($_POST['action']) && $_POST['action'] === 'import_district_block_csv') {
+        if (!isset($_POST['pmpronbstup_location_import_nonce']) || !wp_verify_nonce($_POST['pmpronbstup_location_import_nonce'], 'pmpronbstup_location_import_action')) {
+            return;
+        }
+
+        $state_id = isset($_POST['import_state_id']) ? intval($_POST['import_state_id']) : 0;
+        if ($state_id <= 0 || !pmpro_nbstup_get_state($state_id)) {
+            add_settings_error('pmpro-nbstup-location', 'import_invalid_state', __('Please select a valid state for import.', 'pmpro-nbstup'), 'error');
+            return;
+        }
+
+        if (empty($_FILES['pmpronbstup_location_csv_file']['tmp_name']) || !is_uploaded_file($_FILES['pmpronbstup_location_csv_file']['tmp_name'])) {
+            add_settings_error('pmpro-nbstup-location', 'import_missing_file', __('Please upload a valid CSV file.', 'pmpro-nbstup'), 'error');
+            return;
+        }
+
+        $result = pmpronbstup_import_district_block_csv($_FILES['pmpronbstup_location_csv_file']['tmp_name'], $state_id);
+        if (is_wp_error($result)) {
+            add_settings_error('pmpro-nbstup-location', 'import_failed', $result->get_error_message(), 'error');
+            return;
+        }
+
+        add_settings_error(
+            'pmpro-nbstup-location',
+            'import_success',
+            sprintf(
+                __('Import complete. Rows: %1$d, Districts inserted: %2$d, Districts existing: %3$d, Blocks inserted: %4$d, Blocks existing: %5$d, Skipped: %6$d.', 'pmpro-nbstup'),
+                (int) $result['rows'],
+                (int) $result['district_inserted'],
+                (int) $result['district_existing'],
+                (int) $result['block_inserted'],
+                (int) $result['block_existing'],
+                (int) $result['skipped']
+            ),
+            'success'
+        );
+
+        pmpronbstup_location_redirect_with_messages(
+            admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=districts&import_state_id=' . $state_id)
+        );
+    }
+
     // Handle State actions
     if (isset($_POST['action']) && in_array($_POST['action'], ['add_state', 'update_state'])) {
         if (!isset($_POST['pmpronbstup_state_nonce']) || !wp_verify_nonce($_POST['pmpronbstup_state_nonce'], 'pmpronbstup_state_action')) {
@@ -548,8 +659,7 @@ function pmpronbstup_handle_location_forms()
             $state_id = isset($_POST['state_id']) ? intval($_POST['state_id']) : 0;
             if (pmpro_nbstup_update_state($state_id, $state_name)) {
                 add_settings_error('pmpro-nbstup-location', 'state_updated', __('State updated successfully.', 'pmpro-nbstup'), 'success');
-                wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=states'));
-                exit;
+                pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=states'));
             } else {
                 add_settings_error('pmpro-nbstup-location', 'state_update_failed', __('Failed to update state.', 'pmpro-nbstup'), 'error');
             }
@@ -580,8 +690,7 @@ function pmpronbstup_handle_location_forms()
             $district_id = isset($_POST['district_id']) ? intval($_POST['district_id']) : 0;
             if (pmpro_nbstup_update_district($district_id, $state_id, $district_name)) {
                 add_settings_error('pmpro-nbstup-location', 'district_updated', __('District updated successfully.', 'pmpro-nbstup'), 'success');
-                wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=districts'));
-                exit;
+                pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=districts'));
             } else {
                 add_settings_error('pmpro-nbstup-location', 'district_update_failed', __('Failed to update district.', 'pmpro-nbstup'), 'error');
             }
@@ -612,8 +721,7 @@ function pmpronbstup_handle_location_forms()
             $block_id = isset($_POST['block_id']) ? intval($_POST['block_id']) : 0;
             if (pmpro_nbstup_update_block($block_id, $district_id, $block_name)) {
                 add_settings_error('pmpro-nbstup-location', 'block_updated', __('Block updated successfully.', 'pmpro-nbstup'), 'success');
-                wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=blocks'));
-                exit;
+                pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=blocks'));
             } else {
                 add_settings_error('pmpro-nbstup-location', 'block_update_failed', __('Failed to update block.', 'pmpro-nbstup'), 'error');
             }
@@ -627,8 +735,7 @@ function pmpronbstup_handle_location_forms()
             if (pmpro_nbstup_delete_state($state_id)) {
                 add_settings_error('pmpro-nbstup-location', 'state_deleted', __('State deleted successfully.', 'pmpro-nbstup'), 'success');
             }
-            wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=states'));
-            exit;
+            pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=states'));
         }
     }
 
@@ -638,8 +745,7 @@ function pmpronbstup_handle_location_forms()
             if (pmpro_nbstup_delete_district($district_id)) {
                 add_settings_error('pmpro-nbstup-location', 'district_deleted', __('District deleted successfully.', 'pmpro-nbstup'), 'success');
             }
-            wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=districts'));
-            exit;
+            pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=districts'));
         }
     }
 
@@ -649,9 +755,163 @@ function pmpronbstup_handle_location_forms()
             if (pmpro_nbstup_delete_block($block_id)) {
                 add_settings_error('pmpro-nbstup-location', 'block_deleted', __('Block deleted successfully.', 'pmpro-nbstup'), 'success');
             }
-            wp_redirect(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=blocks'));
-            exit;
+            pmpronbstup_location_redirect_with_messages(admin_url('admin.php?page=pmpro-nbstup-location-management&loc_tab=blocks'));
         }
     }
+}
+
+/**
+ * Persist location settings errors and redirect safely.
+ *
+ * @param string $url Redirect URL.
+ * @return void
+ */
+function pmpronbstup_location_redirect_with_messages($url)
+{
+    set_transient('settings_errors', get_settings_errors(), 30);
+    wp_safe_redirect($url);
+    exit;
+}
+
+add_action('admin_init', 'pmpronbstup_handle_location_forms');
+
+/**
+ * Import District + Block CSV rows into location tables for a specific state.
+ *
+ * @param string $csv_path Uploaded CSV temporary file path.
+ * @param int    $state_id Target state ID.
+ * @return array|WP_Error
+ */
+function pmpronbstup_import_district_block_csv($csv_path, $state_id)
+{
+    global $wpdb;
+
+    if (empty($csv_path) || !file_exists($csv_path)) {
+        return new WP_Error('import_file_missing', __('CSV file is missing.', 'pmpro-nbstup'));
+    }
+
+    $districts_table = $wpdb->prefix . 'pmpro_nbstup_districts';
+    $blocks_table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+
+    $handle = fopen($csv_path, 'r');
+    if (!$handle) {
+        return new WP_Error('import_file_open_failed', __('Could not open CSV file.', 'pmpro-nbstup'));
+    }
+
+    $header = fgetcsv($handle);
+    if (!$header || !is_array($header)) {
+        fclose($handle);
+        return new WP_Error('import_header_missing', __('CSV header row is missing.', 'pmpro-nbstup'));
+    }
+
+    $normalized_headers = array_map(
+        static function ($value) {
+            $value = is_string($value) ? strtolower(trim($value)) : '';
+            return preg_replace('/[^a-z]/', '', $value);
+        },
+        $header
+    );
+
+    $district_idx = false;
+    $block_idx = false;
+    foreach ($normalized_headers as $idx => $column_name) {
+        if ($district_idx === false && in_array($column_name, array('district', 'disctrict'), true)) {
+            $district_idx = $idx;
+        }
+        if ($block_idx === false && $column_name === 'block') {
+            $block_idx = $idx;
+        }
+    }
+
+    if ($district_idx === false || $block_idx === false) {
+        fclose($handle);
+        return new WP_Error('import_header_invalid', __('CSV must include District (or Disctrict) and Block columns.', 'pmpro-nbstup'));
+    }
+
+    $stats = array(
+        'rows' => 0,
+        'district_inserted' => 0,
+        'district_existing' => 0,
+        'block_inserted' => 0,
+        'block_existing' => 0,
+        'skipped' => 0,
+    );
+
+    $district_cache = array();
+
+    while (($row = fgetcsv($handle)) !== false) {
+        $stats['rows']++;
+
+        $district_name = isset($row[$district_idx]) ? pmpro_nbstup_normalize_location_name((string) $row[$district_idx]) : '';
+        $block_name = isset($row[$block_idx]) ? pmpro_nbstup_normalize_location_name((string) $row[$block_idx]) : '';
+
+        if ($district_name === '' || $block_name === '') {
+            $stats['skipped']++;
+            continue;
+        }
+
+        $district_key = strtolower($district_name);
+
+        if (!isset($district_cache[$district_key])) {
+            $district_id = (int) pmpro_nbstup_find_district_id_by_name($state_id, $district_name);
+
+            if ($district_id > 0) {
+                $stats['district_existing']++;
+                $district_cache[$district_key] = $district_id;
+            } else {
+                $inserted = $wpdb->insert(
+                    $districts_table,
+                    array(
+                        'state_id' => $state_id,
+                        'name' => $district_name,
+                    ),
+                    array('%d', '%s')
+                );
+
+                if ($inserted === false) {
+                    $stats['skipped']++;
+                    continue;
+                }
+
+                $district_id = (int) $wpdb->insert_id;
+                $district_cache[$district_key] = $district_id;
+                $stats['district_inserted']++;
+            }
+        } else {
+            $district_id = (int) $district_cache[$district_key];
+        }
+
+        if ($district_id <= 0) {
+            $stats['skipped']++;
+            continue;
+        }
+
+        $block_exists = (int) pmpro_nbstup_find_block_id_by_name($district_id, $block_name);
+
+        if ($block_exists > 0) {
+            $stats['block_existing']++;
+            continue;
+        }
+
+        $block_inserted = $wpdb->insert(
+            $blocks_table,
+            array(
+                'district_id' => $district_id,
+                'name' => $block_name,
+            ),
+            array('%d', '%s')
+        );
+
+        if ($block_inserted === false) {
+            $stats['skipped']++;
+            continue;
+        }
+
+        $stats['block_inserted']++;
+    }
+
+    fclose($handle);
+
+    return $stats;
 }
 

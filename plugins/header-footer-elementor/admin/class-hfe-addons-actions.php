@@ -561,10 +561,10 @@ if ( ! class_exists( 'HFE_Addons_Actions' ) ) {
 				wp_send_json_error( __( 'You do not have permission to perform this action.', 'header-footer-elementor' ) );
 			}
 
-			if ( isset( $_POST['uae_analytics_optin'] ) ) {
+			if ( isset( $_POST['uae_usage_optin'] ) ) {
 				// Sanitize and update option.
-				$option = sanitize_text_field( $_POST['uae_analytics_optin'] );
-				update_option( 'uae_analytics_optin', $option );
+				$option = sanitize_text_field( $_POST['uae_usage_optin'] );
+				update_option( 'uae_usage_optin', $option );
 
 				// Return a success response.
 				wp_send_json_success( __( 'Settings saved successfully!', 'header-footer-elementor' ) );

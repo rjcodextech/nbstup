@@ -319,52 +319,71 @@ $breakpoint-sm: 480px;
 }
 
 .pmpro-nbstup-search-form {
+  @include card; // use card mixin for consistent look
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-wrap: nowrap; // keep dropdowns and button on a single line
+  gap: 12px; // slightly more breathing room
   align-items: center;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: $color-white;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  margin-bottom: 20px;
+  padding: 12px 20px;
+  background: $color-surface; // light surface colour rather than pure white
+  margin-bottom: 24px;
+  transition: box-shadow 0.3s ease;
 
+  &:hover {
+    box-shadow: $shadow-md;
+  }
   input[type="text"] {
-    flex: 1 1 260px;
-    padding: 10px 12px;
-    min-width: 220px;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    background: #fff;
+    display: none; // search disabled, hide field
+  }
 
+  // (no empty select rules)
+
+  select {
+    padding: 10px 12px;
+    padding-right: 36px; // space for arrow
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236b7280' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E")
+      no-repeat right 12px center;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 180px;
+    appearance: none;
+    -webkit-appearance: none;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+
+    &:hover:not(:disabled),
     &:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      border-color: #007cba;
+      box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
+      outline: none;
+    }
+
+    &:disabled {
+      background-color: #f5f5f5;
+      color: #999;
+      cursor: not-allowed;
     }
   }
 
   button,
   .button {
-    padding: 5px 15px;
+    @include button-base;
+    @include button-primary;
+    padding: 6px 18px;
     border-radius: 8px;
-    border: 1px solid #2563eb;
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: 600;
-    line-height: 2;
-    transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+    min-width: 100px;
+    text-align: center;
   }
 
   .button {
-    background: #ffffff;
-    color: #111827;
-    border-color: #d0d5dd;
+    @include button-secondary;
   }
+
+  // ensure selects and buttons stay on one line by default (nowrap above)
 
   button:hover {
     background: linear-gradient(135deg, #1d4ed8, #2563eb);
@@ -381,12 +400,15 @@ $breakpoint-sm: 480px;
   }
 }
 
+// small screens: allow wrapping so form doesn’t overflow
 @media (max-width: 600px) {
   .pmpro-nbstup-search-form {
+    flex-wrap: wrap;
     padding: 10px;
 
-    input[type="text"] {
-      flex-basis: 100%;
+    select {
+      flex: 1 1 100%;
+      min-width: auto;
     }
 
     button,
@@ -397,152 +419,13 @@ $breakpoint-sm: 480px;
   }
 }
 
-.pmpro-nbstup-users-table {
-  width: 100%;
-  border-collapse: collapse;
+// filter summary notice
+.pmpro-nbstup-filter-summary {
   margin-bottom: 20px;
-  background: $color-white;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid $color-gray-200;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-
-  th,
-  td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-    color: $color-gray-700;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  tr:hover {
-    background-color: #f0f0f0;
-  }
-}
-
-.pmpro-nbstup-pagination {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  a,
-  span {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    text-decoration: none;
-    border-radius: 8px;
-  }
-
-  a:hover {
-    background-color: #f0f0f0;
-  }
-
-  .current {
-    background-color: #0073aa;
-    color: white;
-    border-color: #0073aa;
-  }
-}
-
-.pmpro-nbstup-pagination-summary {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.status-active,
-.status-yes {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-inactive,
-.status-no {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-// ============================================================================
-// Contributions Admin Page Styles
-// ============================================================================
-
-.pmpro-nbstup-contrib-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.pmpro-nbstup-contrib-stat {
-  background: #fff;
-  border-left: 4px solid #2271b1;
-  padding: 15px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  border-radius: $radius-md;
-
-  &.is-danger {
-    border-left-color: #d63638;
-  }
-
-  &.is-success {
-    border-left-color: #00a32a;
-  }
-}
-
-.pmpro-nbstup-contrib-stat-value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2271b1;
-
-  &.is-danger {
-    color: #d63638;
-  }
-
-  &.is-success {
-    color: #00a32a;
-  }
-}
-
-.pmpro-nbstup-contrib-stat-label {
-  color: #646970;
-}
-
-.pmpro-nbstup-contrib-filters {
-  background: #fff;
-  padding: 15px;
-  margin: 20px 0;
-  border-radius: $radius-md;
-  border: 1px solid $color-gray-200;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-
-.pmpro-nbstup-contrib-filters-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.pmpro-nbstup-contrib-filter-select {
-  min-width: 150px;
+  padding: 12px;
+  background: #e7f3ff;
+  border-left: 4px solid #007cba;
+  border-radius: 4px;
 }
 
 .pmpro-nbstup-contrib-filter-search {
@@ -643,37 +526,50 @@ $breakpoint-sm: 480px;
 // ============================================================================
 
 .pmpro-nbstup-member-login {
-  max-width: 480px;
+  max-width: 520px;
   margin: 40px auto;
-  padding: 24px;
-  background: $color-white;
+  padding: 36px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
   border: 1px solid $color-gray-200;
-  border-radius: 12px;
-  box-shadow: $shadow-sm;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
   position: relative;
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 4px;
-    background: linear-gradient(90deg, $color-primary, $color-primary-light);
+    height: 5px;
+    background: linear-gradient(90deg, $color-primary, $color-primary-light, #93c5fd);
   }
 }
 
 .pmpro-nbstup-member-login__message {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba($color-danger, 0.2);
+  background: rgba($color-danger, 0.06);
+  color: $color-gray-700;
+  font-weight: 600;
+  border-left: 4px solid $color-danger;
+}
+
+.pmpro-nbstup-member-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
 }
 
 .pmpro-nbstup-member-login__header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: $spacing-sm;
 }
 
 .pmpro-nbstup-member-login__title {
   margin: 0 0 6px;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: $color-gray-900;
 }
@@ -681,10 +577,11 @@ $breakpoint-sm: 480px;
 .pmpro-nbstup-member-login__subtitle {
   margin: 0;
   color: $color-gray-600;
+  font-size: 0.95rem;
 }
 
 .pmpro-nbstup-member-login__field {
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .pmpro-nbstup-member-login__label {
@@ -692,32 +589,241 @@ $breakpoint-sm: 480px;
   margin-bottom: 6px;
   font-weight: 600;
   color: $color-gray-700;
+  letter-spacing: 0.2px;
 }
 
 .pmpro-nbstup-member-login__input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 1px solid $color-gray-300;
-  border-radius: 8px;
+  border-radius: 12px;
   background: $color-white;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+  color: $color-gray-900;
 
   &:focus {
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
     outline: none;
   }
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+}
+
+// Password visibility toggle used across login + checkout forms.
+.pmpro-nbstup-password-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+
+  > input[type="password"],
+  > input[type="text"] {
+    padding-right: 56px;
+  }
+
+  &:focus-within {
+    .pmpro-nbstup-password-toggle {
+      color: $color-primary;
+      border-color: rgba($color-primary, 0.2);
+      background: rgba($color-primary, 0.08);
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.12);
+    }
+  }
+}
+
+.pmpro-nbstup-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: rgba($color-white, 0.92);
+  color: $color-gray-500;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px rgba($color-gray-900, 0.08);
+
+  &:hover {
+    color: $color-gray-700;
+    background: rgba($color-gray-900, 0.06);
+    border-color: rgba($color-gray-900, 0.1);
+  }
+
+  &[aria-pressed="true"] {
+    color: $color-primary;
+    border-color: rgba($color-primary, 0.22);
+    background: rgba($color-primary, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($color-primary, 0.45);
+    outline-offset: 1px;
+  }
+
+  .pmpro-nbstup-password-toggle__icon {
+    line-height: 0;
+    // display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    fill: currentColor;
+  }
+}
+
+.pmpro-nbstup-member-login__field.has-error {
+  .pmpro-nbstup-member-login__input {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.15);
+  }
+}
+
+.pmpro-nbstup-field-error {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: $color-danger;
 }
 
 .pmpro-nbstup-member-login__actions {
   display: flex;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 4px;
+  gap: $spacing-sm;
 }
 
 .pmpro-nbstup-member-login__submit {
-  min-width: 160px;
+  min-width: 200px;
   border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
+}
+
+.pmpro-nbstup-login-tabs__header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  // background: $color-gray-50;
+  // border: 1px solid $color-gray-200;
+  // border-radius: 14px;
+  // padding: 6px;
+  margin-bottom: $spacing-2xl;
+  // box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  // overflow: hidden;
+  position: relative;
+}
+
+.pmpro-nbstup-login-tab {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  min-height: 46px;
+  border: none;
+  background: transparent;
+  color: $color-gray-600;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    color: $color-gray-900;
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($color-primary, 0.5);
+    outline-offset: 2px;
+  }
+
+  &.is-active {
+    background: $color-white;
+    color: $color-gray-900;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.12);
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .pmpro-nbstup-login-tabs__header {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: $radius-md;
+    padding: $spacing-xs;
+  }
+
+  .pmpro-nbstup-login-tab {
+    width: 100%;
+    border-radius: $radius-md;
+  }
+}
+
+.pmpro-nbstup-login-panel[hidden] {
+  display: none;
+}
+
+.pmpro-nbstup-login-panel {
+  padding-top: $spacing-xs;
+}
+
+.pmpro-nbstup-login-message {
+  margin-bottom: $spacing-lg;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba($color-danger, 0.2);
+  background: rgba($color-danger, 0.06);
+  color: $color-gray-700;
+  border-left: 4px solid $color-danger;
+}
+
+.pmpro-nbstup-login__checkbox {
+  label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $color-gray-700;
+    font-weight: 500;
+  }
+
+  input {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: $color-primary;
+  }
+}
+
+.pmpro-nbstup-login-form.is-loading {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.pmpro-nbstup-login-form.is-loading .pmpro-nbstup-member-login__submit {
+  opacity: 0.85;
+  cursor: progress;
 }
 
 // ============================================================================
@@ -945,3 +1051,45 @@ $breakpoint-sm: 480px;
   }
 }
 
+fieldset#pmpro_billing_address_fields,
+fieldset#pmpro_payment_information_fields,
+fieldset#pmpro_user_fields {
+  display: none;
+}
+
+// ============================================================================
+// Checkout Form Tweaks
+// ============================================================================
+
+#pmpro_form_fieldset-nominee-details {
+  .pmpro_form_field-nominee-group {
+    margin: $spacing-lg 0 $spacing-sm;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .pmpro_form_label {
+      color: $color-gray-900;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+  }
+}
+
+.pmpro_form_field-error {
+  .pmpro_form_input {
+    border-color: $color-danger;
+    box-shadow: 0 0 0 2px rgba($color-danger, 0.15);
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    outline: 2px solid rgba($color-danger, 0.35);
+    outline-offset: 2px;
+  }
+}
+
+div#declaration_accept_wrap label {
+  line-height: 1.8;
+}

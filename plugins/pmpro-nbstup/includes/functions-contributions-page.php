@@ -28,6 +28,31 @@ function pmpronbstup_add_contributions_menu()
 add_action('admin_menu', 'pmpronbstup_add_contributions_menu', 20);
 
 /**
+ * Enqueue admin styling for the Contributions Management page.
+ *
+ * @param string $hook Current admin page hook suffix.
+ * @return void
+ */
+function pmpronbstup_enqueue_contributions_assets($hook)
+{
+    if (! is_admin()) {
+        return;
+    }
+
+    if (strpos((string) $hook, 'pmpro-nbstup-contributions') === false && (! isset($_GET['page']) || $_GET['page'] !== 'pmpro-nbstup-contributions')) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'pmpro-nbstup-admin',
+        PMPRONBSTUP_PLUGIN_URL . 'assets/css/admin.css',
+        array(),
+        PMPRONBSTUP_VERSION
+    );
+}
+add_action('admin_enqueue_scripts', 'pmpronbstup_enqueue_contributions_assets');
+
+/**
  * Handle bulk actions and individual actions
  */
 function pmpronbstup_handle_contribution_actions()
@@ -49,10 +74,12 @@ function pmpronbstup_handle_contribution_actions()
             foreach ($user_ids as $user_id) {
                 if ($action === 'mark_deceased_paid') {
                     update_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', 1);
+                    pmpronbstup_reactivate_user_if_eligible($user_id, __('Deceased contribution marked paid from Contributions page (bulk)', 'pmpro-nbstup'));
                     pmpronbstup_send_contribution_confirmation_email($user_id, 'deceased');
                     $count++;
                 } elseif ($action === 'mark_wedding_paid') {
                     update_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', 1);
+                    pmpronbstup_reactivate_user_if_eligible($user_id, __('Wedding contribution marked paid from Contributions page (bulk)', 'pmpro-nbstup'));
                     pmpronbstup_send_contribution_confirmation_email($user_id, 'wedding');
                     $count++;
                 }
@@ -78,6 +105,7 @@ function pmpronbstup_handle_contribution_actions()
         if (wp_verify_nonce($_GET['_wpnonce'], 'contribution_action_' . $user_id)) {
             if ($action === 'mark_deceased_paid') {
                 update_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', 1);
+                pmpronbstup_reactivate_user_if_eligible($user_id, __('Deceased contribution marked paid from Contributions page', 'pmpro-nbstup'));
                 pmpronbstup_send_contribution_confirmation_email($user_id, 'deceased');
                 add_settings_error(
                     'pmpro-nbstup-contributions',
@@ -87,6 +115,7 @@ function pmpronbstup_handle_contribution_actions()
                 );
             } elseif ($action === 'mark_wedding_paid') {
                 update_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', 1);
+                pmpronbstup_reactivate_user_if_eligible($user_id, __('Wedding contribution marked paid from Contributions page', 'pmpro-nbstup'));
                 pmpronbstup_send_contribution_confirmation_email($user_id, 'wedding');
                 add_settings_error(
                     'pmpro-nbstup-contributions',
@@ -230,8 +259,56 @@ function pmpronbstup_render_contributions_page()
     }
 
     ?>
-    <div class="wrap">
+    <div class="wrap pmpro-nbstup-contrib-wrap">
         <h1><?php esc_html_e('Contributions Management', 'pmpro-nbstup'); ?></h1>
+
+        <?php
+        $reactivation_log = get_option('pmpronbstup_reactivation_log', array());
+        if (! empty($reactivation_log) && is_array($reactivation_log)) :
+            $reactivation_log = array_slice($reactivation_log, 0, 10);
+        ?>
+            <div class="pmpro-nbstup-contrib-log">
+                <h2><?php esc_html_e('Recent Auto-Reactivations', 'pmpro-nbstup'); ?></h2>
+                <p class="description"><?php esc_html_e('Shows the latest users restored automatically after verified contribution payment.', 'pmpro-nbstup'); ?></p>
+                <div class="pmpro-nbstup-table-wrap">
+                    <table class="wp-list-table widefat striped">
+                        <thead>
+                            <tr>
+                                <th><?php esc_html_e('Time', 'pmpro-nbstup'); ?></th>
+                                <th><?php esc_html_e('Member', 'pmpro-nbstup'); ?></th>
+                                <th><?php esc_html_e('Email', 'pmpro-nbstup'); ?></th>
+                                <th><?php esc_html_e('Reason', 'pmpro-nbstup'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($reactivation_log as $entry) : ?>
+                                <tr>
+                                    <td>
+                                        <?php
+                                        $ts = isset($entry['timestamp']) ? strtotime($entry['timestamp']) : false;
+                                        echo $ts ? esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $ts)) : esc_html__('N/A', 'pmpro-nbstup');
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $uid = isset($entry['user_id']) ? (int) $entry['user_id'] : 0;
+                                        $name = isset($entry['name']) ? $entry['name'] : '';
+                                        if ($uid > 0) :
+                                        ?>
+                                            <a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $uid)); ?>"><?php echo esc_html($name); ?></a>
+                                        <?php else : ?>
+                                            <?php echo esc_html($name ?: __('Unknown', 'pmpro-nbstup')); ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo esc_html(isset($entry['email']) ? $entry['email'] : ''); ?></td>
+                                    <td><?php echo esc_html(isset($entry['reason']) ? $entry['reason'] : ''); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <!-- Statistics Dashboard -->
         <div class="pmpro-nbstup-contrib-stats">

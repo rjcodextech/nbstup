@@ -12,6 +12,123 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Normalize location names to avoid duplicate variants.
+ *
+ * @param string $name Raw name.
+ * @return string
+ */
+function pmpro_nbstup_normalize_location_name( $name ) {
+	$name = sanitize_text_field( $name );
+	$name = preg_replace( '/\s+/', ' ', trim( (string) $name ) );
+	return $name;
+}
+
+/**
+ * Get state ID by normalized name.
+ *
+ * @param string $name       State name.
+ * @param int    $exclude_id Optional state ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_state_id_by_name( $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$name
+		)
+	);
+}
+
+/**
+ * Get district ID by normalized name under a state.
+ *
+ * @param int    $state_id   State ID.
+ * @param string $name       District name.
+ * @param int    $exclude_id Optional district ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_district_id_by_name( $state_id, $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $state_id <= 0 || $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE state_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$state_id,
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE state_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$state_id,
+			$name
+		)
+	);
+}
+
+/**
+ * Get block ID by normalized name under a district.
+ *
+ * @param int    $district_id District ID.
+ * @param string $name        Block name.
+ * @param int    $exclude_id  Optional block ID to exclude.
+ * @return int
+ */
+function pmpro_nbstup_find_block_id_by_name( $district_id, $name, $exclude_id = 0 ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $district_id <= 0 || $name === '' ) {
+		return 0;
+	}
+
+	if ( $exclude_id > 0 ) {
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $table WHERE district_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) AND id != %d LIMIT 1",
+				$district_id,
+				$name,
+				$exclude_id
+			)
+		);
+	}
+
+	return (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT id FROM $table WHERE district_id = %d AND LOWER(TRIM(name)) = LOWER(TRIM(%s)) LIMIT 1",
+			$district_id,
+			$name
+		)
+	);
+}
+
+/**
  * Create tables for states, districts, and blocks
  */
 function pmpro_nbstup_create_location_tables() {
@@ -71,6 +188,7 @@ function pmpro_nbstup_ensure_location_tables() {
 	}
 }
 add_action( 'admin_init', 'pmpro_nbstup_ensure_location_tables' );
+add_action( 'init', 'pmpro_nbstup_ensure_location_tables', 5 );
 
 // ========== STATE FUNCTIONS ==========
 
@@ -106,10 +224,14 @@ function pmpro_nbstup_get_state_name( $id ) {
 function pmpro_nbstup_add_state( $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $name === '' || pmpro_nbstup_find_state_id_by_name( $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
-		array( 'name' => sanitize_text_field( $name ) ),
+		array( 'name' => $name ),
 		array( '%s' )
 	);
 	
@@ -122,10 +244,14 @@ function pmpro_nbstup_add_state( $name ) {
 function pmpro_nbstup_update_state( $id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_states';
+	$name  = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $name === '' || pmpro_nbstup_find_state_id_by_name( $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
-		array( 'name' => sanitize_text_field( $name ) ),
+		array( 'name' => $name ),
 		array( 'id' => $id ),
 		array( '%s' ),
 		array( '%d' )
@@ -195,12 +321,17 @@ function pmpro_nbstup_get_district_name( $id ) {
 function pmpro_nbstup_add_district( $state_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$state_id = intval( $state_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $state_id <= 0 || $name === '' || pmpro_nbstup_find_district_id_by_name( $state_id, $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'state_id' => intval( $state_id ),
-			'name'     => sanitize_text_field( $name ),
+			'state_id' => $state_id,
+			'name'     => $name,
 		),
 		array( '%d', '%s' )
 	);
@@ -214,12 +345,18 @@ function pmpro_nbstup_add_district( $state_id, $name ) {
 function pmpro_nbstup_update_district( $id, $state_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_districts';
+	$id = intval( $id );
+	$state_id = intval( $state_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $state_id <= 0 || $name === '' || pmpro_nbstup_find_district_id_by_name( $state_id, $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
 		array(
-			'state_id' => intval( $state_id ),
-			'name'     => sanitize_text_field( $name ),
+			'state_id' => $state_id,
+			'name'     => $name,
 		),
 		array( 'id' => $id ),
 		array( '%d', '%s' ),
@@ -283,12 +420,17 @@ function pmpro_nbstup_get_block_name( $id ) {
 function pmpro_nbstup_add_block( $district_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$district_id = intval( $district_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $district_id <= 0 || $name === '' || pmpro_nbstup_find_block_id_by_name( $district_id, $name ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'district_id' => intval( $district_id ),
-			'name'        => sanitize_text_field( $name ),
+			'district_id' => $district_id,
+			'name'        => $name,
 		),
 		array( '%d', '%s' )
 	);
@@ -302,12 +444,18 @@ function pmpro_nbstup_add_block( $district_id, $name ) {
 function pmpro_nbstup_update_block( $id, $district_id, $name ) {
 	global $wpdb;
 	$table = $wpdb->prefix . 'pmpro_nbstup_blocks';
+	$id = intval( $id );
+	$district_id = intval( $district_id );
+	$name = pmpro_nbstup_normalize_location_name( $name );
+	if ( $id <= 0 || $district_id <= 0 || $name === '' || pmpro_nbstup_find_block_id_by_name( $district_id, $name, $id ) > 0 ) {
+		return false;
+	}
 	
 	$result = $wpdb->update(
 		$table,
 		array(
-			'district_id' => intval( $district_id ),
-			'name'        => sanitize_text_field( $name ),
+			'district_id' => $district_id,
+			'name'        => $name,
 		),
 		array( 'id' => $id ),
 		array( '%d', '%s' ),
@@ -334,6 +482,11 @@ function pmpro_nbstup_delete_block( $id ) {
 add_action( 'wp_ajax_pmpro_nbstup_get_districts', 'pmpro_nbstup_ajax_get_districts' );
 add_action( 'wp_ajax_nopriv_pmpro_nbstup_get_districts', 'pmpro_nbstup_ajax_get_districts' );
 function pmpro_nbstup_ajax_get_districts() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'pmpro_nbstup_ajax' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid request' ) );
+	}
+
 	$state_id = isset( $_POST['state_id'] ) ? intval( $_POST['state_id'] ) : 0;
 	
 	if ( ! $state_id ) {
@@ -350,6 +503,11 @@ function pmpro_nbstup_ajax_get_districts() {
 add_action( 'wp_ajax_pmpro_nbstup_get_blocks', 'pmpro_nbstup_ajax_get_blocks' );
 add_action( 'wp_ajax_nopriv_pmpro_nbstup_get_blocks', 'pmpro_nbstup_ajax_get_blocks' );
 function pmpro_nbstup_ajax_get_blocks() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'pmpro_nbstup_ajax' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid request' ) );
+	}
+
 	$district_id = isset( $_POST['district_id'] ) ? intval( $_POST['district_id'] ) : 0;
 	
 	if ( ! $district_id ) {
@@ -360,30 +518,3 @@ function pmpro_nbstup_ajax_get_blocks() {
 	wp_send_json_success( $blocks );
 }
 
-/**
- * Enqueue frontend scripts for cascading dropdowns
- */
-add_action( 'wp_enqueue_scripts', 'pmpro_nbstup_enqueue_location_scripts' );
-function pmpro_nbstup_enqueue_location_scripts() {
-	// Only load on checkout page
-	if ( ! function_exists( 'pmpro_is_checkout' ) || ! pmpro_is_checkout() ) {
-		return;
-	}
-	
-	wp_enqueue_script(
-		'pmpro-nbstup-location',
-		plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/frontend.js',
-		array( 'jquery' ),
-		'1.0.0',
-		true
-	);
-	
-	wp_localize_script(
-		'pmpro-nbstup-location',
-		'pmpro_nbstup_ajax',
-		array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'pmpro_nbstup_ajax' ),
-		)
-	);
-}
