@@ -1,0 +1,1779 @@
+<?php
+
+/**
+ * Core functionality for PMPro NBSTUP Addon
+ *
+ * @package PMProNBSTUP
+ * @subpackage Core
+ */
+
+if (! defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Enqueue frontend styles for NBSTUP account layout.
+ */
+function pmpronbstup_enqueue_frontend_assets()
+{
+    // Only load on the front end.
+    if (is_admin()) {
+        return;
+    }
+
+
+    wp_enqueue_style(
+        'pmpro-nbstup-frontend',
+        PMPRONBSTUP_PLUGIN_URL . 'assets/css/frontend.css',
+        array(),
+        PMPRONBSTUP_VERSION
+    );
+
+    // Frontend JS (source in assets/js/frontend.js).
+    wp_enqueue_script(
+        'pmpro-nbstup-frontend',
+        PMPRONBSTUP_PLUGIN_URL . 'assets/js/frontend.js',
+        array('jquery'),
+        PMPRONBSTUP_VERSION,
+        true
+    );
+
+    wp_localize_script(
+        'pmpro-nbstup-frontend',
+        'pmpro_nbstup_data',
+        array(
+            'ajax_url'      => admin_url( 'admin-ajax.php' ),
+            'ajax_nonce'    => wp_create_nonce( 'pmpro_nbstup_ajax' ),
+            'login_nonce'   => wp_create_nonce( 'pmpro_nbstup_login' ),
+            'generic_error' => esc_html__( 'Login failed. Please try again.', 'pmpro-nbstup' ),
+            'search_loading' => esc_html__( 'Loading members...', 'pmpro-nbstup' ),
+            'search_error'   => esc_html__( 'Unable to load members right now. Please try again.', 'pmpro-nbstup' ),
+            'validation_message'       => esc_html__( 'Please fix the highlighted fields and try again.', 'pmpro-nbstup' ),
+            'validation_login'         => esc_html__( 'Please enter your username or email.', 'pmpro-nbstup' ),
+            'validation_password'      => esc_html__( 'Please enter your password.', 'pmpro-nbstup' ),
+            'validation_aadhar'        => esc_html__( 'Please enter your Aadhar number.', 'pmpro-nbstup' ),
+            'validation_aadhar_format' => esc_html__( 'Enter a valid 12-digit Aadhar number.', 'pmpro-nbstup' ),
+        )
+    );
+
+}
+add_action('wp_enqueue_scripts', 'pmpronbstup_enqueue_frontend_assets');
+
+/**
+ * Map pmpro_level to level for PMPro URLs.
+ */
+function pmpronbstup_map_pmpro_level_query_var() {
+    if ( is_admin() ) {
+        return;
+    }
+
+    if ( ! isset( $_REQUEST['level'] ) && isset( $_REQUEST['pmpro_level'] ) ) {
+        $_REQUEST['level'] = $_REQUEST['pmpro_level'];
+        if ( isset( $_GET['pmpro_level'] ) ) {
+            $_GET['level'] = $_GET['pmpro_level'];
+        }
+        if ( isset( $_POST['pmpro_level'] ) ) {
+            $_POST['level'] = $_POST['pmpro_level'];
+        }
+    }
+}
+add_action( 'init', 'pmpronbstup_map_pmpro_level_query_var', 5 );
+
+/**
+ * Default checkout level to 1 when no level is provided.
+ */
+function pmpronbstup_default_checkout_level() {
+    if ( ! function_exists( 'pmpro_is_checkout' ) || ! pmpro_is_checkout() ) {
+        return;
+    }
+
+    if ( ! isset( $_REQUEST['level'] ) && isset( $_REQUEST['pmpro_level'] ) ) {
+        $_REQUEST['level'] = $_REQUEST['pmpro_level'];
+        if ( isset( $_GET['pmpro_level'] ) ) {
+            $_GET['level'] = $_GET['pmpro_level'];
+        }
+    }
+
+    $level = isset( $_REQUEST['level'] ) ? (int) $_REQUEST['level'] : 0;
+    if ( $level > 0 ) {
+        return;
+    }
+
+    if ( strtoupper( $_SERVER['REQUEST_METHOD'] ) === 'POST' ) {
+        $_REQUEST['level'] = 1;
+        $_POST['level'] = 1;
+        $_GET['level'] = 1;
+        return;
+    }
+
+    $query = array();
+    foreach ( $_GET as $key => $value ) {
+        if ( $key === 'level' ) {
+            continue;
+        }
+        $query[ $key ] = $value;
+    }
+    $query['level'] = 1;
+
+    $redirect = add_query_arg( $query, pmpro_url( 'checkout' ) );
+    wp_safe_redirect( $redirect );
+    exit;
+}
+add_action( 'template_redirect', 'pmpronbstup_default_checkout_level', 9 );
+
+/**
+ * Check if a user (subscriber) is active according to our addon rules.
+ * Includes checking membership expiration dates for yearly recurring subscriptions.
+ *
+ * @param int $user_id User ID to check
+ * @return bool True if user is active and membership is valid, false otherwise
+ */
+function pmpronbstup_is_user_active($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    // Only apply our logic to subscribers; other roles remain unaffected.
+    if (! in_array('subscriber', (array) $user->roles, true)) {
+        return true;
+    }
+
+    // If marked deceased, always treat as inactive.
+    $deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
+    if ((int) $deceased === 1 || $deceased === '1' || $deceased === true) {
+        return false;
+    }
+
+    // Default is inactive unless explicitly marked active.
+    $active = get_user_meta($user_id, 'pmpronbstup_active', true);
+    if ((int) $active !== 1 && $active !== '1' && $active !== true) {
+        return false;
+    }
+
+    // CHECK IF MEMBERSHIP HAS EXPIRED (yearly recurring)
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if ($expiry_date) {
+        $expiry_timestamp = strtotime($expiry_date);
+        if ($expiry_timestamp < time()) {
+            // Membership expired - auto deactivate
+            pmpronbstup_deactivate_user($user_id);
+            update_user_meta($user_id, 'pmpronbstup_renewal_status', 'expired');
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Activate a user account
+ *
+ * @param int $user_id User ID to activate
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_activate_user($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    // Only activate subscribers
+    if (! in_array('subscriber', (array) $user->roles, true)) {
+        return false;
+    }
+
+    // Don't activate deceased users
+    $deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
+    if ((int) $deceased === 1 || $deceased === '1' || $deceased === true) {
+        return false;
+    }
+
+    $updated = update_user_meta($user_id, 'pmpronbstup_active', 1);
+    if ($updated) {
+        pmpronbstup_assign_unique_id($user_id);
+    }
+
+    return $updated;
+}
+
+/**
+ * Get the first non-empty user meta value from a list of keys.
+ *
+ * @param int   $user_id User ID
+ * @param array $keys    Meta keys to check in order
+ * @return string
+ */
+function pmpronbstup_get_first_user_meta($user_id, $keys)
+{
+    foreach ($keys as $key) {
+        $value = get_user_meta($user_id, $key, true);
+        if (! empty($value)) {
+            return $value;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Assign a unique member ID to a user based on Aadhar number.
+ * Format: NBST+Last 4 digits of Aadhar card (only assigned once).
+ *
+ * @param int $user_id User ID
+ * @return string|false Unique ID in format NBST+XXXX or false on failure
+ */
+function pmpronbstup_assign_unique_id($user_id)
+{
+    $existing = get_user_meta($user_id, 'pmpronbstup_unique_id', true);
+    if (! empty($existing)) {
+        return $existing;
+    }
+
+    // Get the Aadhar number from user meta
+    $aadhar = get_user_meta($user_id, 'aadhar_number', true);
+    if (empty($aadhar)) {
+        return false; // Cannot assign ID without Aadhar number
+    }
+
+    // Extract last 4 digits of Aadhar
+    $aadhar_clean = preg_replace('/\D+/', '', $aadhar);
+    if (strlen($aadhar_clean) < 4) {
+        return false; // Invalid Aadhar format
+    }
+
+    $last_four = substr($aadhar_clean, -4);
+    $candidate = 'NBST' . $last_four;
+
+    // Verify uniqueness - in case two users somehow have same last 4 digits,
+    // append a numeric suffix to ensure uniqueness
+    global $wpdb;
+    $existing_user = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+            'pmpronbstup_unique_id',
+            $candidate
+        )
+    );
+
+    if (! empty($existing_user)) {
+        // ID already taken, append a numeric suffix
+        $suffix = 1;
+        $tries = 0;
+        do {
+            $candidate = 'NBST' . $last_four . '-' . $suffix;
+            $existing_user = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+                    'pmpronbstup_unique_id',
+                    $candidate
+                )
+            );
+            if (empty($existing_user)) {
+                break;
+            }
+            $suffix++;
+            $tries++;
+        } while ($tries < 100);
+
+        if ($tries >= 100) {
+            return false;
+        }
+    }
+
+    update_user_meta($user_id, 'pmpronbstup_unique_id', $candidate);
+
+    return $candidate;
+}
+
+/**
+ * Deactivate a user account
+ *
+ * @param int $user_id User ID to deactivate
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_deactivate_user($user_id)
+{
+    return update_user_meta($user_id, 'pmpronbstup_active', 0);
+}
+
+/**
+ * Reactivate a subscriber when contribution requirements are fully satisfied.
+ *
+ * @param int    $user_id User ID to evaluate.
+ * @param string $reason  Optional reason for audit logging.
+ * @return bool True if user was (or is now) active, false otherwise.
+ */
+function pmpronbstup_reactivate_user_if_eligible($user_id, $reason = '')
+{
+    $user = get_userdata($user_id);
+    if (! $user || ! in_array('subscriber', (array) $user->roles, true)) {
+        return false;
+    }
+
+    $deceased = get_user_meta($user_id, 'pmpronbstup_deceased', true);
+    if ((int) $deceased === 1) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if (! empty($expiry_date) && strtotime($expiry_date) < time()) {
+        return false;
+    }
+
+    $deceased_required = (int) get_user_meta($user_id, 'pmpronbstup_contribution_deceased_required', true);
+    $deceased_paid = (int) get_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', true);
+    if ($deceased_required === 1 && $deceased_paid !== 1) {
+        return false;
+    }
+
+    $wedding_required = (int) get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
+    $wedding_paid = (int) get_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', true);
+    if ($wedding_required === 1 && $wedding_paid !== 1) {
+        return false;
+    }
+
+    $was_active = (int) get_user_meta($user_id, 'pmpronbstup_active', true) === 1;
+    update_user_meta($user_id, 'pmpronbstup_active', 1);
+
+    $status = get_user_meta($user_id, 'pmpronbstup_renewal_status', true);
+    if ($status === 'contribution_overdue') {
+        update_user_meta($user_id, 'pmpronbstup_renewal_status', 'active');
+    }
+
+    if (! $was_active) {
+        $log_reason = ! empty($reason) ? $reason : __('Eligibility checks passed after contribution verification', 'pmpro-nbstup');
+        pmpronbstup_log_reactivation_event($user_id, $log_reason);
+
+        // Ensure user has a unique ID assigned
+        pmpronbstup_assign_unique_id($user_id);
+    }
+
+    return true;
+}
+
+/**
+ * Store a rolling log of automatic account reactivations.
+ *
+ * @param int    $user_id User ID.
+ * @param string $reason  Why the reactivation happened.
+ * @return void
+ */
+function pmpronbstup_log_reactivation_event($user_id, $reason = '')
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return;
+    }
+
+    $log = get_option('pmpronbstup_reactivation_log', array());
+    if (! is_array($log)) {
+        $log = array();
+    }
+
+    $entry = array(
+        'timestamp' => current_time('mysql'),
+        'user_id'   => (int) $user_id,
+        'email'     => $user->user_email,
+        'name'      => $user->display_name,
+        'reason'    => $reason,
+    );
+
+    array_unshift($log, $entry);
+    $log = array_slice($log, 0, 50);
+    update_option('pmpronbstup_reactivation_log', $log, false);
+
+    if (is_admin() && current_user_can('manage_options')) {
+        $notice_key = 'pmpronbstup_reactivation_notice_' . get_current_user_id();
+        $notices = get_transient($notice_key);
+        if (! is_array($notices)) {
+            $notices = array();
+        }
+
+        $notices[] = sprintf(
+            /* translators: 1: user display name, 2: user email */
+            __('Account auto-reactivated: %1$s (%2$s).', 'pmpro-nbstup'),
+            $user->display_name,
+            $user->user_email
+        );
+
+        set_transient($notice_key, array_slice($notices, -5), 5 * MINUTE_IN_SECONDS);
+    }
+}
+
+/**
+ * Display queued admin notices for recent auto-reactivations.
+ *
+ * @return void
+ */
+function pmpronbstup_show_reactivation_admin_notices()
+{
+    if (! is_admin() || ! current_user_can('manage_options')) {
+        return;
+    }
+
+    $notice_key = 'pmpronbstup_reactivation_notice_' . get_current_user_id();
+    $notices = get_transient($notice_key);
+    if (empty($notices) || ! is_array($notices)) {
+        return;
+    }
+
+    delete_transient($notice_key);
+
+    foreach ($notices as $notice) {
+        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($notice) . '</p></div>';
+    }
+}
+add_action('admin_notices', 'pmpronbstup_show_reactivation_admin_notices');
+
+/**
+ * Check if a user's membership has expired and auto-deactivate if needed.
+ * This is called daily via scheduled event.
+ *
+ * @param int $user_id User ID to check
+ * @return string 'active', 'expired', 'pending_renewal', or null if no membership
+ */
+function pmpronbstup_check_membership_expiry($user_id)
+{
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    if (! $expiry_date) {
+        return null;
+    }
+
+    $expiry_timestamp = strtotime($expiry_date);
+    $current_timestamp = time();
+
+    if ($expiry_timestamp < $current_timestamp) {
+        // Membership has expired
+        update_user_meta($user_id, 'pmpronbstup_renewal_status', 'expired');
+        pmpronbstup_deactivate_user($user_id);
+
+        // Send renewal reminder email (only if not already sent)
+        if (! get_user_meta($user_id, 'pmpronbstup_expiry_email_sent_' . date('Y-m'), true)) {
+            pmpronbstup_send_renewal_required_email($user_id);
+            update_user_meta($user_id, 'pmpronbstup_expiry_email_sent_' . date('Y-m'), 1);
+        }
+
+        return 'expired';
+    }
+
+    // Days until expiry
+    $days_until_expiry = ceil(($expiry_timestamp - $current_timestamp) / 86400);
+
+    // Send reminder if expiring soon (within 30 days)
+    if ($days_until_expiry <= 30 && $days_until_expiry > 0) {
+        if (! get_user_meta($user_id, 'pmpronbstup_expiry_reminder_sent', true)) {
+            pmpronbstup_send_expiry_reminder_email($user_id, $days_until_expiry);
+            update_user_meta($user_id, 'pmpronbstup_expiry_reminder_sent', 1);
+        }
+    }
+
+    return 'active';
+}
+
+/**
+ * Check all user memberships for expiry daily (scheduled event)
+ * Should be called via wp_scheduled_event
+ */
+function pmpronbstup_check_all_expired_memberships()
+{
+    $users = get_users(array(
+        'role'       => 'subscriber',
+        'meta_key'   => 'pmpronbstup_active',
+        'meta_value' => '1',
+    ));
+
+    foreach ($users as $user) {
+        pmpronbstup_check_membership_expiry($user->ID);
+    }
+}
+
+/**
+ * Send expiry reminder email to user (30 days before expiry)
+ *
+ * @param int $user_id User ID
+ * @param int $days_until_expiry Days remaining until expiry
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_expiry_reminder_email($user_id, $days_until_expiry)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    $subject_template = pmpronbstup_get_email_setting('expiry_reminder_subject', $defaults['expiry_reminder_subject']);
+    $body_template = pmpronbstup_get_email_setting('expiry_reminder_body', $defaults['expiry_reminder_body']);
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+        '{expiry_date}' => $expiry_date,
+        '{days_until_expiry}' => $days_until_expiry,
+        '{account_url}' => pmpro_url('account'),
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send renewal required email to user (membership expired)
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_renewal_required_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    $subject_template = pmpronbstup_get_email_setting('renewal_required_subject', $defaults['renewal_required_subject']);
+    $body_template = pmpronbstup_get_email_setting('renewal_required_body', $defaults['renewal_required_body']);
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+        '{expiry_date}' => $expiry_date,
+        '{account_url}' => pmpro_url('account'),
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send renewal confirmation email to user (renewal payment verified)
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_renewal_confirmation_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $expiry_date = get_user_meta($user_id, 'pmpronbstup_membership_expiry_date', true);
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    $subject_template = pmpronbstup_get_email_setting('renewal_confirmed_subject', $defaults['renewal_confirmed_subject']);
+    $body_template = pmpronbstup_get_email_setting('renewal_confirmed_body', $defaults['renewal_confirmed_body']);
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+        '{expiry_date}' => $expiry_date,
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Shortcode to show the PMPro Membership Account in a
+ * two-column layout: left menu, right details.
+ *
+ * Usage: [pmpro_account_nbstup] instead of [pmpro_account]
+ *
+ * Left menu links jump to the core PMPro account sections
+ * rendered by the [pmpro_account] shortcode:
+ *  - #pmpro_account-profile
+ *  - #pmpro_account-membership
+ *  - #pmpro_account-orders
+ *  - #pmpro_account-links
+ *  - ?view=contribution for deceased members list
+ *
+ * @return string
+ */
+function pmpronbstup_account_two_column_shortcode()
+{
+    if (! is_user_logged_in()) {
+        // Fallback: if not logged in, just show the normal account shortcode
+        // so PMPro can handle redirects/messages as usual.
+        return do_shortcode('[pmpro_account]');
+    }
+
+
+    $account_url = pmpro_url("account");
+
+
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-account-layout">
+        <aside class="pmpro-nbstup-account-sidebar">
+            <nav class="pmpro-nbstup-account-nav" aria-label="<?php esc_attr_e('Membership account navigation', 'pmpro-nbstup'); ?>">
+                <ul>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-profile"><?php esc_html_e('Account Overview', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-membership"><?php esc_html_e('My Memberships', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>#pmpro_account-orders"><?php esc_html_e('Order / Invoice History', 'pmpro-nbstup'); ?></a></li>
+                    <li><a href="<?php echo esc_url( $account_url ); ?>?view=contribution"><?php esc_html_e('Contribution', 'pmpro-nbstup'); ?></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="pmpro-nbstup-account-content">
+            <?php
+            if (isset($_GET['view']) && $_GET['view'] === 'contribution') {
+                echo pmpronbstup_render_deceased_members_list();
+            } else {
+                // Render the standard PMPro account shortcode inside the content pane.
+                echo do_shortcode('[pmpro_account]');
+            }
+            ?>
+        </div>
+    </div>
+    <?php
+
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode: Member login with Aadhar + Password
+ * Usage: [pmpro_nbstup_member_login redirect="/account/"]
+ */
+/**
+ * Shortcode: [pmpro_nbstup_member_login]
+ * Renders ONLY the member login form (no admin tab)
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string
+ */
+function pmpronbstup_member_login_shortcode( $atts )
+{
+    if ( is_user_logged_in() ) {
+        $account_url = function_exists( 'pmpro_url' ) ? pmpro_url( 'account' ) : home_url( '/' );
+        return '<p>' . sprintf( esc_html__( 'You are already logged in. Go to %s.', 'pmpro-nbstup' ), '<a href="' . esc_url( $account_url ) . '">' . esc_html__( 'your account', 'pmpro-nbstup' ) . '</a>' ) . '</p>';
+    }
+
+    $atts = shortcode_atts(
+        array(
+            'redirect' => '',
+        ),
+        $atts,
+        'pmpro_nbstup_member_login'
+    );
+
+    $member_redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : '';
+
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-member-login">
+        <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
+
+        <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="member" data-redirect="<?php echo esc_attr( $member_redirect ); ?>">
+            <div class="pmpro-nbstup-member-login__header">
+                <h2 class="pmpro-nbstup-member-login__title">
+                    <?php esc_html_e( 'Member Login', 'pmpro-nbstup' ); ?>
+                </h2>
+                <p class="pmpro-nbstup-member-login__subtitle">
+                    <?php esc_html_e( 'Login using your Aadhar number and password.', 'pmpro-nbstup' ); ?>
+                </p>
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_aadhar_number" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'आधार कार्ड नंबर', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="text"
+                    id="pmpro_nbstup_aadhar_number"
+                    name="aadhar_number"
+                    class="pmpro-nbstup-member-login__input"
+                    inputmode="numeric"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_member_password" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="password"
+                    id="pmpro_nbstup_member_password"
+                    name="member_password"
+                    class="pmpro-nbstup-member-login__input"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+
+            <div class="pmpro-nbstup-member-login__actions">
+                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+    <?php
+
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode: [pmpro_nbstup_admin_login]
+ * Renders ONLY the admin login form
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string
+ */
+function pmpronbstup_admin_login_shortcode( $atts )
+{
+    if ( is_user_logged_in() ) {
+        return '<p>' . esc_html__( 'You are already logged in.', 'pmpro-nbstup' ) . '</p>';
+    }
+
+    $atts = shortcode_atts(
+        array(
+            'redirect' => '',
+        ),
+        $atts,
+        'pmpro_nbstup_admin_login'
+    );
+
+    $admin_redirect = ! empty( $atts['redirect'] ) ? $atts['redirect'] : '';
+
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-admin-login">
+        <div class="pmpro_message pmpro_error pmpro-nbstup-login-message" role="alert" hidden></div>
+
+        <form method="post" class="pmpro-nbstup-member-login__form pmpro-nbstup-login-form" data-login-type="admin" data-redirect="<?php echo esc_attr( $admin_redirect ); ?>">
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_admin_login" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Email or Username', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="text"
+                    id="pmpro_nbstup_admin_login"
+                    name="user_login"
+                    class="pmpro-nbstup-member-login__input"
+                    placeholder="<?php esc_attr_e( 'Email or Username', 'pmpro-nbstup' ); ?>"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div class="pmpro-nbstup-member-login__field">
+                <label for="pmpro_nbstup_admin_password" class="pmpro-nbstup-member-login__label">
+                    <?php esc_html_e( 'Password', 'pmpro-nbstup' ); ?>
+                </label>
+                <input
+                    type="password"
+                    id="pmpro_nbstup_admin_password"
+                    name="user_password"
+                    class="pmpro-nbstup-member-login__input"
+                    placeholder="<?php esc_attr_e( 'Enter your password', 'pmpro-nbstup' ); ?>"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+
+            <div class="admin-login-actions-row">
+                <div class="admin-login-remember">
+                    <input type="checkbox" id="pmpro_nbstup_admin_remember" name="remember" value="1" />
+                    <label for="pmpro_nbstup_admin_remember">
+                        <?php esc_html_e( 'Remember me', 'pmpro-nbstup' ); ?>
+                    </label>
+                </div>
+                <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>" class="admin-login-forgot">
+                    <?php esc_html_e( 'Forgot Password?', 'pmpro-nbstup' ); ?>
+                </a>
+            </div>
+
+            <div class="pmpro-nbstup-member-login__actions">
+                <button type="submit" class="pmpro_btn pmpro_btn-submit pmpro-nbstup-member-login__submit">
+                    <?php esc_html_e( 'Log In', 'pmpro-nbstup' ); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+    <?php
+
+    return ob_get_clean();
+}
+
+/**
+ * Render the list of deceased members for contribution payments
+ *
+ * @return string
+ */
+function pmpronbstup_render_deceased_members_list()
+{
+    $paged = isset($_GET['paged']) ? max(1, (int) $_GET['paged']) : 1;
+    $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+    $data = pmpronbstup_get_deceased_members_data( $search, $paged, 10 );
+
+    ob_start();
+    ?>
+    <strong><?php esc_html_e('Deceased Members - Pay Contribution', 'pmpro-nbstup'); ?></strong>
+    <form method="get" class="pmpro-nbstup-search-form" data-ajax="1">
+        <input type="hidden" name="view" value="contribution" />
+        <input
+            type="search"
+            name="s"
+            value="<?php echo esc_attr( $search ); ?>"
+            placeholder="<?php esc_attr_e( 'Search by member ID, name, email or username', 'pmpro-nbstup' ); ?>"
+            aria-label="<?php esc_attr_e( 'Search members', 'pmpro-nbstup' ); ?>"
+        />
+        <button type="submit"><?php esc_html_e( 'Search', 'pmpro-nbstup' ); ?></button>
+        <span class="pmpro-nbstup-search-loading" data-search-loading hidden><?php esc_html_e( 'Loading members...', 'pmpro-nbstup' ); ?></span>
+        <a href="<?php echo esc_url( pmpro_url( 'account' ) . '?view=contribution' ); ?>" class="button"><?php esc_html_e( 'Reset', 'pmpro-nbstup' ); ?></a>
+    </form>
+
+    <div class="pmpro-nbstup-users-list" data-search-results>
+        <?php echo pmpronbstup_render_deceased_members_results_markup( $data ); ?>
+    </div>
+
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('pmpro_account_nbstup', 'pmpronbstup_account_two_column_shortcode');
+add_shortcode('pmpro_nbstup_member_login', 'pmpronbstup_member_login_shortcode');
+add_shortcode('pmpro_nbstup_admin_login', 'pmpronbstup_admin_login_shortcode');
+
+/**
+ * Build a URL for contribution list pagination while preserving search input.
+ *
+ * @param int    $page   Page number.
+ * @param string $search Search keyword.
+ * @return string
+ */
+function pmpronbstup_get_contribution_list_url( $page, $search = '' )
+{
+    $args = array(
+        'view'  => 'contribution',
+        'paged' => max( 1, (int) $page ),
+    );
+
+    if ( $search !== '' ) {
+        $args['s'] = $search;
+    }
+
+    return add_query_arg( $args, pmpro_url( 'account' ) );
+}
+
+/**
+ * Query deceased members for contribution listing.
+ *
+ * @param string $search   Search keyword.
+ * @param int    $paged    Current page.
+ * @param int    $per_page Items per page.
+ * @return array
+ */
+function pmpronbstup_get_deceased_members_data( $search = '', $paged = 1, $per_page = 10 )
+{
+    $paged = max( 1, (int) $paged );
+    $offset = ( $paged - 1 ) * (int) $per_page;
+
+    $query_args = array(
+        'meta_query' => array(
+            array(
+                'key'     => 'pmpronbstup_deceased',
+                'value'   => '1',
+                'compare' => '=',
+            ),
+        ),
+        'number'     => (int) $per_page,
+        'offset'     => $offset,
+        'orderby'    => 'ID',
+        'order'      => 'ASC',
+    );
+
+    $search = trim( (string) $search );
+    if ( $search !== '' ) {
+        if ( ctype_digit( $search ) ) {
+            $query_args['include'] = array( (int) $search );
+        } else {
+            $query_args['search'] = '*' . $search . '*';
+            $query_args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
+        }
+    }
+
+    $query = new WP_User_Query( $query_args );
+    $total_users = (int) $query->get_total();
+    $total_pages = $total_users > 0 ? (int) ceil( $total_users / $per_page ) : 1;
+
+    return array(
+        'users'       => $query->get_results(),
+        'total_users' => $total_users,
+        'total_pages' => $total_pages,
+        'paged'       => $paged,
+        'search'      => $search,
+    );
+}
+
+/**
+ * Render the deceased members table and pagination.
+ *
+ * @param array $data Query data from pmpronbstup_get_deceased_members_data.
+ * @return string
+ */
+function pmpronbstup_render_deceased_members_results_markup( $data )
+{
+    $users = isset( $data['users'] ) && is_array( $data['users'] ) ? $data['users'] : array();
+    $paged = isset( $data['paged'] ) ? max( 1, (int) $data['paged'] ) : 1;
+    $total_pages = isset( $data['total_pages'] ) ? max( 1, (int) $data['total_pages'] ) : 1;
+    $search = isset( $data['search'] ) ? (string) $data['search'] : '';
+
+    ob_start();
+    if ( empty( $users ) ) :
+    ?>
+        <p><?php esc_html_e( 'No deceased members found.', 'pmpro-nbstup' ); ?></p>
+    <?php else : ?>
+        <table class="pmpro-nbstup-deceased-table">
+            <thead>
+                <tr>
+                    <th><?php esc_html_e( 'ID', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Avatar', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Display Name', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Date of Death', 'pmpro-nbstup' ); ?></th>
+                    <th><?php esc_html_e( 'Action', 'pmpro-nbstup' ); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ( $users as $user ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( (string) $user->ID ); ?></td>
+                        <td><?php echo get_avatar( $user->ID, 32 ); ?></td>
+                        <td><?php echo esc_html( $user->display_name ); ?></td>
+                        <td>
+                            <?php
+                            $date = get_user_meta( $user->ID, 'pmpronbstup_deceased_date', true );
+                            if ( ! empty( $date ) ) {
+                                echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $date ) ) );
+                            } else {
+                                esc_html_e( 'N/A', 'pmpro-nbstup' );
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo esc_url( pmpro_url( 'checkout' ) . '?level=1&contribution_for=' . $user->ID ); ?>" class="button">
+                                <?php esc_html_e( 'Pay your contribution', 'pmpro-nbstup' ); ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php if ( $total_pages > 1 ) : ?>
+            <div class="pmpro-nbstup-pagination">
+                <?php if ( $paged > 1 ) : ?>
+                    <a href="<?php echo esc_url( pmpronbstup_get_contribution_list_url( $paged - 1, $search ) ); ?>" class="button" data-page="<?php echo esc_attr( (string) ( $paged - 1 ) ); ?>"><?php esc_html_e( 'Previous', 'pmpro-nbstup' ); ?></a>
+                <?php endif; ?>
+                <span><?php printf( esc_html__( 'Page %1$d of %2$d', 'pmpro-nbstup' ), $paged, $total_pages ); ?></span>
+                <?php if ( $paged < $total_pages ) : ?>
+                    <a href="<?php echo esc_url( pmpronbstup_get_contribution_list_url( $paged + 1, $search ) ); ?>" class="button" data-page="<?php echo esc_attr( (string) ( $paged + 1 ) ); ?>"><?php esc_html_e( 'Next', 'pmpro-nbstup' ); ?></a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    <?php
+    endif;
+
+    return ob_get_clean();
+}
+
+/**
+ * AJAX: Filter/search deceased members list.
+ *
+ * @return void
+ */
+function pmpronbstup_ajax_filter_deceased_members()
+{
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['nonce'] ), 'pmpro_nbstup_ajax' ) ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Security check failed. Please refresh and try again.', 'pmpro-nbstup' ) ) );
+    }
+
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error( array( 'message' => esc_html__( 'Please log in to view this list.', 'pmpro-nbstup' ) ) );
+    }
+
+    $search = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : '';
+    $paged = isset( $_POST['paged'] ) ? max( 1, (int) $_POST['paged'] ) : 1;
+    $data = pmpronbstup_get_deceased_members_data( $search, $paged, 10 );
+    $html = pmpronbstup_render_deceased_members_results_markup( $data );
+
+    wp_send_json_success(
+        array(
+            'html'        => $html,
+            'total_users' => (int) $data['total_users'],
+            'total_pages' => (int) $data['total_pages'],
+            'paged'       => (int) $data['paged'],
+        )
+    );
+}
+add_action( 'wp_ajax_pmpronbstup_filter_deceased_members', 'pmpronbstup_ajax_filter_deceased_members' );
+add_action( 'wp_ajax_nopriv_pmpronbstup_filter_deceased_members', 'pmpronbstup_ajax_filter_deceased_members' );
+
+/**
+ * Migrate existing active users to have membership expiry dates
+ * Run this on plugin activation to set expiry dates for current active users
+ */
+function pmpronbstup_migrate_existing_users()
+{
+    $users = get_users(array(
+        'role'     => 'subscriber',
+        'meta_key' => 'pmpronbstup_active',
+        'meta_value' => '1'
+    ));
+
+    foreach ($users as $user) {
+        $expiry = get_user_meta($user->ID, 'pmpronbstup_membership_expiry_date', true);
+        if (!$expiry) {
+            // Set expiry to 1 year from today for existing active users
+            update_user_meta($user->ID, 'pmpronbstup_membership_expiry_date',
+                date('Y-m-d', strtotime('+1 year')));
+            update_user_meta($user->ID, 'pmpronbstup_membership_start_date', date('Y-m-d'));
+            update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'active');
+        }
+
+        // Assign unique ID to existing users if not already assigned
+        pmpronbstup_assign_unique_id($user->ID);
+    }
+}
+
+// Hook the daily expiry check
+add_action('wp_scheduled_event_pmpronbstup_check_expiry', 'pmpronbstup_check_all_expired_memberships');
+
+/**
+ * Mark all active users as requiring contribution payment for deceased member
+ * Called when a user is marked as deceased
+ *
+ * @param int $deceased_user_id User ID of the deceased member
+ * @return int Number of users marked to pay contribution
+ */
+function pmpronbstup_mark_contribution_required_deceased($deceased_user_id)
+{
+    $users = get_users(array(
+        'role'       => 'subscriber',
+        'meta_key'   => 'pmpronbstup_active',
+        'meta_value' => '1',
+    ));
+
+    $count = 0;
+    $contribution_deadline = date('Y-m-d', strtotime('+1 month'));
+
+    foreach ($users as $user) {
+        // Skip the deceased user
+        if ($user->ID === $deceased_user_id) {
+            continue;
+        }
+
+        // Check if already marked as requiring contribution
+        $already_required = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', true);
+        if ((int) $already_required === 1) {
+            continue;
+        }
+
+        update_user_meta($user->ID, 'pmpronbstup_contribution_deceased_required', 1);
+        update_user_meta($user->ID, 'pmpronbstup_contribution_deceased_deadline', $contribution_deadline);
+        update_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', 0);
+
+        // Send notification email
+        pmpronbstup_send_contribution_required_email($user->ID, $contribution_deadline, 'deceased');
+
+        $count++;
+    }
+
+    return $count;
+}
+
+/**
+ * Mark all active users as requiring contribution payment (legacy function for backward compatibility)
+ * Called when a user is marked as deceased
+ *
+ * @param int $deceased_user_id User ID of the deceased member
+ * @return int Number of users marked to pay contribution
+ */
+function pmpronbstup_mark_contribution_required($deceased_user_id)
+{
+    return pmpronbstup_mark_contribution_required_deceased($deceased_user_id);
+}
+
+/**
+ * Mark all active users as requiring contribution payment for daughter wedding
+ * Called when a user is marked for daughter wedding
+ * Note: This can be called multiple times for different weddings
+ *
+ * @param int $wedding_user_id User ID of the member with daughter wedding
+ * @return int Number of users marked to pay contribution
+ */
+function pmpronbstup_mark_contribution_required_wedding($wedding_user_id)
+{
+    $users = get_users(array(
+        'role'       => 'subscriber',
+        'meta_key'   => 'pmpronbstup_active',
+        'meta_value' => '1',
+    ));
+
+    $count = 0;
+    $contribution_deadline = date('Y-m-d', strtotime('+1 month'));
+
+    foreach ($users as $user) {
+        // Skip the wedding user themselves
+        if ($user->ID === $wedding_user_id) {
+            continue;
+        }
+
+        // Always mark as requiring contribution (allows multiple weddings)
+        // If already required and unpaid, this updates the deadline
+        update_user_meta($user->ID, 'pmpronbstup_contribution_wedding_required', 1);
+        update_user_meta($user->ID, 'pmpronbstup_contribution_wedding_deadline', $contribution_deadline);
+        
+        // Only reset paid status if not already paid for current wedding cycle
+        $already_paid = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
+        if ((int) $already_paid !== 1) {
+            update_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', 0);
+        }
+
+        // Send notification email
+        pmpronbstup_send_contribution_required_email($user->ID, $contribution_deadline, 'wedding');
+
+        $count++;
+    }
+
+    return $count;
+}
+
+/**
+ * Send email notifying user that they need to pay contribution
+ *
+ * @param int    $user_id User ID
+ * @param string $deadline Deadline date (Y-m-d format)
+ * @param string $type Contribution type: 'deceased' or 'wedding'
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_required_email($user_id, $deadline, $type = 'deceased')
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    
+    if ($type === 'wedding') {
+        $subject_template = pmpronbstup_get_email_setting('wedding_contribution_subject', $defaults['wedding_contribution_subject']);
+        $body_template = pmpronbstup_get_email_setting('wedding_contribution_body', $defaults['wedding_contribution_body']);
+    } else {
+        $subject_template = pmpronbstup_get_email_setting('deceased_contribution_subject', $defaults['deceased_contribution_subject']);
+        $body_template = pmpronbstup_get_email_setting('deceased_contribution_body', $defaults['deceased_contribution_body']);
+    }
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+        '{deadline}' => date_i18n(get_option('date_format'), strtotime($deadline)),
+        '{account_url}' => pmpro_url('account'),
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Check all users for overdue contribution payments and deactivate if needed
+ * Should be called via wp_scheduled_event
+ */
+function pmpronbstup_check_contribution_deadlines()
+{
+    $overdue_deceased = array();
+    $overdue_wedding = array();
+    
+    // Check deceased contributions
+    $users_deceased = get_users(array(
+        'meta_key'   => 'pmpronbstup_contribution_deceased_required',
+        'meta_value' => '1',
+    ));
+
+    foreach ($users_deceased as $user) {
+        // Skip if contribution already paid
+        $paid = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_paid', true);
+        if ((int) $paid === 1) {
+            continue;
+        }
+
+        // Check deadline
+        $deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_deceased_deadline', true);
+        if (! $deadline) {
+            continue;
+        }
+
+        $deadline_timestamp = strtotime($deadline);
+        $current_timestamp  = time();
+
+        if ($deadline_timestamp < $current_timestamp) {
+            // Deadline passed, deactivate user
+            pmpronbstup_deactivate_user($user->ID);
+            update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'contribution_overdue');
+
+            // Send overdue notification email to user
+            pmpronbstup_send_contribution_overdue_email($user->ID);
+            
+            // Add to admin notification list
+            $overdue_deceased[] = array(
+                'user' => $user,
+                'deadline' => $deadline,
+                'type' => 'deceased'
+            );
+        }
+    }
+    
+    // Check wedding contributions
+    $users_wedding = get_users(array(
+        'meta_key'   => 'pmpronbstup_contribution_wedding_required',
+        'meta_value' => '1',
+    ));
+
+    foreach ($users_wedding as $user) {
+        // Skip if contribution already paid
+        $paid = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_paid', true);
+        if ((int) $paid === 1) {
+            continue;
+        }
+
+        // Check deadline
+        $deadline = get_user_meta($user->ID, 'pmpronbstup_contribution_wedding_deadline', true);
+        if (! $deadline) {
+            continue;
+        }
+
+        $deadline_timestamp = strtotime($deadline);
+        $current_timestamp  = time();
+
+        if ($deadline_timestamp < $current_timestamp) {
+            // Deadline passed, deactivate user
+            pmpronbstup_deactivate_user($user->ID);
+            update_user_meta($user->ID, 'pmpronbstup_renewal_status', 'contribution_overdue');
+
+            // Send overdue notification email to user
+            pmpronbstup_send_contribution_overdue_email($user->ID);
+            
+            // Add to admin notification list
+            $overdue_wedding[] = array(
+                'user' => $user,
+                'deadline' => $deadline,
+                'type' => 'wedding'
+            );
+        }
+    }
+    
+    // Send admin summary email if there are overdue contributions
+    if (!empty($overdue_deceased) || !empty($overdue_wedding)) {
+        pmpronbstup_send_admin_overdue_summary($overdue_deceased, $overdue_wedding);
+    }
+}
+
+/**
+ * Send email when contribution payment is overdue
+ *
+ * @param int $user_id User ID
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_overdue_email($user_id)
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    $subject_template = pmpronbstup_get_email_setting('contribution_overdue_subject', $defaults['contribution_overdue_subject']);
+    $body_template = pmpronbstup_get_email_setting('contribution_overdue_body', $defaults['contribution_overdue_body']);
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+        '{account_url}' => pmpro_url('account'),
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Send admin summary email of all overdue contributions
+ *
+ * @param array $overdue_deceased Array of deceased contribution overdue users
+ * @param array $overdue_wedding Array of wedding contribution overdue users
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_admin_overdue_summary($overdue_deceased, $overdue_wedding)
+{
+    $admin_email = get_option('admin_email');
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    
+    $total_overdue = count($overdue_deceased) + count($overdue_wedding);
+    
+    $subject = sprintf(
+        __('[%s] %d Members with Overdue Contributions - Accounts Deactivated', 'pmpro-nbstup'),
+        $blogname,
+        $total_overdue
+    );
+    
+    $message = sprintf(
+        __("Admin Notification - Overdue Contributions\n\n%d member(s) have been automatically deactivated due to overdue contribution payments.\n\n", 'pmpro-nbstup'),
+        $total_overdue
+    );
+    
+    if (!empty($overdue_deceased)) {
+        $message .= sprintf(
+            __("DECEASED MEMBER CONTRIBUTIONS (%d overdue):\n", 'pmpro-nbstup'),
+            count($overdue_deceased)
+        );
+        $message .= str_repeat('-', 50) . "\n";
+        foreach ($overdue_deceased as $item) {
+            $message .= sprintf(
+                "- %s (%s) - Deadline: %s\n",
+                $item['user']->display_name,
+                $item['user']->user_email,
+                date_i18n(get_option('date_format'), strtotime($item['deadline']))
+            );
+        }
+        $message .= "\n";
+    }
+    
+    if (!empty($overdue_wedding)) {
+        $message .= sprintf(
+            __("WEDDING CONTRIBUTIONS (%d overdue):\n", 'pmpro-nbstup'),
+            count($overdue_wedding)
+        );
+        $message .= str_repeat('-', 50) . "\n";
+        foreach ($overdue_wedding as $item) {
+            $message .= sprintf(
+                "- %s (%s) - Deadline: %s\n",
+                $item['user']->display_name,
+                $item['user']->user_email,
+                date_i18n(get_option('date_format'), strtotime($item['deadline']))
+            );
+        }
+        $message .= "\n";
+    }
+    
+    $message .= __("\nThese members have been notified via email and their accounts have been deactivated.\n\n", 'pmpro-nbstup');
+    $message .= sprintf(
+        __("To manage contributions, visit: %s/wp-admin/admin.php?page=pmpro-nbstup-contributions\n\n", 'pmpro-nbstup'),
+        home_url()
+    );
+    $message .= sprintf(__("Best regards,\n%s", 'pmpro-nbstup'), $blogname);
+    
+    return wp_mail($admin_email, $subject, $message);
+}
+
+/**
+ * Send confirmation email when contribution is verified as paid
+ *
+ * @param int $user_id User ID
+ * @param string $type Contribution type: 'deceased' or 'wedding'
+ * @return bool True on success, false on failure
+ */
+function pmpronbstup_send_contribution_confirmation_email($user_id, $type = 'deceased')
+{
+    $user = get_userdata($user_id);
+    if (! $user) {
+        return false;
+    }
+
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    $to       = $user->user_email;
+    
+    $defaults = pmpronbstup_get_default_email_templates();
+    
+    if ($type === 'wedding') {
+        $subject_template = pmpronbstup_get_email_setting('wedding_contribution_confirmed_subject', $defaults['wedding_contribution_confirmed_subject']);
+        $body_template = pmpronbstup_get_email_setting('wedding_contribution_confirmed_body', $defaults['wedding_contribution_confirmed_body']);
+    } else {
+        $subject_template = pmpronbstup_get_email_setting('deceased_contribution_confirmed_subject', $defaults['deceased_contribution_confirmed_subject']);
+        $body_template = pmpronbstup_get_email_setting('deceased_contribution_confirmed_body', $defaults['deceased_contribution_confirmed_body']);
+    }
+    
+    // Replace placeholders
+    $replacements = array(
+        '{blogname}' => $blogname,
+        '{display_name}' => $user->display_name,
+    );
+    
+    $subject = str_replace(array_keys($replacements), array_values($replacements), $subject_template);
+    $message = str_replace(array_keys($replacements), array_values($replacements), $body_template);
+
+    return wp_mail($to, $subject, $message);
+}
+
+/**
+ * Check if user is active (including contribution status)
+ * Updated to also check contribution requirements
+ *
+ * @param int $user_id User ID to check
+ * @return bool True if user is active and all requirements met, false otherwise
+ */
+function pmpronbstup_is_user_active_with_contribution($user_id)
+{
+    // First check basic active status
+    if (! pmpronbstup_is_user_active($user_id)) {
+        return false;
+    }
+
+    $deceased_required = get_user_meta($user_id, 'pmpronbstup_contribution_deceased_required', true);
+    $deceased_paid = get_user_meta($user_id, 'pmpronbstup_contribution_deceased_paid', true);
+
+    $wedding_required = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_required', true);
+    $wedding_paid = get_user_meta($user_id, 'pmpronbstup_contribution_wedding_paid', true);
+
+    if ((int) $deceased_required === 1 && (int) $deceased_paid !== 1) {
+        return false;
+    }
+
+    if ((int) $wedding_required === 1 && (int) $wedding_paid !== 1) {
+        return false;
+    }
+
+    return true;
+}
+
+// Hook the daily contribution deadline check
+add_action('wp_scheduled_event_pmpronbstup_check_contribution', 'pmpronbstup_check_contribution_deadlines');
+
+/**
+ * Shortcode to display a list of all users with details, pagination, and search
+ * Usage: [pmpro_nbstup_users_list]
+ * Optional attributes: per_page (default: 20)
+ *
+ * @param array $atts Shortcode attributes
+ * @return string HTML output
+ */
+function pmpronbstup_users_list_shortcode($atts)
+{
+    // Parse shortcode attributes
+    $atts = shortcode_atts(array(
+        'per_page' => 100,
+    ), $atts, 'pmpro_nbstup_users_list');
+
+    $per_page = intval($atts['per_page']);
+    if ($per_page < 1) {
+        $per_page = 100;
+    }
+
+    // Get current page
+    $paged = isset($_GET['user_page']) ? max(1, intval($_GET['user_page'])) : 1;
+
+    // Get search query
+    $search = isset($_GET['user_search']) ? sanitize_text_field($_GET['user_search']) : '';
+    $selected_state = isset($_GET['user_state']) ? absint($_GET['user_state']) : 0;
+    $selected_district = isset($_GET['user_district']) ? absint($_GET['user_district']) : 0;
+    $selected_block = isset($_GET['user_block']) ? absint($_GET['user_block']) : 0;
+
+    // Location options for filters.
+    $states = function_exists('pmpro_nbstup_get_all_states') ? pmpro_nbstup_get_all_states() : array();
+    $districts = array();
+    $blocks = array();
+
+    if ($selected_state > 0 && function_exists('pmpro_nbstup_get_districts')) {
+        $districts = pmpro_nbstup_get_districts($selected_state);
+    } elseif ($selected_district > 0 && function_exists('pmpro_nbstup_get_district') && function_exists('pmpro_nbstup_get_districts')) {
+        $selected_district_obj = pmpro_nbstup_get_district($selected_district);
+        if (!empty($selected_district_obj->state_id)) {
+            $districts = pmpro_nbstup_get_districts((int) $selected_district_obj->state_id);
+        }
+    }
+
+    if ($selected_district > 0 && function_exists('pmpro_nbstup_get_blocks')) {
+        $blocks = pmpro_nbstup_get_blocks($selected_district);
+    } elseif ($selected_block > 0 && function_exists('pmpro_nbstup_get_block') && function_exists('pmpro_nbstup_get_blocks')) {
+        $selected_block_obj = pmpro_nbstup_get_block($selected_block);
+        if (!empty($selected_block_obj->district_id)) {
+            $blocks = pmpro_nbstup_get_blocks((int) $selected_block_obj->district_id);
+        }
+    }
+
+    // Build user query arguments
+    $args = array(
+        'role'    => 'subscriber',
+        'orderby' => 'ID',
+        'order'   => 'ASC',
+        'number'  => $per_page,
+        'offset'  => ($paged - 1) * $per_page,
+    );
+
+    // Add search if provided
+    if (!empty($search)) {
+        $args['search'] = '*' . $search . '*';
+        $args['search_columns'] = array('user_login', 'user_email', 'display_name');
+    }
+
+    $meta_query = array();
+    
+    // Filter for active members only
+    $meta_query[] = array(
+        'key' => 'pmpronbstup_active',
+        'value' => '1',
+        'compare' => '=',
+        'type' => 'NUMERIC',
+    );
+    
+    if ($selected_state > 0) {
+        $meta_query[] = array(
+            'key' => 'user_state',
+            'value' => (string) $selected_state,
+            'compare' => '=',
+        );
+    }
+    if ($selected_district > 0) {
+        $meta_query[] = array(
+            'key' => 'user_district',
+            'value' => (string) $selected_district,
+            'compare' => '=',
+        );
+    }
+    if ($selected_block > 0) {
+        $meta_query[] = array(
+            'key' => 'user_block',
+            'value' => (string) $selected_block,
+            'compare' => '=',
+        );
+    }
+    if (!empty($meta_query)) {
+        $meta_query['relation'] = 'AND';
+        $args['meta_query'] = $meta_query;
+    }
+
+    // Get users
+    $user_query = new WP_User_Query($args);
+    $users = $user_query->get_results();
+    $total_users = $user_query->get_total();
+
+    // Calculate pagination
+    $total_pages = ceil($total_users / $per_page);
+    $serial_start = ($paged - 1) * $per_page;
+
+    // Start output buffering
+    ob_start();
+    ?>
+    <div class="pmpro-nbstup-users-list">
+        <!-- Filter Form -->
+        <form method="get" class="pmpro-nbstup-search-form">
+            <?php
+            // Preserve all GET parameters except pagination/filter controls.
+            foreach ($_GET as $key => $value) {
+                if (
+                    $key !== 'user_page' &&
+                    $key !== 'user_search' &&
+                    $key !== 'user_state' &&
+                    $key !== 'user_district' &&
+                    $key !== 'user_block'
+                ) {
+                    echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '" />';
+                }
+            }
+            ?>
+            <input
+                type="search"
+                name="user_search"
+                value="<?php echo esc_attr($search); ?>"
+                placeholder="<?php esc_attr_e('Search by name, username, email', 'pmpro-nbstup'); ?>"
+                aria-label="<?php esc_attr_e('Search users', 'pmpro-nbstup'); ?>"
+            />
+            <select id="user_state" name="user_state">
+                <option value=""><?php esc_html_e('All States', 'pmpro-nbstup'); ?></option>
+                <?php foreach ($states as $state) : ?>
+                    <option value="<?php echo esc_attr($state->id); ?>" <?php selected($selected_state, (int) $state->id); ?>>
+                        <?php echo esc_html($state->name); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <select id="user_district" name="user_district" <?php disabled($selected_state <= 0 && $selected_district <= 0); ?>>
+                <?php if ($selected_state <= 0 && $selected_district <= 0) : ?>
+                    <option value=""><?php esc_html_e('Select State First', 'pmpro-nbstup'); ?></option>
+                <?php else : ?>
+                    <option value=""><?php esc_html_e('All Districts', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($districts as $district) : ?>
+                        <option value="<?php echo esc_attr($district->id); ?>" <?php selected($selected_district, (int) $district->id); ?>>
+                            <?php echo esc_html($district->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+            <select id="user_block" name="user_block" <?php disabled($selected_district <= 0 && $selected_block <= 0); ?>>
+                <?php if ($selected_district <= 0 && $selected_block <= 0) : ?>
+                    <option value=""><?php esc_html_e('Select District First', 'pmpro-nbstup'); ?></option>
+                <?php else : ?>
+                    <option value=""><?php esc_html_e('All Blocks', 'pmpro-nbstup'); ?></option>
+                    <?php foreach ($blocks as $block) : ?>
+                        <option value="<?php echo esc_attr($block->id); ?>" <?php selected($selected_block, (int) $block->id); ?>>
+                            <?php echo esc_html($block->name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+            <button type="submit"><?php esc_html_e('Filter', 'pmpro-nbstup'); ?></button>
+            <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+                <a href="<?php echo esc_url(remove_query_arg(array('user_search', 'user_state', 'user_district', 'user_block', 'user_page'))); ?>" class="button"><?php esc_html_e('Clear Filters', 'pmpro-nbstup'); ?></a>
+            <?php endif; ?>
+        </form>
+
+        <?php if (!empty($search) || $selected_state > 0 || $selected_district > 0 || $selected_block > 0) : ?>
+            <p class="pmpro-nbstup-filter-summary">
+                <strong>
+                    <?php esc_html_e('Filtered results', 'pmpro-nbstup'); ?>
+                </strong>
+                (<?php printf(__('%d users found', 'pmpro-nbstup'), $total_users); ?>)
+            </p>
+        <?php endif; ?>
+
+        <?php if (empty($users)) : ?>
+            <p><?php esc_html_e('No users found.', 'pmpro-nbstup'); ?></p>
+        <?php else : ?>
+            <table class="pmpro-nbstup-users-table">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('S No', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Unique ID', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('नाम', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('पिता/पति का नाम', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('व्यवसाय', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('स्थाई निवासी जिला', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('ब्लॉक', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Status', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('स्थाई पता', 'pmpro-nbstup'); ?></th>
+                        <th><?php esc_html_e('Submission Date', 'pmpro-nbstup'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $index => $user) :
+                        $serial = $serial_start + $index + 1;
+
+                        $unique_id = get_user_meta($user->ID, 'pmpronbstup_unique_id', true);
+                        $active = get_user_meta($user->ID, 'pmpronbstup_active', true);
+
+                        $father_husband = pmpronbstup_get_first_user_meta($user->ID, array(
+                            'pmpronbstup_father_husband_name',
+                            'father_husband_name',
+                            'father_name',
+                            'husband_name',
+                            'pmpronbstup_father_name',
+                            'pmpronbstup_husband_name',
+                        ));
+
+                        $occupation = pmpronbstup_get_first_user_meta($user->ID, array(
+                            'Occupation',
+                            'pmpronbstup_occupation',
+                            'occupation',
+                            'business',
+                            'profession',
+                        ));
+
+                        $user_district_id = get_user_meta($user->ID, 'user_district', true);
+                        $user_block_id = get_user_meta($user->ID, 'user_block', true);
+                        $user_address = get_user_meta($user->ID, 'user_address', true);
+
+                        $district_name = $user_district_id ? pmpro_nbstup_get_district_name($user_district_id) : '';
+                        $block_name = $user_block_id ? pmpro_nbstup_get_block_name($user_block_id) : '';
+
+                        $submission_date = $user->user_registered ? date_i18n(get_option('date_format'), strtotime($user->user_registered)) : '';
+                    ?>
+                        <tr>
+                            <td><?php echo esc_html($serial); ?></td>
+                            <td><?php echo esc_html($unique_id ?: '-'); ?></td>
+                            <td>
+                                <?php
+                                $display_name = pmpronbstup_get_first_user_meta($user->ID, array('name'));
+                                echo esc_html($display_name ? $display_name : ($user->display_name ?: '-'));
+                                ?>
+                            </td>
+                            <td><?php echo esc_html($father_husband ?: '-'); ?></td>
+                            <td><?php echo esc_html($occupation ?: '-'); ?></td>
+                            <td><?php echo esc_html($district_name ?: '-'); ?></td>
+                            <td><?php echo esc_html($block_name ?: '-'); ?></td>
+                            <td>
+                                <?php if ((int) $active === 1) : ?>
+                                    <span class="status-badge status-active"><?php esc_html_e('Active', 'pmpro-nbstup'); ?></span>
+                                <?php else : ?>
+                                    <span class="status-badge status-inactive"><?php esc_html_e('Inactive', 'pmpro-nbstup'); ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo esc_html($user_address ?: '-'); ?></td>
+                            <td><?php echo esc_html($submission_date ?: '-'); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <?php if ($total_pages > 1) : ?>
+                <div class="pmpro-nbstup-pagination">
+                    <?php if ($paged > 1) : ?>
+                        <a href="<?php echo esc_url(add_query_arg('user_page', $paged - 1)); ?>">&laquo; <?php esc_html_e('Previous', 'pmpro-nbstup'); ?></a>
+                    <?php endif; ?>
+
+                    <?php
+                    // Show page numbers
+                    $range = 2; // Number of pages to show on each side
+                    for ($i = 1; $i <= $total_pages; $i++) {
+                        if ($i == 1 || $i == $total_pages || ($i >= $paged - $range && $i <= $paged + $range)) {
+                            if ($i == $paged) {
+                                echo '<span class="current">' . $i . '</span>';
+                            } else {
+                                echo '<a href="' . esc_url(add_query_arg('user_page', $i)) . '">' . $i . '</a>';
+                            }
+                        } elseif ($i == $paged - $range - 1 || $i == $paged + $range + 1) {
+                            echo '<span>...</span>';
+                        }
+                    }
+                    ?>
+
+                    <?php if ($paged < $total_pages) : ?>
+                        <a href="<?php echo esc_url(add_query_arg('user_page', $paged + 1)); ?>"><?php esc_html_e('Next', 'pmpro-nbstup'); ?> &raquo;</a>
+                    <?php endif; ?>
+                </div>
+
+                <p class="pmpro-nbstup-pagination-summary">
+                    <?php printf(__('Page %d of %d | Total users: %d', 'pmpro-nbstup'), $paged, $total_pages, $total_users); ?>
+                </p>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('pmpro_nbstup_users_list', 'pmpronbstup_users_list_shortcode');
