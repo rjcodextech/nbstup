@@ -264,33 +264,79 @@ function pmpronbstup_ajax_admin_login() {
 }
 
 /**
- * Disable logged-in state after PMPro checkout confirmation redirect.
+ * Mark subscriber users for one-time logout after confirmation page display.
  *
- * PMPro signs users in during checkout for new registrations. We immediately
- * end that session and send them to the member login page so access always
- * requires an explicit post-checkout login.
- *
- * @param string $url     Confirmation URL.
- * @param int    $user_id Checked out user ID.
- * @return string
+ * @param int      $user_id Checked out user ID.
+ * @param stdClass $morder  Membership order object.
+ * @return void
  */
-function pmpronbstup_disable_checkout_auto_login( $url, $user_id ) {
-    $current_user_id = get_current_user_id();
-    if ( empty( $current_user_id ) || (int) $current_user_id !== (int) $user_id ) {
-        return $url;
+function pmpronbstup_mark_user_for_post_confirmation_logout( $user_id, $morder ) {
+    if ( empty( $user_id ) ) {
+        return;
     }
 
-    // Never force-logout privileged users during admin-managed operations.
-    if ( current_user_can( 'manage_options' ) ) {
-        return $url;
+    $user = get_userdata( $user_id );
+    if ( ! $user instanceof WP_User ) {
+        return;
     }
 
+    if ( in_array( 'administrator', (array) $user->roles, true ) || user_can( $user, 'manage_options' ) ) {
+        return;
+    }
+
+    update_user_meta( $user_id, 'pmpronbstup_logout_after_confirmation', time() );
+}
+add_action( 'pmpro_after_checkout', 'pmpronbstup_mark_user_for_post_confirmation_logout', 99, 2 );
+
+/**
+ * Determine if the current request is PMPro confirmation page.
+ *
+ * @return bool
+ */
+function pmpronbstup_is_confirmation_request() {
+    if ( function_exists( 'pmpro_is_confirmation_page' ) && pmpro_is_confirmation_page() ) {
+        return true;
+    }
+
+    if ( function_exists( 'pmpro_getOption' ) ) {
+        $confirmation_page_id = (int) pmpro_getOption( 'confirmation_page_id' );
+        if ( $confirmation_page_id > 0 && is_page( $confirmation_page_id ) ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Log users out after their first confirmation page request post-checkout.
+ *
+ * @return void
+ */
+function pmpronbstup_logout_user_after_confirmation_page() {
+    if ( ! is_user_logged_in() || ! pmpronbstup_is_confirmation_request() ) {
+        return;
+    }
+
+    if ( isset( $_GET['pmpronbstup_logged_out'] ) ) {
+        return;
+    }
+
+    $user_id = get_current_user_id();
+    if ( empty( $user_id ) || current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    $logout_marker = (int) get_user_meta( $user_id, 'pmpronbstup_logout_after_confirmation', true );
+    if ( empty( $logout_marker ) ) {
+        return;
+    }
+
+    delete_user_meta( $user_id, 'pmpronbstup_logout_after_confirmation' );
     wp_logout();
 
-    if ( function_exists( 'pmpro_login_url' ) ) {
-        return add_query_arg( 'checkout_complete', '1', pmpro_login_url() );
-    }
-
-    return wp_login_url();
+    $redirect_url = add_query_arg( 'pmpronbstup_logged_out', '1' );
+    wp_safe_redirect( $redirect_url );
+    exit;
 }
-add_filter( 'pmpro_confirmation_url', 'pmpronbstup_disable_checkout_auto_login', 10, 2 );
+add_action( 'template_redirect', 'pmpronbstup_logout_user_after_confirmation_page', 20 );

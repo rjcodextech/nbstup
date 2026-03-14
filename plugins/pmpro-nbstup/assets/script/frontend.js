@@ -291,7 +291,7 @@ jQuery(document).ready(function ($) {
       var passwordValue = $memberPassword.length ? ($memberPassword.val() || '') : '';
       var nameParts = fullName ? fullName.split(/\s+/) : [];
       var firstName = nameParts.length ? nameParts[0] : '';
-      var lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+      var lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : firstName;
 
       if ($username.length) {
         $username.val(aadharValue);
