@@ -443,6 +443,236 @@ function pmpronbstup_handle_contribution_wedding_csv_upload()
 add_action('admin_init', 'pmpronbstup_handle_contribution_wedding_csv_upload');
 
 /**
+ * Validate YYYY-MM-DD date format.
+ *
+ * @param string $date Raw date string.
+ * @return bool
+ */
+function pmpronbstup_is_valid_iso_date($date)
+{
+    if (! is_string($date) || $date === '') {
+        return false;
+    }
+
+    $dt = DateTime::createFromFormat('Y-m-d', $date);
+    return $dt instanceof DateTime && $dt->format('Y-m-d') === $date;
+}
+
+/**
+ * Build a vCard 3.0 entry for a member.
+ *
+ * @param WP_User $user User object.
+ * @return string
+ */
+function pmpronbstup_build_member_vcard_entry($user)
+{
+    if (! ($user instanceof WP_User)) {
+        return '';
+    }
+
+    $user_id = (int) $user->ID;
+    if ($user_id <= 0) {
+        return '';
+    }
+
+    $values = function_exists('pmpronbstup_get_pmpro_member_custom_field_values')
+        ? pmpronbstup_get_pmpro_member_custom_field_values($user_id)
+        : array();
+
+    $full_name = isset($values['member_name']) && $values['member_name'] !== ''
+        ? $values['member_name']
+        : $user->display_name;
+    $full_name = trim((string) $full_name);
+
+    $name_parts = preg_split('/\s+/', $full_name);
+    $first_name = ! empty($name_parts) ? array_shift($name_parts) : '';
+    $last_name  = ! empty($name_parts) ? implode(' ', $name_parts) : '';
+
+    $district = isset($values['district_name']) ? (string) $values['district_name'] : '';
+    if ($district === '') {
+        $district_id = (int) get_user_meta($user_id, 'user_district', true);
+        if ($district_id > 0 && function_exists('pmpro_nbstup_get_district_name')) {
+            $district = (string) pmpro_nbstup_get_district_name($district_id);
+        }
+    }
+
+    $block = isset($values['block_name']) ? (string) $values['block_name'] : '';
+    if ($block === '') {
+        $block_id = (int) get_user_meta($user_id, 'user_block', true);
+        if ($block_id > 0 && function_exists('pmpro_nbstup_get_block_name')) {
+            $block = (string) pmpro_nbstup_get_block_name($block_id);
+        }
+    }
+
+    $mobile = isset($values['phone_no']) ? (string) $values['phone_no'] : (string) get_user_meta($user_id, 'phone_no', true);
+    $unique_id = (string) get_user_meta($user_id, 'pmpronbstup_unique_id', true);
+    if ($unique_id === '' && function_exists('pmpronbstup_assign_unique_id')) {
+        $maybe_unique_id = pmpronbstup_assign_unique_id($user_id);
+        if (is_string($maybe_unique_id) && $maybe_unique_id !== '') {
+            $unique_id = $maybe_unique_id;
+        }
+    }
+
+    $escape = function_exists('pmpronbstup_escape_vcard_text')
+        ? 'pmpronbstup_escape_vcard_text'
+        : static function ($value) {
+            $value = (string) $value;
+            $value = str_replace('\\', '\\\\', $value);
+            $value = str_replace(';', '\\;', $value);
+            $value = str_replace(',', '\\,', $value);
+            $value = preg_replace("/\r\n|\r|\n/", '\\n', $value);
+            return trim($value);
+        };
+
+    $display_name_base = $full_name !== '' ? $full_name : ('NBSTUP Member ' . $user_id);
+    $fn_parts = array( $display_name_base );
+    if ( $district !== '' ) {
+        $fn_parts[] = $district;
+    }
+    if ( $block !== '' ) {
+        $fn_parts[] = $block;
+    }
+    if ( $unique_id !== '' ) {
+        $fn_parts[] = $unique_id;
+    }
+    $fn = implode( ' - ', $fn_parts );
+
+    $vcard = array(
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'FN:' . $escape($fn),
+        'N:' . $escape($last_name) . ';' . $escape($first_name) . ';;;',
+    );
+
+    if ($mobile !== '') {
+        $vcard[] = 'TEL;TYPE=CELL:' . $escape($mobile);
+    }
+
+    $vcard[] = 'X-DISTRICT:' . $escape($district);
+    $vcard[] = 'X-BLOCK:' . $escape($block);
+    $vcard[] = 'X-UNIQUE-ID:' . $escape($unique_id);
+    $vcard[] = 'END:VCARD';
+
+    return implode("\r\n", $vcard);
+}
+
+/**
+ * Export subscriber members as a single vCard file with optional registration date filters.
+ *
+ * @return void
+ */
+function pmpronbstup_handle_members_vcard_export()
+{
+    if (! is_admin()) {
+        return;
+    }
+
+    $page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+    if (empty($_GET['pmpronbstup_export_vcards']) || $page === '' || ! in_array($page, array('pmpro-nbstup-user-approval', 'pmpro-memberslist'), true)) {
+        return;
+    }
+
+    if (! current_user_can('manage_options')) {
+        wp_die(esc_html__('You do not have permission to export members.', 'pmpro-nbstup'));
+    }
+
+    $nonce = isset($_GET['pmpronbstup_export_vcards_nonce']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_export_vcards_nonce'])) : '';
+    if ($nonce === '' || ! wp_verify_nonce($nonce, 'pmpronbstup_export_members_vcards')) {
+        wp_die(esc_html__('Security check failed while exporting members vCard file.', 'pmpro-nbstup'));
+    }
+
+    $registered_from = isset($_GET['pmpronbstup_registered_from']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_from'])) : '';
+    $registered_to   = isset($_GET['pmpronbstup_registered_to']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_to'])) : '';
+
+    if ($registered_from !== '' && ! pmpronbstup_is_valid_iso_date($registered_from)) {
+        wp_die(esc_html__('Invalid "Registered From" date. Please use YYYY-MM-DD format.', 'pmpro-nbstup'));
+    }
+
+    if ($registered_to !== '' && ! pmpronbstup_is_valid_iso_date($registered_to)) {
+        wp_die(esc_html__('Invalid "Registered To" date. Please use YYYY-MM-DD format.', 'pmpro-nbstup'));
+    }
+
+    if ($registered_from !== '' && $registered_to !== '' && strtotime($registered_from) > strtotime($registered_to)) {
+        wp_die(esc_html__('"Registered From" date cannot be after "Registered To" date.', 'pmpro-nbstup'));
+    }
+
+    $query_args = array(
+        'role'    => 'subscriber',
+        'fields'  => 'all',
+        'orderby' => 'registered',
+        'order'   => 'ASC',
+        'number'  => -1,
+    );
+
+    if ($registered_from !== '' || $registered_to !== '') {
+        $date_clause = array(
+            'column'    => 'user_registered',
+            'inclusive' => true,
+        );
+
+        if ($registered_from !== '') {
+            $date_clause['after'] = $registered_from;
+        }
+        if ($registered_to !== '') {
+            $date_clause['before'] = $registered_to;
+        }
+
+        $query_args['date_query'] = array($date_clause);
+    }
+
+    $tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : '';
+    $redirect_args = array(
+        'page' => $page,
+    );
+    if ($page === 'pmpro-nbstup-user-approval' && $tab !== '') {
+        $redirect_args['tab'] = $tab;
+    }
+    if ($registered_from !== '') {
+        $redirect_args['pmpronbstup_registered_from'] = $registered_from;
+    }
+    if ($registered_to !== '') {
+        $redirect_args['pmpronbstup_registered_to'] = $registered_to;
+    }
+
+    $users = get_users($query_args);
+    if (empty($users)) {
+        $redirect_args['pmpronbstup_export_notice'] = 'no_members';
+        wp_safe_redirect(add_query_arg($redirect_args, admin_url('admin.php')));
+        exit;
+    }
+
+    $entries = array();
+    foreach ($users as $user) {
+        $entry = pmpronbstup_build_member_vcard_entry($user);
+        if ($entry !== '') {
+            $entries[] = $entry;
+        }
+    }
+
+    if (empty($entries)) {
+        $redirect_args['pmpronbstup_export_notice'] = 'no_vcards';
+        wp_safe_redirect(add_query_arg($redirect_args, admin_url('admin.php')));
+        exit;
+    }
+
+    $filename_parts = array('nbstup-members');
+    if ($registered_from !== '') {
+        $filename_parts[] = 'from-' . $registered_from;
+    }
+    if ($registered_to !== '') {
+        $filename_parts[] = 'to-' . $registered_to;
+    }
+    $filename = sanitize_file_name(implode('-', $filename_parts) . '.vcf');
+
+    nocache_headers();
+    header('Content-Type: text/vcard; charset=utf-8');
+    header('Content-Disposition: attachment; filename=' . $filename);
+    echo implode("\r\n", $entries) . "\r\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    exit;
+}
+add_action('admin_init', 'pmpronbstup_handle_members_vcard_export', 7);
+
+/**
  * Send activation email to user (initial membership)
  *
  * @param int $user_id User ID

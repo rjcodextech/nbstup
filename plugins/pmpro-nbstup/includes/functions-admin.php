@@ -105,7 +105,271 @@ function pmpronbstup_render_admin_page()
                 <?php endif; ?>
             <?php endif; ?>
         </div>
+
+        <hr />
+        <?php pmpronbstup_render_members_vcard_export_form(); ?>
     </div>
+<?php
+}
+
+/**
+ * Render admin notice for vCard export feedback.
+ *
+ * @return void
+ */
+function pmpronbstup_render_vcard_export_notice()
+{
+    if (! is_admin() || ! current_user_can('manage_options')) {
+        return;
+    }
+
+    if (empty($_GET['page']) || empty($_GET['pmpronbstup_export_notice'])) {
+        return;
+    }
+
+    $page = sanitize_text_field(wp_unslash($_GET['page']));
+    if (! in_array($page, array('pmpro-nbstup-user-approval', 'pmpro-memberslist'), true)) {
+        return;
+    }
+
+    $notice_code = sanitize_text_field(wp_unslash($_GET['pmpronbstup_export_notice']));
+    $message = '';
+
+    if ($notice_code === 'no_members') {
+        $message = __('No members found for the selected registration date range.', 'pmpro-nbstup');
+    } elseif ($notice_code === 'no_vcards') {
+        $message = __('No members could be exported as vCard.', 'pmpro-nbstup');
+    }
+
+    if ($message === '') {
+        return;
+    }
+    ?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php echo esc_html($message); ?></p>
+    </div>
+    <?php
+}
+add_action('admin_notices', 'pmpronbstup_render_vcard_export_notice');
+
+/**
+ * Add "Export to vCard" button on PMPro Members List page near "Export to CSV".
+ *
+ * @return void
+ */
+function pmpronbstup_add_memberslist_vcard_export_button()
+{
+    if (! is_admin() || ! current_user_can('manage_options')) {
+        return;
+    }
+
+    if (empty($_GET['page']) || sanitize_text_field(wp_unslash($_GET['page'])) !== 'pmpro-memberslist') {
+        return;
+    }
+
+    $registered_from = isset($_GET['pmpronbstup_registered_from']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_from'])) : '';
+    $registered_to   = isset($_GET['pmpronbstup_registered_to']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_to'])) : '';
+    $export_nonce    = wp_create_nonce('pmpronbstup_export_members_vcards');
+    ?>
+    <script>
+        (function() {
+            function addVcardExportModalButton() {
+                var links = document.querySelectorAll('a.page-title-action, a.button');
+                var exportCsvButton = null;
+
+                for (var i = 0; i < links.length; i++) {
+                    var text = (links[i].textContent || '').toLowerCase().trim();
+                    if (text.indexOf('export to csv') !== -1) {
+                        exportCsvButton = links[i];
+                        break;
+                    }
+                }
+
+                if (!exportCsvButton || document.getElementById('pmpronbstup-export-vcard-trigger')) {
+                    return;
+                }
+
+                var trigger = document.createElement('a');
+                trigger.id = 'pmpronbstup-export-vcard-trigger';
+                trigger.href = '#';
+                trigger.className = exportCsvButton.className;
+                trigger.textContent = '<?php echo esc_js(__('Export to vCard', 'pmpro-nbstup')); ?>';
+                trigger.style.marginLeft = '8px';
+
+                var overlay = document.createElement('div');
+                overlay.id = 'pmpronbstup-export-vcard-modal';
+                overlay.style.position = 'fixed';
+                overlay.style.inset = '0';
+                overlay.style.background = 'rgba(0,0,0,0.45)';
+                overlay.style.display = 'none';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '100000';
+
+                var modal = document.createElement('div');
+                modal.style.background = '#fff';
+                modal.style.padding = '20px';
+                modal.style.width = '100%';
+                modal.style.maxWidth = '420px';
+                modal.style.borderRadius = '8px';
+                modal.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+
+                var heading = document.createElement('h3');
+                heading.textContent = '<?php echo esc_js(__('Export Members vCard', 'pmpro-nbstup')); ?>';
+                heading.style.marginTop = '0';
+                heading.style.marginBottom = '14px';
+
+                var form = document.createElement('form');
+                form.method = 'get';
+                form.action = '<?php echo esc_js(admin_url('admin.php')); ?>';
+
+                function hiddenInput(name, value) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = value;
+                    return input;
+                }
+
+                function fieldWrap(labelText, inputEl) {
+                    var wrap = document.createElement('div');
+                    wrap.style.marginBottom = '12px';
+
+                    var label = document.createElement('label');
+                    label.textContent = labelText;
+                    label.style.display = 'block';
+                    label.style.fontWeight = '600';
+                    label.style.marginBottom = '6px';
+
+                    inputEl.style.width = '100%';
+                    inputEl.style.boxSizing = 'border-box';
+
+                    wrap.appendChild(label);
+                    wrap.appendChild(inputEl);
+                    return wrap;
+                }
+
+                var fromInput = document.createElement('input');
+                fromInput.type = 'date';
+                fromInput.name = 'pmpronbstup_registered_from';
+                fromInput.value = '<?php echo esc_js($registered_from); ?>';
+
+                var toInput = document.createElement('input');
+                toInput.type = 'date';
+                toInput.name = 'pmpronbstup_registered_to';
+                toInput.value = '<?php echo esc_js($registered_to); ?>';
+
+                var actions = document.createElement('div');
+                actions.style.display = 'flex';
+                actions.style.justifyContent = 'flex-end';
+                actions.style.gap = '8px';
+                actions.style.marginTop = '16px';
+
+                var cancelButton = document.createElement('button');
+                cancelButton.type = 'button';
+                cancelButton.className = 'button';
+                cancelButton.textContent = '<?php echo esc_js(__('Cancel', 'pmpro-nbstup')); ?>';
+
+                var submitButton = document.createElement('button');
+                submitButton.type = 'submit';
+                submitButton.className = 'button button-primary';
+                submitButton.textContent = '<?php echo esc_js(__('Export Data', 'pmpro-nbstup')); ?>';
+
+                form.appendChild(hiddenInput('page', 'pmpro-memberslist'));
+                form.appendChild(hiddenInput('pmpronbstup_export_vcards', '1'));
+                form.appendChild(hiddenInput('pmpronbstup_export_vcards_nonce', '<?php echo esc_js($export_nonce); ?>'));
+                form.appendChild(fieldWrap('<?php echo esc_js(__('Registered From', 'pmpro-nbstup')); ?>', fromInput));
+                form.appendChild(fieldWrap('<?php echo esc_js(__('Registered To', 'pmpro-nbstup')); ?>', toInput));
+
+                actions.appendChild(cancelButton);
+                actions.appendChild(submitButton);
+                form.appendChild(actions);
+
+                modal.appendChild(heading);
+                modal.appendChild(form);
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                function closeModal() {
+                    overlay.style.display = 'none';
+                }
+
+                function onEscapeKey(event) {
+                    if (event.key === 'Escape' && overlay.style.display === 'flex') {
+                        closeModal();
+                    }
+                }
+
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    overlay.style.display = 'flex';
+                });
+
+                cancelButton.addEventListener('click', closeModal);
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === overlay) {
+                        closeModal();
+                    }
+                });
+                document.addEventListener('keydown', onEscapeKey);
+
+                exportCsvButton.insertAdjacentElement('afterend', trigger);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', addVcardExportModalButton);
+            } else {
+                addVcardExportModalButton();
+            }
+        })();
+    </script>
+    <?php
+}
+add_action('admin_footer', 'pmpronbstup_add_memberslist_vcard_export_button', 20);
+
+/**
+ * Render bulk members vCard export form with registration date filters.
+ *
+ * @return void
+ */
+function pmpronbstup_render_members_vcard_export_form()
+{
+    $registered_from = isset($_GET['pmpronbstup_registered_from']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_from'])) : '';
+    $registered_to   = isset($_GET['pmpronbstup_registered_to']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_to'])) : '';
+?>
+    <h2><?php esc_html_e('Bulk Members vCard Export', 'pmpro-nbstup'); ?></h2>
+    <p>
+        <?php esc_html_e('Export all subscriber members as a single .vcf file. Optional registration date filters allow exporting only members registered within a selected duration.', 'pmpro-nbstup'); ?>
+    </p>
+
+    <form method="get" action="<?php echo esc_url(admin_url('admin.php')); ?>">
+        <input type="hidden" name="page" value="pmpro-nbstup-user-approval" />
+        <input type="hidden" name="tab" value="<?php echo isset($_GET['tab']) ? esc_attr(sanitize_text_field(wp_unslash($_GET['tab']))) : ''; ?>" />
+        <input type="hidden" name="pmpronbstup_export_vcards" value="1" />
+        <?php wp_nonce_field('pmpronbstup_export_members_vcards', 'pmpronbstup_export_vcards_nonce'); ?>
+
+        <table class="form-table" role="presentation">
+            <tr>
+                <th scope="row">
+                    <label for="pmpronbstup_registered_from"><?php esc_html_e('Registered From', 'pmpro-nbstup'); ?></label>
+                </th>
+                <td>
+                    <input type="date" id="pmpronbstup_registered_from" name="pmpronbstup_registered_from" value="<?php echo esc_attr($registered_from); ?>" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="pmpronbstup_registered_to"><?php esc_html_e('Registered To', 'pmpro-nbstup'); ?></label>
+                </th>
+                <td>
+                    <input type="date" id="pmpronbstup_registered_to" name="pmpronbstup_registered_to" value="<?php echo esc_attr($registered_to); ?>" />
+                    <p class="description"><?php esc_html_e('Leave both dates empty to export all members.', 'pmpro-nbstup'); ?></p>
+                </td>
+            </tr>
+        </table>
+
+        <?php submit_button(__('Export Members vCard (.vcf)', 'pmpro-nbstup')); ?>
+    </form>
 <?php
 }
 

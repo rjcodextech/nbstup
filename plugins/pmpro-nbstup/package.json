@@ -1,6 +1,6 @@
 {
   "name": "pmpro-nbstup",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Build tooling (Gulp, SCSS, JS) for the PMPro NBSTUP addon.",
   "private": true,
   "scripts": {

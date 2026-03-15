@@ -1161,25 +1161,22 @@ function pmpro_nbstup_block_member_username_login( $user, $username, $password )
 }
 
 /**
- * Show custom checkout user fields on PMPro Member Edit -> User Info panel.
+ * Check whether the current admin user can edit custom PMPro member fields.
  *
- * @param WP_User $user User object for the member being viewed.
- * @return void
+ * @return bool
  */
-function pmpronbstup_render_pmpro_member_custom_user_info( $user ) {
-	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
-		return;
-	}
+function pmpronbstup_can_edit_pmpro_member_custom_fields() {
+	return is_admin() && current_user_can( 'edit_users' );
+}
 
-	if ( ! ( $user instanceof WP_User ) ) {
-		return;
-	}
-
-	$user_id = (int) $user->ID;
-	if ( $user_id <= 0 ) {
-		return;
-	}
-
+/**
+ * Get PMPro member custom field values for display on the member edit screen.
+ *
+ * @param int $user_id User ID.
+ * @return array
+ */
+function pmpronbstup_get_pmpro_member_custom_field_values( $user_id ) {
+	$user_id     = (int) $user_id;
 	$state_id    = (int) get_user_meta( $user_id, 'user_state', true );
 	$district_id = (int) get_user_meta( $user_id, 'user_district', true );
 	$block_id    = (int) get_user_meta( $user_id, 'user_block', true );
@@ -1199,91 +1196,811 @@ function pmpronbstup_render_pmpro_member_custom_user_info( $user ) {
 		'nominee_name_2'          => get_user_meta( $user_id, 'nominee_name_2', true ),
 		'relation_with_nominee_2' => get_user_meta( $user_id, 'relation_with_nominee_2', true ),
 		'nominee_2_mobile'        => get_user_meta( $user_id, 'nominee_2_mobile', true ),
+		'user_state'              => $state_id,
+		'user_district'           => $district_id,
+		'user_block'              => $block_id,
 		'user_address'            => get_user_meta( $user_id, 'user_address', true ),
 		'declaration_accept'      => (int) get_user_meta( $user_id, 'declaration_accept', true ),
-		'state_name'              => $state_id ? pmpro_nbstup_get_state_name( $state_id ) : '',
-		'district_name'           => $district_id ? pmpro_nbstup_get_district_name( $district_id ) : '',
-		'block_name'              => $block_id ? pmpro_nbstup_get_block_name( $block_id ) : '',
+		'new_password'            => '',
+	);
+
+	if (
+		is_admin()
+		&& isset( $_REQUEST['page'] )
+		&& 'pmpro-member' === $_REQUEST['page']
+		&& ! empty( $_POST )
+	) {
+		$text_fields = array(
+			'member_name',
+			'phone_no',
+			'aadhar_number',
+			'father_husband_name',
+			'dob',
+			'gender',
+			'Occupation',
+			'nominee_name_1',
+			'relation_with_nominee_1',
+			'nominee_1_mobile',
+			'nominee_name_2',
+			'relation_with_nominee_2',
+			'nominee_2_mobile',
+			'new_password',
+		);
+
+		foreach ( $text_fields as $field ) {
+			if ( isset( $_POST[ $field ] ) ) {
+				$values[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+			}
+		}
+
+		if ( isset( $_POST['user_address'] ) ) {
+			$values['user_address'] = sanitize_textarea_field( wp_unslash( $_POST['user_address'] ) );
+		}
+
+		foreach ( array( 'user_state', 'user_district', 'user_block' ) as $field ) {
+			if ( isset( $_POST[ $field ] ) ) {
+				$values[ $field ] = absint( $_POST[ $field ] );
+			}
+		}
+
+		$values['join_blood_donation'] = isset( $_POST['join_blood_donation'] ) ? 1 : 0;
+		$values['declaration_accept']  = isset( $_POST['declaration_accept'] ) ? 1 : 0;
+	}
+
+	$values['state_name']    = $values['user_state'] ? pmpro_nbstup_get_state_name( $values['user_state'] ) : '';
+	$values['district_name'] = $values['user_district'] ? pmpro_nbstup_get_district_name( $values['user_district'] ) : '';
+	$values['block_name']    = $values['user_block'] ? pmpro_nbstup_get_block_name( $values['user_block'] ) : '';
+
+	return $values;
+}
+
+/**
+ * Validate custom PMPro member field values submitted from wp-admin.
+ *
+ * @param array $values  Submitted values.
+ * @param int   $user_id Current user ID being edited.
+ * @return array
+ */
+function pmpronbstup_validate_pmpro_member_custom_field_values( $values, $user_id = 0 ) {
+	$errors = array();
+	$user_id = (int) $user_id;
+
+	$name_fields = array(
+		'member_name'         => __( 'Member Name', 'pmpro-nbstup' ),
+		'father_husband_name' => __( 'Father / Husband Name', 'pmpro-nbstup' ),
+		'nominee_name_1'      => __( 'Nominee 1 Name', 'pmpro-nbstup' ),
+		'nominee_name_2'      => __( 'Nominee 2 Name', 'pmpro-nbstup' ),
+	);
+
+	foreach ( $name_fields as $field => $label ) {
+		if ( $values[ $field ] !== '' && ! preg_match( '/^[\p{L}][\p{L}\s.\-]{1,60}$/u', $values[ $field ] ) ) {
+			$errors[] = sprintf( __( '%s should contain only letters and valid characters.', 'pmpro-nbstup' ), $label );
+		}
+	}
+
+	if ( $values['phone_no'] !== '' && ! preg_match( '/^\d{10}$/', $values['phone_no'] ) ) {
+		$errors[] = __( 'Phone Number must be 10 digits.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['aadhar_number'] !== '' && ! preg_match( '/^\d{12}$/', $values['aadhar_number'] ) ) {
+		$errors[] = __( 'Aadhar Number must be 12 digits only.', 'pmpro-nbstup' );
+	}
+
+	if ( preg_match( '/^\d{12}$/', $values['aadhar_number'] ) ) {
+		$existing_users = get_users(
+			array(
+				'meta_key'   => 'aadhar_number',
+				'meta_value' => $values['aadhar_number'],
+				'number'     => 1,
+				'fields'     => array( 'ID' ),
+			)
+		);
+
+		if ( ! empty( $existing_users ) ) {
+			$existing_id = (int) $existing_users[0]->ID;
+			if ( $existing_id > 0 && $existing_id !== $user_id ) {
+				$errors[] = __( 'This Aadhar Number is already registered to another member.', 'pmpro-nbstup' );
+			}
+		}
+	}
+
+	if ( $values['nominee_1_mobile'] !== '' && ! preg_match( '/^\d{10}$/', $values['nominee_1_mobile'] ) ) {
+		$errors[] = __( 'Nominee 1 Mobile must be 10 digits.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['nominee_2_mobile'] !== '' && ! preg_match( '/^\d{10}$/', $values['nominee_2_mobile'] ) ) {
+		$errors[] = __( 'Nominee 2 Mobile must be 10 digits.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['relation_with_nominee_1'] !== '' && strlen( $values['relation_with_nominee_1'] ) < 2 ) {
+		$errors[] = __( 'Relation With Nominee 1 must be at least 2 characters.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['relation_with_nominee_2'] !== '' && strlen( $values['relation_with_nominee_2'] ) < 2 ) {
+		$errors[] = __( 'Relation With Nominee 2 must be at least 2 characters.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['dob'] !== '' ) {
+		$timezone = wp_timezone();
+		$date     = DateTimeImmutable::createFromFormat( 'Y-m-d', $values['dob'], $timezone );
+		if ( ! $date || $date->format( 'Y-m-d' ) !== $values['dob'] ) {
+			$errors[] = __( 'Date of Birth must be a valid date.', 'pmpro-nbstup' );
+		} else {
+			$today = new DateTimeImmutable( 'now', $timezone );
+			if ( $date > $today ) {
+				$errors[] = __( 'Date of Birth cannot be in the future.', 'pmpro-nbstup' );
+			}
+		}
+	}
+
+	if ( $values['gender'] !== '' && ! in_array( $values['gender'], array( 'male', 'female', 'other' ), true ) ) {
+		$errors[] = __( 'Please select a valid Gender.', 'pmpro-nbstup' );
+	}
+
+	$occupation_options = array(
+		'Self Employed',
+		'Government Job',
+		'Private Job',
+		'Business',
+		'Agriculture',
+		'Housewife',
+		'Student',
+		'Contract Workers',
+		'Public Representative',
+	);
+	if ( $values['Occupation'] !== '' && ! in_array( $values['Occupation'], $occupation_options, true ) ) {
+		$errors[] = __( 'Please select a valid Occupation.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['new_password'] !== '' && strlen( $values['new_password'] ) < 6 ) {
+		$errors[] = __( 'Password must be at least 6 characters.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['user_state'] <= 0 && ( $values['user_district'] > 0 || $values['user_block'] > 0 ) ) {
+		$errors[] = __( 'State must be selected before District or Block.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['user_district'] <= 0 && $values['user_block'] > 0 ) {
+		$errors[] = __( 'District must be selected before Block.', 'pmpro-nbstup' );
+	}
+
+	if ( $values['user_state'] > 0 && $values['user_district'] > 0 ) {
+		$district = pmpro_nbstup_get_district( $values['user_district'] );
+		if ( empty( $district ) || (int) $district->state_id !== $values['user_state'] ) {
+			$errors[] = __( 'Selected District does not belong to the selected State.', 'pmpro-nbstup' );
+		}
+	}
+
+	if ( $values['user_district'] > 0 && $values['user_block'] > 0 ) {
+		$block = pmpro_nbstup_get_block( $values['user_block'] );
+		if ( empty( $block ) || (int) $block->district_id !== $values['user_district'] ) {
+			$errors[] = __( 'Selected Block does not belong to the selected District.', 'pmpro-nbstup' );
+		}
+	}
+
+	return array_values( array_unique( $errors ) );
+}
+
+/**
+ * Save or delete a user meta value.
+ *
+ * @param int    $user_id  User ID.
+ * @param string $meta_key Meta key.
+ * @param mixed  $value    Meta value.
+ * @return void
+ */
+function pmpronbstup_update_or_delete_user_meta( $user_id, $meta_key, $value ) {
+	if ( '' === $value || null === $value ) {
+		delete_user_meta( $user_id, $meta_key );
+		return;
+	}
+
+	update_user_meta( $user_id, $meta_key, $value );
+}
+
+/**
+ * Prevent PMPro from saving the current panel after a custom-field validation error.
+ *
+ * @return void
+ */
+function pmpronbstup_stop_pmpro_member_panel_save() {
+	unset( $_REQUEST['pmpro_member_edit_saved_panel_nonce'] );
+	unset( $_POST['pmpro_member_edit_saved_panel_nonce'] );
+}
+
+/**
+ * Save custom checkout fields from the PMPro member edit page.
+ *
+ * @return void
+ */
+function pmpronbstup_save_pmpro_member_custom_user_info() {
+	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
+		return;
+	}
+
+	if ( empty( $_POST ) || empty( $_REQUEST['pmpro_member_edit_panel'] ) || 'user-info' !== $_REQUEST['pmpro_member_edit_panel'] ) {
+		return;
+	}
+
+	if ( ! pmpronbstup_can_edit_pmpro_member_custom_fields() ) {
+		return;
+	}
+
+	if ( empty( $_POST['pmpronbstup_pmpro_member_custom_fields_nonce'] ) || ! class_exists( 'PMPro_Member_Edit_Panel' ) ) {
+		return;
+	}
+
+	$user = PMPro_Member_Edit_Panel::get_user();
+	if ( ! ( $user instanceof WP_User ) || empty( $user->ID ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( wp_unslash( $_POST['pmpronbstup_pmpro_member_custom_fields_nonce'] ), 'pmpronbstup_pmpro_member_custom_fields_' . $user->ID ) ) {
+		pmpronbstup_stop_pmpro_member_panel_save();
+		pmpro_setMessage( __( 'Security check failed while saving NBSTUP custom fields.', 'pmpro-nbstup' ), 'pmpro_error' );
+		return;
+	}
+
+	$values = array(
+		'member_name'             => isset( $_POST['member_name'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['member_name'] ) ) ) : '',
+		'phone_no'                => isset( $_POST['phone_no'] ) ? preg_replace( '/\D+/', '', wp_unslash( $_POST['phone_no'] ) ) : '',
+		'aadhar_number'           => isset( $_POST['aadhar_number'] ) ? preg_replace( '/\D+/', '', wp_unslash( $_POST['aadhar_number'] ) ) : '',
+		'father_husband_name'     => isset( $_POST['father_husband_name'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['father_husband_name'] ) ) ) : '',
+		'dob'                     => isset( $_POST['dob'] ) ? sanitize_text_field( wp_unslash( $_POST['dob'] ) ) : '',
+		'gender'                  => isset( $_POST['gender'] ) ? sanitize_text_field( wp_unslash( $_POST['gender'] ) ) : '',
+		'Occupation'              => isset( $_POST['Occupation'] ) ? sanitize_text_field( wp_unslash( $_POST['Occupation'] ) ) : '',
+		'join_blood_donation'     => isset( $_POST['join_blood_donation'] ) ? 1 : 0,
+		'nominee_name_1'          => isset( $_POST['nominee_name_1'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['nominee_name_1'] ) ) ) : '',
+		'relation_with_nominee_1' => isset( $_POST['relation_with_nominee_1'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['relation_with_nominee_1'] ) ) ) : '',
+		'nominee_1_mobile'        => isset( $_POST['nominee_1_mobile'] ) ? preg_replace( '/\D+/', '', wp_unslash( $_POST['nominee_1_mobile'] ) ) : '',
+		'nominee_name_2'          => isset( $_POST['nominee_name_2'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['nominee_name_2'] ) ) ) : '',
+		'relation_with_nominee_2' => isset( $_POST['relation_with_nominee_2'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['relation_with_nominee_2'] ) ) ) : '',
+		'nominee_2_mobile'        => isset( $_POST['nominee_2_mobile'] ) ? preg_replace( '/\D+/', '', wp_unslash( $_POST['nominee_2_mobile'] ) ) : '',
+		'user_state'              => isset( $_POST['user_state'] ) ? absint( $_POST['user_state'] ) : 0,
+		'user_district'           => isset( $_POST['user_district'] ) ? absint( $_POST['user_district'] ) : 0,
+		'user_block'              => isset( $_POST['user_block'] ) ? absint( $_POST['user_block'] ) : 0,
+		'user_address'            => isset( $_POST['user_address'] ) ? trim( sanitize_textarea_field( wp_unslash( $_POST['user_address'] ) ) ) : '',
+		'declaration_accept'      => isset( $_POST['declaration_accept'] ) ? 1 : 0,
+		'new_password'            => isset( $_POST['new_password'] ) ? (string) wp_unslash( $_POST['new_password'] ) : '',
+	);
+
+	$errors = pmpronbstup_validate_pmpro_member_custom_field_values( $values, $user->ID );
+	if ( ! empty( $errors ) ) {
+		pmpronbstup_stop_pmpro_member_panel_save();
+		pmpro_setMessage( '<p>' . esc_html__( 'Could not update NBSTUP custom fields.', 'pmpro-nbstup' ) . '</p><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $errors ) ) . '</li></ul>', 'pmpro_error' );
+		return;
+	}
+
+	$meta_map = array(
+		'member_name'             => 'name',
+		'phone_no'                => 'phone_no',
+		'aadhar_number'           => 'aadhar_number',
+		'father_husband_name'     => 'father_husband_name',
+		'dob'                     => 'dob',
+		'gender'                  => 'gender',
+		'Occupation'              => 'Occupation',
+		'nominee_name_1'          => 'nominee_name_1',
+		'relation_with_nominee_1' => 'relation_with_nominee_1',
+		'nominee_1_mobile'        => 'nominee_1_mobile',
+		'nominee_name_2'          => 'nominee_name_2',
+		'relation_with_nominee_2' => 'relation_with_nominee_2',
+		'nominee_2_mobile'        => 'nominee_2_mobile',
+	);
+
+	foreach ( $meta_map as $field => $meta_key ) {
+		pmpronbstup_update_or_delete_user_meta( $user->ID, $meta_key, $values[ $field ] );
+	}
+
+	pmpronbstup_update_or_delete_user_meta( $user->ID, 'user_state', $values['user_state'] > 0 ? $values['user_state'] : '' );
+	pmpronbstup_update_or_delete_user_meta( $user->ID, 'user_district', $values['user_district'] > 0 ? $values['user_district'] : '' );
+	pmpronbstup_update_or_delete_user_meta( $user->ID, 'user_block', $values['user_block'] > 0 ? $values['user_block'] : '' );
+	pmpronbstup_update_or_delete_user_meta( $user->ID, 'user_address', $values['user_address'] );
+
+	update_user_meta( $user->ID, 'join_blood_donation', $values['join_blood_donation'] );
+	update_user_meta( $user->ID, 'declaration_accept', $values['declaration_accept'] );
+
+	if ( $values['new_password'] !== '' ) {
+		wp_update_user(
+			array(
+				'ID'        => $user->ID,
+				'user_pass' => $values['new_password'],
+			)
+		);
+	}
+
+	pmpronbstup_assign_unique_id( $user->ID );
+}
+add_action( 'admin_init', 'pmpronbstup_save_pmpro_member_custom_user_info', 9 );
+
+/**
+ * Escape a text value for vCard output.
+ *
+ * @param string $value Raw value.
+ * @return string
+ */
+function pmpronbstup_escape_vcard_text( $value ) {
+	$value = (string) $value;
+	$value = str_replace( '\\', '\\\\', $value );
+	$value = str_replace( ';', '\\;', $value );
+	$value = str_replace( ',', '\\,', $value );
+	$value = preg_replace( "/\r\n|\r|\n/", '\\n', $value );
+	return trim( $value );
+}
+
+/**
+ * Download a member vCard from the PMPro member edit screen.
+ *
+ * @return void
+ */
+function pmpronbstup_download_pmpro_member_vcard() {
+	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
+		return;
+	}
+
+	if ( empty( $_GET['pmpronbstup_download_vcard'] ) || ! pmpronbstup_can_edit_pmpro_member_custom_fields() ) {
+		return;
+	}
+
+	$user_id = isset( $_GET['user_id'] ) ? absint( $_GET['user_id'] ) : 0;
+	if ( $user_id <= 0 ) {
+		return;
+	}
+
+	if ( empty( $_GET['pmpronbstup_vcard_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['pmpronbstup_vcard_nonce'] ) ), 'pmpronbstup_download_vcard_' . $user_id ) ) {
+		wp_die( esc_html__( 'Security check failed while downloading the vCard.', 'pmpro-nbstup' ) );
+	}
+
+	$user = get_userdata( $user_id );
+	if ( ! $user ) {
+		wp_die( esc_html__( 'Member not found.', 'pmpro-nbstup' ) );
+	}
+
+	$values     = pmpronbstup_get_pmpro_member_custom_field_values( $user_id );
+	$full_name  = $values['member_name'] ? $values['member_name'] : $user->display_name;
+	$full_name  = trim( $full_name );
+	$name_parts = preg_split( '/\s+/', $full_name );
+	$first_name = ! empty( $name_parts ) ? array_shift( $name_parts ) : '';
+	$last_name  = ! empty( $name_parts ) ? implode( ' ', $name_parts ) : '';
+	$state_name = $values['state_name'];
+	$district   = $values['district_name'];
+	$block      = $values['block_name'];
+	$address    = $values['user_address'];
+
+	$vcard = array(
+		'BEGIN:VCARD',
+		'VERSION:3.0',
+		'FN:' . pmpronbstup_escape_vcard_text( $full_name ),
+		'N:' . pmpronbstup_escape_vcard_text( $last_name ) . ';' . pmpronbstup_escape_vcard_text( $first_name ) . ';;;',
+		'ORG:' . pmpronbstup_escape_vcard_text( 'NBSTUP' ),
+	);
+
+	if ( ! empty( $values['Occupation'] ) ) {
+		$vcard[] = 'TITLE:' . pmpronbstup_escape_vcard_text( $values['Occupation'] );
+	}
+
+	if ( ! empty( $values['phone_no'] ) ) {
+		$vcard[] = 'TEL;TYPE=CELL:' . pmpronbstup_escape_vcard_text( $values['phone_no'] );
+	}
+
+	if ( ! empty( $user->user_email ) ) {
+		$vcard[] = 'EMAIL;TYPE=INTERNET:' . pmpronbstup_escape_vcard_text( $user->user_email );
+	}
+
+	if ( ! empty( $values['dob'] ) ) {
+		$vcard[] = 'BDAY:' . pmpronbstup_escape_vcard_text( $values['dob'] );
+	}
+
+	if ( $address !== '' || $district !== '' || $state_name !== '' || $block !== '' ) {
+		$vcard[] = 'ADR;TYPE=HOME:;' . pmpronbstup_escape_vcard_text( $block ) . ';' . pmpronbstup_escape_vcard_text( $address ) . ';' . pmpronbstup_escape_vcard_text( $district ) . ';' . pmpronbstup_escape_vcard_text( $state_name ) . ';;' . pmpronbstup_escape_vcard_text( 'India' );
+	}
+
+	$vcard[] = 'END:VCARD';
+
+	$filename = sanitize_file_name( ( $full_name ? $full_name : 'nbstup-member-' . $user_id ) . '.vcf' );
+
+	nocache_headers();
+	header( 'Content-Type: text/vcard; charset=utf-8' );
+	header( 'Content-Disposition: attachment; filename=' . $filename );
+	echo implode( "\r\n", $vcard ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	exit;
+}
+add_action( 'admin_init', 'pmpronbstup_download_pmpro_member_vcard', 8 );
+
+/**
+ * Enqueue cascading location script for the PMPro member admin screen.
+ *
+ * @return void
+ */
+function pmpronbstup_enqueue_pmpro_member_custom_fields_script() {
+	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
+		return;
+	}
+
+	wp_enqueue_script( 'jquery' );
+
+	$ajax_nonce = wp_create_nonce( 'pmpro_nbstup_ajax' );
+	wp_add_inline_script(
+		'jquery',
+		"jQuery(function($) {
+			var stateSelect = $('#pmpronbstup_user_state');
+			var districtSelect = $('#pmpronbstup_user_district');
+			var blockSelect = $('#pmpronbstup_user_block');
+			var ajaxNonce = '" . esc_js( $ajax_nonce ) . "';
+
+			if (!stateSelect.length || !districtSelect.length || !blockSelect.length) {
+				return;
+			}
+
+			function fillSelect(select, items, placeholder, selectedValue) {
+				select.empty();
+				select.append($('<option>', { value: '', text: placeholder }));
+				$.each(items || [], function(_, item) {
+					var option = $('<option>', { value: item.id, text: item.name });
+					if (String(selectedValue) === String(item.id)) {
+						option.prop('selected', true);
+					}
+					select.append(option);
+				});
+			}
+
+			function loadDistricts(selectedDistrictId, selectedBlockId) {
+				var stateId = stateSelect.val();
+				fillSelect(districtSelect, [], '" . esc_js( __( 'Select District', 'pmpro-nbstup' ) ) . "', '');
+				fillSelect(blockSelect, [], '" . esc_js( __( 'Select Block', 'pmpro-nbstup' ) ) . "', '');
+				blockSelect.prop('disabled', true);
+
+				if (!stateId) {
+					districtSelect.prop('disabled', true);
+					return;
+				}
+
+				districtSelect.prop('disabled', true);
+				$.post(ajaxurl, {
+					action: 'pmpro_nbstup_get_districts',
+					state_id: stateId,
+					nonce: ajaxNonce
+				}).done(function(response) {
+					if (response && response.success) {
+						fillSelect(districtSelect, response.data, '" . esc_js( __( 'Select District', 'pmpro-nbstup' ) ) . "', selectedDistrictId || '');
+					}
+					districtSelect.prop('disabled', false);
+					if (selectedDistrictId) {
+						loadBlocks(selectedBlockId || '');
+					}
+				});
+			}
+
+			function loadBlocks(selectedBlockId) {
+				var districtId = districtSelect.val();
+				fillSelect(blockSelect, [], '" . esc_js( __( 'Select Block', 'pmpro-nbstup' ) ) . "', '');
+
+				if (!districtId) {
+					blockSelect.prop('disabled', true);
+					return;
+				}
+
+				blockSelect.prop('disabled', true);
+				$.post(ajaxurl, {
+					action: 'pmpro_nbstup_get_blocks',
+					district_id: districtId,
+					nonce: ajaxNonce
+				}).done(function(response) {
+					if (response && response.success) {
+						fillSelect(blockSelect, response.data, '" . esc_js( __( 'Select Block', 'pmpro-nbstup' ) ) . "', selectedBlockId || '');
+					}
+					blockSelect.prop('disabled', false);
+				});
+			}
+
+			stateSelect.on('change', function() {
+				loadDistricts('', '');
+			});
+
+			districtSelect.on('change', function() {
+				loadBlocks('');
+			});
+
+			if (stateSelect.val()) {
+				loadDistricts(districtSelect.data('selected') || '', blockSelect.data('selected') || '');
+			}
+		});"
+	);
+}
+add_action( 'admin_enqueue_scripts', 'pmpronbstup_enqueue_pmpro_member_custom_fields_script' );
+
+/**
+ * Show custom checkout user fields on PMPro Member Edit -> User Info panel.
+ *
+ * @param WP_User $user User object for the member being viewed.
+ * @return void
+ */
+function pmpronbstup_render_pmpro_member_custom_user_info( $user ) {
+	if ( ! is_admin() || empty( $_REQUEST['page'] ) || 'pmpro-member' !== $_REQUEST['page'] ) {
+		return;
+	}
+
+	if ( ! ( $user instanceof WP_User ) ) {
+		return;
+	}
+
+	$user_id = (int) $user->ID;
+	if ( $user_id <= 0 ) {
+		return;
+	}
+
+	$values         = pmpronbstup_get_pmpro_member_custom_field_values( $user_id );
+	$can_edit       = pmpronbstup_can_edit_pmpro_member_custom_fields();
+	$gender_options = array(
+		'male'   => __( 'Male', 'pmpro-nbstup' ),
+		'female' => __( 'Female', 'pmpro-nbstup' ),
+		'other'  => __( 'Other', 'pmpro-nbstup' ),
+	);
+	$occupation_options = array(
+		'Self Employed'       => __( 'Self Employed', 'pmpro-nbstup' ),
+		'Government Job'      => __( 'Government Job', 'pmpro-nbstup' ),
+		'Private Job'         => __( 'Private Job', 'pmpro-nbstup' ),
+		'Business'            => __( 'Business', 'pmpro-nbstup' ),
+		'Agriculture'         => __( 'Agriculture', 'pmpro-nbstup' ),
+		'Housewife'           => __( 'Housewife', 'pmpro-nbstup' ),
+		'Student'             => __( 'Student', 'pmpro-nbstup' ),
+		'Contract Workers'    => __( 'Contract Workers', 'pmpro-nbstup' ),
+		'Public Representative' => __( 'Public Representative', 'pmpro-nbstup' ),
+	);
+	$states    = pmpro_nbstup_get_all_states();
+	$districts = $values['user_state'] ? pmpro_nbstup_get_districts( $values['user_state'] ) : array();
+	$blocks    = $values['user_district'] ? pmpro_nbstup_get_blocks( $values['user_district'] ) : array();
+	$download_vcard_url = wp_nonce_url(
+		add_query_arg(
+			array(
+				'page'                       => 'pmpro-member',
+				'user_id'                    => $user_id,
+				'pmpro_member_edit_panel'    => 'user-info',
+				'pmpronbstup_download_vcard' => 1,
+			),
+			admin_url( 'admin.php' )
+		),
+		'pmpronbstup_download_vcard_' . $user_id,
+		'pmpronbstup_vcard_nonce'
 	);
 	?>
 	<h2><?php esc_html_e( 'NBSTUP Custom Checkout Fields', 'pmpro-nbstup' ); ?></h2>
+	<?php if ( $can_edit ) : ?>
+		<?php wp_nonce_field( 'pmpronbstup_pmpro_member_custom_fields_' . $user_id, 'pmpronbstup_pmpro_member_custom_fields_nonce' ); ?>
+		<p>
+			<a class="button button-secondary" href="<?php echo esc_url( $download_vcard_url ); ?>"><?php esc_html_e( 'Download vCard', 'pmpro-nbstup' ); ?></a>
+		</p>
+	<?php endif; ?>
 	<table class="form-table">
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Member Name', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['member_name'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="member_name" id="pmpronbstup_member_name" class="regular-text" value="<?php echo esc_attr( $values['member_name'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['member_name'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Phone Number', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['phone_no'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="phone_no" id="pmpronbstup_phone_no" class="regular-text" value="<?php echo esc_attr( $values['phone_no'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['phone_no'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Aadhar Number', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['aadhar_number'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="aadhar_number" id="pmpronbstup_aadhar_number" class="regular-text" value="<?php echo esc_attr( $values['aadhar_number'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['aadhar_number'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Father / Husband Name', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['father_husband_name'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="father_husband_name" id="pmpronbstup_father_husband_name" class="regular-text" value="<?php echo esc_attr( $values['father_husband_name'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['father_husband_name'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Date of Birth', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['dob'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="date" name="dob" id="pmpronbstup_dob" value="<?php echo esc_attr( $values['dob'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['dob'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Gender', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['gender'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<select name="gender" id="pmpronbstup_gender" class="regular-text">
+						<option value=""><?php esc_html_e( 'Select Gender', 'pmpro-nbstup' ); ?></option>
+						<?php foreach ( $gender_options as $option_value => $option_label ) : ?>
+							<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $values['gender'], $option_value ); ?>><?php echo esc_html( $option_label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<?php echo esc_html( $values['gender'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Occupation', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['Occupation'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<select name="Occupation" id="pmpronbstup_occupation" class="regular-text">
+						<option value=""><?php esc_html_e( 'Select Occupation', 'pmpro-nbstup' ); ?></option>
+						<?php foreach ( $occupation_options as $option_value => $option_label ) : ?>
+							<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $values['Occupation'], $option_value ); ?>><?php echo esc_html( $option_label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<?php echo esc_html( $values['Occupation'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Join Blood Donation Team', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['join_blood_donation'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<label for="pmpronbstup_join_blood_donation">
+						<input type="checkbox" name="join_blood_donation" id="pmpronbstup_join_blood_donation" value="1" <?php checked( $values['join_blood_donation'], 1 ); ?> />
+						<?php esc_html_e( 'Yes', 'pmpro-nbstup' ); ?>
+					</label>
+				<?php else : ?>
+					<?php echo esc_html( $values['join_blood_donation'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Nominee 1 Name', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['nominee_name_1'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="nominee_name_1" id="pmpronbstup_nominee_name_1" class="regular-text" value="<?php echo esc_attr( $values['nominee_name_1'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['nominee_name_1'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Relation With Nominee 1', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['relation_with_nominee_1'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="relation_with_nominee_1" id="pmpronbstup_relation_with_nominee_1" class="regular-text" value="<?php echo esc_attr( $values['relation_with_nominee_1'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['relation_with_nominee_1'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Nominee 1 Mobile', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['nominee_1_mobile'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="nominee_1_mobile" id="pmpronbstup_nominee_1_mobile" class="regular-text" value="<?php echo esc_attr( $values['nominee_1_mobile'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['nominee_1_mobile'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Nominee 2 Name', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['nominee_name_2'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="nominee_name_2" id="pmpronbstup_nominee_name_2" class="regular-text" value="<?php echo esc_attr( $values['nominee_name_2'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['nominee_name_2'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Relation With Nominee 2', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['relation_with_nominee_2'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="relation_with_nominee_2" id="pmpronbstup_relation_with_nominee_2" class="regular-text" value="<?php echo esc_attr( $values['relation_with_nominee_2'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['relation_with_nominee_2'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Nominee 2 Mobile', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['nominee_2_mobile'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<input type="text" name="nominee_2_mobile" id="pmpronbstup_nominee_2_mobile" class="regular-text" value="<?php echo esc_attr( $values['nominee_2_mobile'] ); ?>" />
+				<?php else : ?>
+					<?php echo esc_html( $values['nominee_2_mobile'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'State', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['state_name'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<select name="user_state" id="pmpronbstup_user_state" class="regular-text">
+						<option value=""><?php esc_html_e( 'Select State', 'pmpro-nbstup' ); ?></option>
+						<?php foreach ( $states as $state ) : ?>
+							<option value="<?php echo esc_attr( $state->id ); ?>" <?php selected( $values['user_state'], $state->id ); ?>><?php echo esc_html( $state->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<?php echo esc_html( $values['state_name'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'District', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['district_name'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<select name="user_district" id="pmpronbstup_user_district" class="regular-text" data-selected="<?php echo esc_attr( $values['user_district'] ); ?>" <?php disabled( $values['user_state'] <= 0 ); ?>>
+						<option value=""><?php esc_html_e( 'Select District', 'pmpro-nbstup' ); ?></option>
+						<?php foreach ( $districts as $district ) : ?>
+							<option value="<?php echo esc_attr( $district->id ); ?>" <?php selected( $values['user_district'], $district->id ); ?>><?php echo esc_html( $district->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<?php echo esc_html( $values['district_name'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Block', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['block_name'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<select name="user_block" id="pmpronbstup_user_block" class="regular-text" data-selected="<?php echo esc_attr( $values['user_block'] ); ?>" <?php disabled( $values['user_district'] <= 0 ); ?>>
+						<option value=""><?php esc_html_e( 'Select Block', 'pmpro-nbstup' ); ?></option>
+						<?php foreach ( $blocks as $block ) : ?>
+							<option value="<?php echo esc_attr( $block->id ); ?>" <?php selected( $values['user_block'], $block->id ); ?>><?php echo esc_html( $block->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<?php echo esc_html( $values['block_name'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Address', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['user_address'] ?: '-' ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<textarea name="user_address" id="pmpronbstup_user_address" rows="3" cols="40" class="large-text"><?php echo esc_textarea( $values['user_address'] ); ?></textarea>
+				<?php else : ?>
+					<?php echo esc_html( $values['user_address'] ?: '-' ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Declaration Accepted', 'pmpro-nbstup' ); ?></th>
-			<td><?php echo esc_html( $values['declaration_accept'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?></td>
+			<td>
+				<?php if ( $can_edit ) : ?>
+					<label for="pmpronbstup_declaration_accept">
+						<input type="checkbox" name="declaration_accept" id="pmpronbstup_declaration_accept" value="1" <?php checked( $values['declaration_accept'], 1 ); ?> />
+						<?php esc_html_e( 'Yes', 'pmpro-nbstup' ); ?>
+					</label>
+				<?php else : ?>
+					<?php echo esc_html( $values['declaration_accept'] === 1 ? __( 'Yes', 'pmpro-nbstup' ) : __( 'No', 'pmpro-nbstup' ) ); ?>
+				<?php endif; ?>
+			</td>
 		</tr>
+		<?php if ( $can_edit ) : ?>
+		<tr>
+			<th scope="row"><label for="pmpronbstup_new_password"><?php esc_html_e( 'Set New Password', 'pmpro-nbstup' ); ?></label></th>
+			<td>
+				<input type="password" name="new_password" id="pmpronbstup_new_password" class="regular-text" value="" autocomplete="new-password" />
+				<p class="description"><?php esc_html_e( 'Leave blank to keep the current password unchanged.', 'pmpro-nbstup' ); ?></p>
+			</td>
+		</tr>
+		<?php endif; ?>
 	</table>
 	<?php
 }

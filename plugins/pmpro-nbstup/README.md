@@ -6,6 +6,7 @@ PMPro NBSTUP is a Paid Memberships Pro extension for yearly membership operation
 It supports:
 - Membership activation and renewal tracking.
 - CSV-based transaction verification.
+- One-click bulk member vCard export with optional registration date filtering.
 - Deceased and daughter wedding contribution flows.
 - Custom checkout fields for member/nominee/address data.
 - Admin contribution management and reactivation tracking.
@@ -213,6 +214,7 @@ Current scope:
   - Activation CSV.
   - Deceased contribution CSV.
   - Wedding contribution CSV.
+  - Bulk members vCard export (`.vcf`) with optional `Registered From` / `Registered To` filters.
 - `Memberships > Contributions`
   - Contribution monitoring and actions.
 - `Memberships > Email Settings`
