@@ -65,6 +65,29 @@ function ai1wm_storage_path( $params ) {
 }
 
 /**
+ * Resolve the backups path.
+ * If the stored option points to a stale path (e.g., from a server migration)
+ * where neither the path nor its parent directory exist, the option is deleted
+ * and the default path is returned.
+ *
+ * @return string
+ */
+function ai1wm_resolve_backups_path() {
+	$backups_path = get_option( AI1WM_BACKUPS_PATH_OPTION, false );
+	if ( $backups_path === false ) {
+		return AI1WM_DEFAULT_BACKUPS_PATH;
+	}
+
+	$parent_backups_path = dirname( $backups_path );
+	if ( ! is_dir( $parent_backups_path ) || ! is_writable( $parent_backups_path ) ) {
+		delete_option( AI1WM_BACKUPS_PATH_OPTION );
+		return AI1WM_DEFAULT_BACKUPS_PATH;
+	}
+
+	return $backups_path;
+}
+
+/**
  * Get backup absolute path
  *
  * @param  array  $params Request parameters

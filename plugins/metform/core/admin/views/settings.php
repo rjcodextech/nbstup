@@ -535,6 +535,28 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 											</div>
 										</div>
 									</div>
+									<div class="other-tab list-item">
+										<div class="tab-header">
+											<h4 class="list-item-header"><?php esc_html_e('Form Entry File Management', 'metform') ?></h4>
+										</div>
+										<div class="tab-pane">
+											<div class="info-list">
+												<div class="attr-row">
+													<div class="attr-col-lg-12" style="padding: 0px;">
+														<div class="mf-setting-input-group">
+															<label class="mf-setting-label mf-setting-switch">
+																<input type="checkbox" name="mf_enable_entry_file_delete" value="1" class="attr-form-control" <?php echo esc_attr((isset($settings['mf_enable_entry_file_delete'])) ? 'Checked' : ''); ?> />
+																<span><?php esc_html_e('Remove Uploaded Files When Entry Is Deleted', 'metform'); ?></span>
+															</label>
+														</div>
+													</div>
+												</div>
+												<p class="description">
+													<?php echo wp_kses_post(__('If <strong>enabled</strong>, when an entry is permanently deleted, the files associated with it will also be deleted.', 'metform')); ?>
+												</p>
+											</div>
+										</div>
+									</div>
 									<?php if (class_exists(Package::class) && class_exists('\MetForm_Pro\Core\Integrations\Dropbox\Dropbox_Access_Token')  && (Util::is_mid_tier() || Util::is_top_tier())) : ?>
 										<div class="mf-dropbox-tab list-item">
 											<div class="tab-header">
@@ -644,9 +666,11 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
 													<li><span class="pointer">5</span><?php echo esc_html__('Click on "Connect your dropbox account"', 'metform') ?></li>
 												</ol>
-												<a class="mf-setting-btn-link achor-style round-btn disabled" href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none">
-														<path d="M1 4.85V2.4A1.4 1.4 0 0 1 2.4 1h11.2c.773 0 1.4.628 1.4 1.401V10.8a1.4 1.4 0 0 1-1.4 1.401H2.4A1.4 1.4 0 0 1 1 10.8V8.35a1.75 1.75 0 0 0 0-3.5zM10.1 6.6h2.1M7.3 9.4h4.9" stroke="#0D1427" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-													</svg> <?php esc_attr_e('Connect your dropbox account', 'metform'); ?></a>
+												<a class="mf-setting-btn-link achor-style round-btn disabled" href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+															<path d="M7.08663 6.21467L7.21077 6.09053C8.39799 4.90326 10.3229 4.90326 11.5101 6.09053C12.6974 7.27775 12.6974 9.20267 11.5101 10.3899L9.79041 12.1096C8.60319 13.2969 6.67827 13.2969 5.49102 12.1096C4.30378 10.9224 4.30378 8.99747 5.49102 7.81025L5.76963 7.53167" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M11.8312 6.46841L12.1097 6.18983C13.297 5.00257 13.297 3.07768 12.1097 1.89043C10.9225 0.70319 8.99759 0.70319 7.81037 1.89043L6.09065 3.61019C4.90338 4.79743 4.90338 6.72233 6.09065 7.90955C7.27787 9.09683 9.20279 9.09683 10.39 7.90955L10.5141 7.78541" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M1.00049 4.60008L2.80049 5.20008M1.60049 7.90008L2.80049 7.00008M2.50049 2.20007L3.40049 3.40007" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+														</svg>	<?php esc_attr_e('Connect your dropbox account', 'metform'); ?></a>
 											</div>
 										</div>
 									</div>
@@ -823,7 +847,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 
 										<div class="attr-form-group-wrap">
 											<div class="attr-tab-content" id="nav-tabContent">
-												<?php if (class_exists(Paypal::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier()) || Util::is_using_settings_option('mf_paypal_email')) : ?>
+												<?php if (class_exists(Paypal::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier() || Util::is_using_settings_option('mf_paypal_email'))) : ?>
 													<div class="attr-tab-pane attr-fade attr-active attr-in" id="mf-paypal-tab" role="tabpanel" aria-labelledby="mf-paypal-tab-label">
 														<div class="attr-row" style="margin: 0 -10px;">
 															<div class="attr-col-lg-12">
@@ -1181,17 +1205,32 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															</div>
 														</div>
 													</div>
-													<?php $google = new Google_Access_Token; ?>
-													<ol class="xs_social_ol">
-														<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/google-integrations/" target="_blank">Documentation</a></li>
-														<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
-														<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
-														<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
-														<li><span class="pointer">5</span><?php echo esc_html__('Click on "Generate Access Token"', 'metform') ?></li>
-													</ol>
-													<a class="mf-setting-btn-link round-btn" href="<?php echo esc_url($google->get_code()); ?>"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none">
-															<path d="M1 4.85V2.4A1.4 1.4 0 0 1 2.4 1h11.2c.773 0 1.4.628 1.4 1.401V10.8a1.4 1.4 0 0 1-1.4 1.401H2.4A1.4 1.4 0 0 1 1 10.8V8.35a1.75 1.75 0 0 0 0-3.5zM10.1 6.6h2.1M7.3 9.4h4.9" stroke="#9D9EA1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-														</svg> <?php esc_attr_e('Generate Access Token', 'metform'); ?></a>
+													<?php 
+													$google = new Google_Access_Token;
+													$google_connected = get_option('wf_google_access_token');
+													
+													if ($google_connected) : ?>
+														<div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+															<a href="<?php echo esc_url(add_query_arg('mf_google_disconnect', '1', admin_url('admin.php?page=metform-menu-settings'))); ?>" class="mf-admin-setting mf-admin-setting-google" onclick="return confirm('<?php esc_attr_e('Are you sure you want to disconnect GoogleServices integration?', 'metform'); ?>');">
+																<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.33333 1.06335C8.02867 1.02161 7.717 1 7.4 1C3.86538 1 1 3.68629 1 7C1 10.3137 3.86538 13 7.4 13C7.717 13 8.02867 12.9784 8.33333 12.9367" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.3335 5.33333L13.0002 6.99999L11.3335 8.66666M6.3335 6.99999H12.5943" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <?php esc_html_e('Disconnect Google Services', 'metform'); ?>
+															</a>
+														</div>
+													<?php else : ?>
+														<ol class="xs_social_ol">
+															<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/google-integrations/" target="_blank">Documentation</a></li>
+															<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
+															<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
+															<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
+															<li><span class="pointer">5</span><?php echo esc_html__('Click on "Connect Google Services"', 'metform') ?></li>
+														</ol>
+														<a class="mf-admin-setting mf-admin-setting-dropbox" href="<?php echo esc_url($google->get_code()); ?>">
+														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+															<path d="M7.08663 6.21467L7.21077 6.09053C8.39799 4.90326 10.3229 4.90326 11.5101 6.09053C12.6974 7.27775 12.6974 9.20267 11.5101 10.3899L9.79041 12.1096C8.60319 13.2969 6.67827 13.2969 5.49102 12.1096C4.30378 10.9224 4.30378 8.99747 5.49102 7.81025L5.76963 7.53167" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M11.8312 6.46841L12.1097 6.18983C13.297 5.00257 13.297 3.07768 12.1097 1.89043C10.9225 0.70319 8.99759 0.70319 7.81037 1.89043L6.09065 3.61019C4.90338 4.79743 4.90338 6.72233 6.09065 7.90955C7.27787 9.09683 9.20279 9.09683 10.39 7.90955L10.5141 7.78541" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M1.00049 4.60008L2.80049 5.20008M1.60049 7.90008L2.80049 7.00008M2.50049 2.20007L3.40049 3.40007" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+														</svg>	
+														<?php esc_attr_e('Connect Google Services', 'metform'); ?></a>
+													<?php endif; ?>
 												</div>
 												<p class="mf-set-dash-top-notch--item__desc">
 													<?php esc_html_e("Note: After 200 days your token will be expired, before the expiration of your token, generate a new token.", 'metform'); ?>
@@ -1230,9 +1269,12 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
 															<li><span class="pointer">5</span><?php echo esc_html__('Click on "Generate Access Token"', 'metform') ?></li>
 														</ol>
-														<a class="mf-setting-btn-link achor-style round-btn disabled" href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none">
-																<path d="M1 4.85V2.4A1.4 1.4 0 0 1 2.4 1h11.2c.773 0 1.4.628 1.4 1.401V10.8a1.4 1.4 0 0 1-1.4 1.401H2.4A1.4 1.4 0 0 1 1 10.8V8.35a1.75 1.75 0 0 0 0-3.5zM10.1 6.6h2.1M7.3 9.4h4.9" stroke="#0D1427" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-															</svg> <?php esc_attr_e('Generate Access Token', 'metform'); ?></a>
+														<a class="mf-setting-btn-link achor-style round-btn disabled" href="#"> 
+														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+															<path d="M7.08663 6.21467L7.21077 6.09053C8.39799 4.90326 10.3229 4.90326 11.5101 6.09053C12.6974 7.27775 12.6974 9.20267 11.5101 10.3899L9.79041 12.1096C8.60319 13.2969 6.67827 13.2969 5.49102 12.1096C4.30378 10.9224 4.30378 8.99747 5.49102 7.81025L5.76963 7.53167" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M11.8312 6.46841L12.1097 6.18983C13.297 5.00257 13.297 3.07768 12.1097 1.89043C10.9225 0.70319 8.99759 0.70319 7.81037 1.89043L6.09065 3.61019C4.90338 4.79743 4.90338 6.72233 6.09065 7.90955C7.27787 9.09683 9.20279 9.09683 10.39 7.90955L10.5141 7.78541" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+															<path d="M1.00049 4.60008L2.80049 5.20008M1.60049 7.90008L2.80049 7.00008M2.50049 2.20007L3.40049 3.40007" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+														</svg>	<?php esc_attr_e('Connect Google Services', 'metform'); ?></a>
 														<p class="mf-set-dash-top-notch--item__desc">
 															<?php esc_html_e("Note: After 200 days your token will be expired, before the expiration of your token, generate a new token.", 'metform'); ?>
 														</p>

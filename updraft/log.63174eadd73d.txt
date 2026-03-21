@@ -1,0 +1,475 @@
+0000.000 (0) Opened log file at time: Thu, 19 Mar 2026 11:55:35 +0000 on https://nbstup.com
+0000.001 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.26.2 WP: 6.9.4 PHP: 8.3.25 (fpm-fcgi, Linux server.hostxify.com 4.18.0-553.89.1.el8_10.x86_64 #1 SMP Mon Dec 8 03:53:08 EST 2025 x86_64) MySQL: 10.11.15-MariaDB (max packet size=268435456) WPLANG: en_US Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 85.9M | 89M) multisite: N openssl: OpenSSL 1.1.1k  FIPS 25 Mar 2021 mcrypt: N LANG:  WP Proxy: disabled ZipArchive::addFile: Y
+0000.002 (0) Free space on disk containing Updraft's temporary directory: Unknown
+0000.006 (0) Tasks: Backup files: 1 (schedule: daily) Backup DB: 1 (schedule: daily)
+0000.009 (0) Requesting semaphore lock (fd) (apparently not via scheduler)
+0000.011 (0) Set semaphore last lock (fd) time to 2026-03-19 11:55:35
+0000.012 (0) Semaphore lock (fd) complete
+0000.014 (0) Backup run: resumption=0, nonce=63174eadd73d, file_nonce=63174eadd73d begun at=1773921335 (0s ago), job type=backup
+0000.016 (0) Scheduling a resumption (1) after 300 seconds (1773921635) in case this run gets aborted
+0000.025 (0) Checking if we have a zip executable available
+0000.027 (0) Creation of backups of directories: beginning
+0000.030 (0) Beginning creation of dump of plugins (split every: 25 MB)
+0001.035 (0) Total entities for the zip file: 2378 directories, 11498 files (0 skipped as non-modified), 226.3 MB
+0001.044 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 100 files added (on-disk size: 0 KB)
+0001.052 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 200 files added (on-disk size: 0 KB)
+0001.057 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 300 files added (on-disk size: 0 KB)
+0001.063 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 400 files added (on-disk size: 0 KB)
+0001.068 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 500 files added (on-disk size: 0 KB)
+0001.073 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 600 files added (on-disk size: 0 KB)
+0001.078 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 700 files added (on-disk size: 0 KB)
+0001.083 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 800 files added (on-disk size: 0 KB)
+0001.088 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 900 files added (on-disk size: 0 KB)
+0001.093 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1000 files added (on-disk size: 0 KB)
+0001.095 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (18.1 MB, 11498 files batched, 1001 (1001) added so far); re-opening (prior size: 0 KB)
+0002.759 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1100 files added (on-disk size: 7142.8 KB)
+0002.764 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1200 files added (on-disk size: 7142.8 KB)
+0002.769 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1300 files added (on-disk size: 7142.8 KB)
+0002.773 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1400 files added (on-disk size: 7142.8 KB)
+0002.777 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1500 files added (on-disk size: 7142.8 KB)
+0002.781 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 25 MB added on this batch (26.2 MB, 11498 files batched, 573 (1574) added so far); re-opening (prior size: 7142.8 KB)
+0004.626 (0) A useful amount of data was added after this amount of zip processing: 2.5 s (normalised: 2.4 s, rate: 10623.2 KB/s)
+0004.627 (0) Performance is good - but we will not increase the amount of data we batch, as we are already at the present limit (time=2.5280139446259, normalised_time=2.4098180959278, max_time=4.6264729499817, data points known=1, max_bytes=26214400)
+0004.632 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1600 files added (on-disk size: 13381.5 KB)
+0004.633 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 25 MB added on this batch (25.7 MB, 11498 files batched, 37 (1611) added so far); re-opening (prior size: 13381.5 KB)
+0006.410 (0) A useful amount of data was added after this amount of zip processing: 2.3 s (normalised: 2.2 s, rate: 11382.8 KB/s)
+0006.411 (0) Performance is good - but we will not increase the amount of data we batch, as we are already at the present limit (time=2.3127920627594, normalised_time=2.2489985710724, max_time=6.4112179279327, data points known=1, max_bytes=26214400)
+0006.419 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1700 files added (on-disk size: 17259 KB)
+0006.425 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1800 files added (on-disk size: 17259 KB)
+0006.429 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 1900 files added (on-disk size: 17259 KB)
+0006.432 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2000 files added (on-disk size: 17259 KB)
+0006.436 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2100 files added (on-disk size: 17259 KB)
+0006.440 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2200 files added (on-disk size: 17259 KB)
+0006.443 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2300 files added (on-disk size: 17259 KB)
+0006.447 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2400 files added (on-disk size: 17259 KB)
+0006.451 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2500 files added (on-disk size: 17259 KB)
+0006.455 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2600 files added (on-disk size: 17259 KB)
+0006.456 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (9.7 MB, 11498 files batched, 1001 (2612) added so far); re-opening (prior size: 17259 KB)
+0007.392 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2700 files added (on-disk size: 19233.5 KB)
+0007.396 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2800 files added (on-disk size: 19233.5 KB)
+0007.401 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 2900 files added (on-disk size: 19233.5 KB)
+0007.405 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3000 files added (on-disk size: 19233.5 KB)
+0007.408 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3100 files added (on-disk size: 19233.5 KB)
+0007.412 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3200 files added (on-disk size: 19233.5 KB)
+0007.416 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3300 files added (on-disk size: 19233.5 KB)
+0007.419 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3400 files added (on-disk size: 19233.5 KB)
+0007.423 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3500 files added (on-disk size: 19233.5 KB)
+0007.427 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3600 files added (on-disk size: 19233.5 KB)
+0007.428 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (11.8 MB, 11498 files batched, 1001 (3613) added so far); re-opening (prior size: 19233.5 KB)
+0008.372 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3700 files added (on-disk size: 21951.2 KB)
+0008.376 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3800 files added (on-disk size: 21951.2 KB)
+0008.380 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 3900 files added (on-disk size: 21951.2 KB)
+0008.384 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4000 files added (on-disk size: 21951.2 KB)
+0008.387 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4100 files added (on-disk size: 21951.2 KB)
+0008.391 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4200 files added (on-disk size: 21951.2 KB)
+0008.395 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4300 files added (on-disk size: 21951.2 KB)
+0008.399 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4400 files added (on-disk size: 21951.2 KB)
+0008.403 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4500 files added (on-disk size: 21951.2 KB)
+0008.406 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4600 files added (on-disk size: 21951.2 KB)
+0008.408 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (4.8 MB, 11498 files batched, 1001 (4614) added so far); re-opening (prior size: 21951.2 KB)
+0008.926 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4700 files added (on-disk size: 23447.1 KB)
+0008.930 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4800 files added (on-disk size: 23447.1 KB)
+0008.934 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 4900 files added (on-disk size: 23447.1 KB)
+0008.938 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 5000 files added (on-disk size: 23447.1 KB)
+0008.941 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.tmp: 5100 files added (on-disk size: 23447.1 KB)
+0008.942 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): possibly approaching split limit (6.2 MB, 493 (5107) files added so far); last ratio: 0.3068; re-opening (prior size: 23447.1 KB)
+0009.494 (0) Zip size is at/near split limit (26 MB / 25 MB) - bumping index (from: 0)
+0009.742 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.list-temp.tmp)
+0009.783 (0) Successfully created zip file manifest (size: 448778)
+0009.786 (0) Created plugins zip (0) - 26595.8 KB in 9.5 s (2810.5 KB/s) (checksums: sha1: 083eb478519013cb310a6cd8060967926d62bd2b, sha256: 3415da96846fe4fc52e76c2d46fb724f98d03dc84d85bc1f698736f84e38842b)
+0009.793 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0009.794 (0) No remote despatch: user chose no remote backup service
+0009.795 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip
+0009.796 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip.list.tmp)
+0009.797 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0009.802 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5200 files added (on-disk size: 0 KB)
+0009.806 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5300 files added (on-disk size: 0 KB)
+0009.810 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5400 files added (on-disk size: 0 KB)
+0009.813 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5500 files added (on-disk size: 0 KB)
+0009.815 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 25 MB added on this batch (25.1 MB, 11498 files batched, 426 (5533) added so far); re-opening (prior size: 0 KB)
+0011.762 (0) A useful amount of data was added after this amount of zip processing: 2.7 s (normalised: 2.7 s, rate: 9631.9 KB/s)
+0011.763 (0) Performance is good - but we will not increase the amount of data we batch, as we are already at the present limit (time=2.6640861034393, normalised_time=2.6578259006411, max_time=11.7628698349, data points known=1, max_bytes=26214400)
+0011.767 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5600 files added (on-disk size: 7084.5 KB)
+0011.771 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5700 files added (on-disk size: 7084.5 KB)
+0011.775 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5800 files added (on-disk size: 7084.5 KB)
+0011.778 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 5900 files added (on-disk size: 7084.5 KB)
+0011.780 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 25 MB added on this batch (26.7 MB, 11498 files batched, 395 (5928) added so far); re-opening (prior size: 7084.5 KB)
+0013.373 (0) A useful amount of data was added after this amount of zip processing: 2.3 s (normalised: 2.1 s, rate: 12001.3 KB/s)
+0013.374 (0) Performance is good - but we will not increase the amount of data we batch, as we are already at the present limit (time=2.2750639915466, normalised_time=2.133094762341, max_time=13.373450994492, data points known=1, max_bytes=26214400)
+0013.378 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6000 files added (on-disk size: 13323.8 KB)
+0013.382 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6100 files added (on-disk size: 13323.8 KB)
+0013.386 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6200 files added (on-disk size: 13323.8 KB)
+0013.389 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6300 files added (on-disk size: 13323.8 KB)
+0013.393 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6400 files added (on-disk size: 13323.8 KB)
+0013.397 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6500 files added (on-disk size: 13323.8 KB)
+0013.401 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6600 files added (on-disk size: 13323.8 KB)
+0013.404 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6700 files added (on-disk size: 13323.8 KB)
+0013.408 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6800 files added (on-disk size: 13323.8 KB)
+0013.412 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 6900 files added (on-disk size: 13323.8 KB)
+0013.413 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (18.4 MB, 11498 files batched, 1001 (6929) added so far); re-opening (prior size: 13323.8 KB)
+0015.061 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 7000 files added (on-disk size: 19367.2 KB)
+0015.067 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 7100 files added (on-disk size: 19367.2 KB)
+0015.073 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 7200 files added (on-disk size: 19367.2 KB)
+0015.080 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 7300 files added (on-disk size: 19367.2 KB)
+0015.085 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.tmp: 7400 files added (on-disk size: 19367.2 KB)
+0015.089 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): possibly approaching split limit (17.5 MB, 530 (7459) files added so far); last ratio: 0.3211; re-opening (prior size: 19367.2 KB)
+0016.436 (0) Zip size is at/near split limit (24 MB / 25 MB) - bumping index (from: 1)
+0016.654 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.list-temp.tmp)
+0016.669 (0) Successfully created zip file manifest (size: 196740)
+0016.671 (0) Created plugins zip (1) - 24550.8 KB in 6.7 s (3691.7 KB/s) (checksums: sha1: 71afa50410721a0fede6ee7bbcd2c40c1bfbf3fb, sha256: 0e8fc86fae6b95abb1824e3f61abeeb2b1217f47af1d807ee1aa7c736e1699fb)
+0016.676 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0016.676 (0) No remote despatch: user chose no remote backup service
+0016.677 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip
+0016.679 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip.list.tmp)
+0016.680 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0016.683 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 7500 files added (on-disk size: 0 KB)
+0016.687 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 7600 files added (on-disk size: 0 KB)
+0016.691 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 7700 files added (on-disk size: 0 KB)
+0016.695 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 7800 files added (on-disk size: 0 KB)
+0016.700 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 7900 files added (on-disk size: 0 KB)
+0016.704 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8000 files added (on-disk size: 0 KB)
+0016.708 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8100 files added (on-disk size: 0 KB)
+0016.712 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8200 files added (on-disk size: 0 KB)
+0016.717 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8300 files added (on-disk size: 0 KB)
+0016.721 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8400 files added (on-disk size: 0 KB)
+0016.724 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (13.1 MB, 11498 files batched, 1001 (8460) added so far); re-opening (prior size: 0 KB)
+0018.316 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8500 files added (on-disk size: 3732.7 KB)
+0018.320 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8600 files added (on-disk size: 3732.7 KB)
+0018.324 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8700 files added (on-disk size: 3732.7 KB)
+0018.328 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8800 files added (on-disk size: 3732.7 KB)
+0018.331 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 8900 files added (on-disk size: 3732.7 KB)
+0018.335 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9000 files added (on-disk size: 3732.7 KB)
+0018.339 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9100 files added (on-disk size: 3732.7 KB)
+0018.343 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9200 files added (on-disk size: 3732.7 KB)
+0018.347 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9300 files added (on-disk size: 3732.7 KB)
+0018.351 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9400 files added (on-disk size: 3732.7 KB)
+0018.353 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (13 MB, 11498 files batched, 1001 (9461) added so far); re-opening (prior size: 3732.7 KB)
+0019.181 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9500 files added (on-disk size: 11262.5 KB)
+0019.186 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9600 files added (on-disk size: 11262.5 KB)
+0019.190 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9700 files added (on-disk size: 11262.5 KB)
+0019.194 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9800 files added (on-disk size: 11262.5 KB)
+0019.198 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 9900 files added (on-disk size: 11262.5 KB)
+0019.202 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10000 files added (on-disk size: 11262.5 KB)
+0019.207 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10100 files added (on-disk size: 11262.5 KB)
+0019.211 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10200 files added (on-disk size: 11262.5 KB)
+0019.215 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10300 files added (on-disk size: 11262.5 KB)
+0019.219 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10400 files added (on-disk size: 11262.5 KB)
+0019.222 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (5.3 MB, 11498 files batched, 1001 (10462) added so far); re-opening (prior size: 11262.5 KB)
+0019.862 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10500 files added (on-disk size: 14276.1 KB)
+0019.876 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10600 files added (on-disk size: 14276.1 KB)
+0019.880 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10700 files added (on-disk size: 14276.1 KB)
+0019.884 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10800 files added (on-disk size: 14276.1 KB)
+0019.888 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 10900 files added (on-disk size: 14276.1 KB)
+0019.891 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 11000 files added (on-disk size: 14276.1 KB)
+0019.895 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 11100 files added (on-disk size: 14276.1 KB)
+0019.899 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 11200 files added (on-disk size: 14276.1 KB)
+0019.903 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 11300 files added (on-disk size: 14276.1 KB)
+0019.906 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.tmp: 11400 files added (on-disk size: 14276.1 KB)
+0019.909 (0) Adding batch to zip file (UpdraftPlus_ZipArchive): over 1000 files added on this batch (4.8 MB, 11498 files batched, 1001 (11463) added so far); re-opening (prior size: 14276.1 KB)
+0020.655 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.list-temp.tmp)
+0020.682 (0) Successfully created zip file manifest (size: 381212)
+0020.811 (0) Created plugins zip (2) - 15992.4 KB in 4.1 s (3864 KB/s) (sha1: 1348ba3c46df5ec1d393e5d5f4e660db0b091907, sha256: 68f5808225bce648ee1013bcf9cc01deede06675ed0ce295ed722de8437d347c)
+0020.816 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0020.816 (0) No remote despatch: user chose no remote backup service
+0020.817 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip
+0020.819 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip.list.tmp)
+0020.820 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0020.823 (0) Beginning creation of dump of themes (split every: 25 MB)
+0020.856 (0) Total entities for the zip file: 66 directories, 511 files (0 skipped as non-modified), 15.4 MB
+0020.860 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.tmp: 100 files added (on-disk size: 0 KB)
+0020.863 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.tmp: 200 files added (on-disk size: 0 KB)
+0020.867 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.tmp: 300 files added (on-disk size: 0 KB)
+0020.871 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.tmp: 400 files added (on-disk size: 0 KB)
+0020.874 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.tmp: 500 files added (on-disk size: 0 KB)
+0021.665 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.list-temp.tmp)
+0021.670 (0) Successfully created zip file manifest (size: 35656)
+0021.789 (0) Created themes zip (0) - 14123.5 KB in 1 s (14647.3 KB/s) (sha1: fbcd32b1758bf3d2b387c7ab44c451bce49861bb, sha256: 9b0fcd05fa5a8aff510a9eb5ac09a4416b1104006d505b68b03b038a76d969ef)
+0021.807 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0021.809 (0) No remote despatch: user chose no remote backup service
+0021.811 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip
+0021.819 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip.list.tmp)
+0021.820 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0021.826 (0) Exclusion option setting (uploads): 
+0021.827 (0) Looking for candidates to backup in: /home/nbstup/public_html/wp-content/uploads
+0021.829 (0) finding files: elementor: adding to list (1)
+0021.830 (0) finding files: pmpro-4bec5bd060: adding to list (2)
+0021.831 (0) finding files: template-kits: adding to list (3)
+0021.832 (0) finding files: 2026: adding to list (4)
+0021.834 (0) finding files: auto-webp-converter-logger: adding to list (5)
+0021.835 (0) Beginning creation of dump of uploads (split every: 25 MB)
+0021.854 (0) Total entities for the zip file: 13 directories, 421 files (0 skipped as non-modified), 16.7 MB
+0021.858 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.tmp: 100 files added (on-disk size: 0 KB)
+0021.862 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.tmp: 200 files added (on-disk size: 0 KB)
+0021.866 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.tmp: 300 files added (on-disk size: 0 KB)
+0021.870 (0) Zip: backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.tmp: 400 files added (on-disk size: 0 KB)
+0022.494 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.list-temp.tmp)
+0022.497 (0) Successfully created zip file manifest (size: 31344)
+0022.634 (0) Created uploads zip (0) - 15202.4 KB in 0.8 s (19103.8 KB/s) (sha1: 49ea5018906c6c5d57497b5d16b43d9d040db36b, sha256: e7555424119ced60cef271d39cc16eff2cf94b00a4d57226c7d23b060d91b41a)
+0022.637 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0022.638 (0) No remote despatch: user chose no remote backup service
+0022.639 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip
+0022.641 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip.list.tmp)
+0022.644 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0022.646 (0) No backup of mu-plugins: excluded by user's options
+0022.648 (0) Beginning backup of other directories found in the content directory (index: 0)
+0022.649 (0) Exclusion option setting (others): 
+0022.650 (0) Looking for candidates to backup in: /home/nbstup/public_html/wp-content
+0022.650 (0) finding files: updraft: skipping: this is the updraft directory
+0022.651 (0) finding files: ai1wm-backups: adding to list (1)
+0022.652 (0) finding files: imunify-security: adding to list (2)
+0022.653 (0) finding files: index.php: adding to list (3)
+0022.654 (0) finding files: upgrade-temp-backup: adding to list (4)
+0022.654 (0) finding files: themes: skipping: this is the themes directory
+0022.655 (0) finding files: mu-plugins: skipping: this is the mu-plugins directory
+0022.656 (0) finding files: upgrade: adding to list (5)
+0022.657 (0) finding files: maintenance: adding to list (6)
+0022.658 (0) finding files: uploads: skipping: this is the uploads directory
+0022.658 (0) finding files: maintenance.php: adding to list (7)
+0022.659 (0) finding files: plugins: skipping: this is the plugins directory
+0022.665 (0) Total entities for the zip file: 8 directories, 25 files (0 skipped as non-modified), 3.2 MB
+0022.722 (0) Creating zip file manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-others.zip.list-temp.tmp)
+0022.724 (0) Successfully created zip file manifest (size: 1059)
+0022.751 (0) Created others zip (0) - 2836.3 KB in 0.1 s (31938.2 KB/s) (sha1: b628b36c1b6ac48efd1639236387d820a578463c, sha256: 7891a3aefb9ad76565018c270fbfc0ebe3a41e069920246bc383ddd28efd06c1)
+0022.754 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0022.755 (0) No remote despatch: user chose no remote backup service
+0022.756 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-others.zip
+0022.757 (0) Deleting zip manifest (backup_2026-03-19-1725_NBSTUP_63174eadd73d-others.zip.list.tmp)
+0022.758 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0022.763 (0) Saving backup status to database (elements: 10)
+0022.765 (0) Beginning creation of database dump (WordPress DB)
+0022.766 (0) SQL compatibility mode is: ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+0022.775 (0) Table yz2sd9X_options: Total expected rows (via COUNT): 467
+0022.776 (0) Table is relatively small; fetch_rows will thus be: 500 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0022.853 (0) Table yz2sd9X_options: Rows added in this batch (next record: 61034): 462 (uncompressed bytes in this segment=2406743) in 0.08 seconds
+0022.858 (0) Table yz2sd9X_options: finishing file(s) (2, 418.1 KB)
+0022.861 (0) Table yz2sd9X_users: Total expected rows (via COUNT): 157
+0022.862 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0022.869 (0) Table yz2sd9X_users: Rows added in this batch (next record: 175): 157 (uncompressed bytes in this segment=30144) in 0.01 seconds
+0022.874 (0) Table yz2sd9X_users: finishing file(s) (2, 12.6 KB)
+0022.887 (0) Table yz2sd9X_usermeta: Total expected rows (approximate): 1967
+0022.923 (0) Table yz2sd9X_usermeta: Rows added in this batch (next record: 6591): 5907 (uncompressed bytes in this segment=392012) in 0.05 seconds
+0022.929 (0) Table yz2sd9X_usermeta: finishing file(s) (2, 75.6 KB)
+0023.014 (0) Table yz2sd9X_actionscheduler_actions: Total expected rows (via COUNT): 5441
+0023.120 (0) Table yz2sd9X_actionscheduler_actions: Rows added in this batch (next record: 8121): 5441 (uncompressed bytes in this segment=3567712) in 0.19 seconds
+0023.126 (0) Table yz2sd9X_actionscheduler_actions: finishing file(s) (2, 144.6 KB)
+0023.129 (0) Table yz2sd9X_actionscheduler_claims: Total expected rows (via COUNT): 0
+0023.130 (0) Table yz2sd9X_actionscheduler_claims: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=657) in 0.00 seconds
+0023.133 (0) Table yz2sd9X_actionscheduler_claims: finishing file(s) (2, 0.4 KB)
+0023.136 (0) Table yz2sd9X_actionscheduler_groups: Total expected rows (via COUNT): 4
+0023.137 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0023.139 (0) Table yz2sd9X_actionscheduler_groups: Rows added in this batch (next record: 4): 4 (uncompressed bytes in this segment=771) in 0.00 seconds
+0023.144 (0) Table yz2sd9X_actionscheduler_groups: finishing file(s) (2, 0.4 KB)
+0023.149 (0) Table yz2sd9X_actionscheduler_logs: Total expected rows (approximate): 1968
+0023.291 (0) Table yz2sd9X_actionscheduler_logs: Rows added in this batch (next record: 24153): 16301 (uncompressed bytes in this segment=1441549) in 0.14 seconds
+0023.296 (0) Table yz2sd9X_actionscheduler_logs: finishing file(s) (2, 116 KB)
+0023.302 (0) Table yz2sd9X_commentmeta: Total expected rows (via COUNT): 0
+0023.304 (0) Table yz2sd9X_commentmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=664) in 0.00 seconds
+0023.308 (0) Table yz2sd9X_commentmeta: finishing file(s) (2, 0.4 KB)
+0023.313 (0) Table yz2sd9X_comments: Total expected rows (via COUNT): 955
+0023.333 (0) Table yz2sd9X_comments: Rows added in this batch (next record: 955): 955 (uncompressed bytes in this segment=166520) in 0.02 seconds
+0023.337 (0) Table yz2sd9X_comments: finishing file(s) (2, 18.1 KB)
+0023.342 (0) Table yz2sd9X_e_notes: Total expected rows (via COUNT): 0
+0023.343 (0) Table yz2sd9X_e_notes: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1915) in 0.00 seconds
+0023.348 (0) Table yz2sd9X_e_notes: finishing file(s) (2, 0.7 KB)
+0023.352 (0) Table yz2sd9X_e_notes_users_relations: Total expected rows (via COUNT): 0
+0023.355 (0) Table yz2sd9X_e_notes_users_relations: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=882) in 0.00 seconds
+0023.359 (0) Table yz2sd9X_e_notes_users_relations: finishing file(s) (2, 0.4 KB)
+0023.364 (0) Table yz2sd9X_links: Total expected rows (via COUNT): 0
+0023.365 (0) Table yz2sd9X_links: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1057) in 0.00 seconds
+0023.369 (0) Table yz2sd9X_links: finishing file(s) (2, 0.5 KB)
+0024.182 (0) Table yz2sd9X_postmeta: Total expected rows (approximate): 3514
+0024.849 (0) Table yz2sd9X_postmeta: Rows added in this batch (next record: 10436): 6650 (uncompressed bytes in this segment=32699610) in 1.48 seconds
+0024.855 (0) Table yz2sd9X_postmeta: finishing file(s) (2, 2889.8 KB)
+0025.186 (0) Table yz2sd9X_posts: Total expected rows (via COUNT): 870
+0025.316 (0) Table yz2sd9X_posts: Rows added in this batch (next record: 967): 870 (uncompressed bytes in this segment=8809927) in 0.46 seconds
+0025.321 (0) Table yz2sd9X_posts: finishing file(s) (2, 320.9 KB)
+0025.324 (0) Table yz2sd9X_term_relationships: Total expected rows (approximate): 40
+0025.331 (0) Table yz2sd9X_term_relationships: Rows added in this batch (next record: 100000): 36 (uncompressed bytes in this segment=1213) in 0.01 seconds
+0025.335 (0) Table yz2sd9X_term_relationships: finishing file(s) (2, 0.5 KB)
+0025.340 (0) Table yz2sd9X_term_taxonomy: Total expected rows (via COUNT): 10
+0025.340 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.342 (0) Table yz2sd9X_term_taxonomy: Rows added in this batch (next record: 10): 10 (uncompressed bytes in this segment=1275) in 0.01 seconds
+0025.347 (0) Table yz2sd9X_term_taxonomy: finishing file(s) (2, 0.6 KB)
+0025.354 (0) Table yz2sd9X_termmeta: Total expected rows (via COUNT): 0
+0025.356 (0) Table yz2sd9X_termmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=637) in 0.00 seconds
+0025.363 (0) Table yz2sd9X_termmeta: finishing file(s) (2, 0.4 KB)
+0025.366 (0) Table yz2sd9X_terms: Total expected rows (via COUNT): 10
+0025.367 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.369 (0) Table yz2sd9X_terms: Rows added in this batch (next record: 10): 10 (uncompressed bytes in this segment=1015) in 0.00 seconds
+0025.373 (0) Table yz2sd9X_terms: finishing file(s) (2, 0.5 KB)
+0025.378 (0) Table yz2sd9X_e_events: Total expected rows (via COUNT): 0
+0025.380 (0) Table yz2sd9X_e_events: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=541) in 0.00 seconds
+0025.383 (0) Table yz2sd9X_e_events: finishing file(s) (2, 0.4 KB)
+0025.388 (0) Table yz2sd9X_e_submissions: Total expected rows (via COUNT): 0
+0025.390 (0) Table yz2sd9X_e_submissions: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=2009) in 0.00 seconds
+0025.394 (0) Table yz2sd9X_e_submissions: finishing file(s) (2, 0.7 KB)
+0025.398 (0) Table yz2sd9X_e_submissions_actions_log: Total expected rows (via COUNT): 0
+0025.399 (0) Table yz2sd9X_e_submissions_actions_log: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1170) in 0.00 seconds
+0025.403 (0) Table yz2sd9X_e_submissions_actions_log: finishing file(s) (2, 0.5 KB)
+0025.408 (0) Table yz2sd9X_e_submissions_values: Total expected rows (via COUNT): 0
+0025.409 (0) Table yz2sd9X_e_submissions_values: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=703) in 0.00 seconds
+0025.414 (0) Table yz2sd9X_e_submissions_values: finishing file(s) (2, 0.4 KB)
+0025.418 (0) Table yz2sd9X_pmpro_discount_codes: Total expected rows (via COUNT): 0
+0025.419 (0) Table yz2sd9X_pmpro_discount_codes: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=753) in 0.00 seconds
+0025.423 (0) Table yz2sd9X_pmpro_discount_codes: finishing file(s) (2, 0.4 KB)
+0025.427 (0) Table yz2sd9X_pmpro_discount_codes_levels: Total expected rows (approximate): 0
+0025.428 (0) Table yz2sd9X_pmpro_discount_codes_levels: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=1139) in 0.00 seconds
+0025.431 (0) Table yz2sd9X_pmpro_discount_codes_levels: finishing file(s) (2, 0.5 KB)
+0025.435 (0) Table yz2sd9X_pmpro_discount_codes_uses: Total expected rows (via COUNT): 0
+0025.436 (0) Table yz2sd9X_pmpro_discount_codes_uses: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=815) in 0.00 seconds
+0025.440 (0) Table yz2sd9X_pmpro_discount_codes_uses: finishing file(s) (2, 0.4 KB)
+0025.444 (0) Table yz2sd9X_pmpro_groups: Total expected rows (via COUNT): 1
+0025.444 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.446 (0) Table yz2sd9X_pmpro_groups: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=698) in 0.00 seconds
+0025.451 (0) Table yz2sd9X_pmpro_groups: finishing file(s) (2, 0.4 KB)
+0025.456 (0) Table yz2sd9X_pmpro_membership_levelmeta: Total expected rows (via COUNT): 2
+0025.457 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.458 (0) Table yz2sd9X_pmpro_membership_levelmeta: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=985) in 0.00 seconds
+0025.462 (0) Table yz2sd9X_pmpro_membership_levelmeta: finishing file(s) (2, 0.5 KB)
+0025.467 (0) Table yz2sd9X_pmpro_membership_levels: Total expected rows (via COUNT): 1
+0025.468 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.469 (0) Table yz2sd9X_pmpro_membership_levels: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=2233) in 0.00 seconds
+0025.474 (0) Table yz2sd9X_pmpro_membership_levels: finishing file(s) (2, 1 KB)
+0025.479 (0) Table yz2sd9X_pmpro_membership_levels_groups: Total expected rows (via COUNT): 1
+0025.480 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.481 (0) Table yz2sd9X_pmpro_membership_levels_groups: Rows added in this batch (next record: 11): 1 (uncompressed bytes in this segment=796) in 0.00 seconds
+0025.484 (0) Table yz2sd9X_pmpro_membership_levels_groups: finishing file(s) (2, 0.4 KB)
+0025.489 (0) Table yz2sd9X_pmpro_membership_ordermeta: Total expected rows (via COUNT): 0
+0025.490 (0) Table yz2sd9X_pmpro_membership_ordermeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=785) in 0.00 seconds
+0025.495 (0) Table yz2sd9X_pmpro_membership_ordermeta: finishing file(s) (2, 0.4 KB)
+0025.500 (0) Table yz2sd9X_pmpro_membership_orders: Total expected rows (via COUNT): 178
+0025.501 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.510 (0) Table yz2sd9X_pmpro_membership_orders: Rows added in this batch (next record: 178): 178 (uncompressed bytes in this segment=50528) in 0.01 seconds
+0025.514 (0) Table yz2sd9X_pmpro_membership_orders: finishing file(s) (2, 13.4 KB)
+0025.517 (0) Table yz2sd9X_pmpro_memberships_categories: Total expected rows (approximate): 0
+0025.519 (0) Table yz2sd9X_pmpro_memberships_categories: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=775) in 0.00 seconds
+0025.522 (0) Table yz2sd9X_pmpro_memberships_categories: finishing file(s) (2, 0.4 KB)
+0025.527 (0) Table yz2sd9X_pmpro_memberships_pages: Total expected rows (approximate): 0
+0025.528 (0) Table yz2sd9X_pmpro_memberships_pages: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=729) in 0.00 seconds
+0025.531 (0) Table yz2sd9X_pmpro_memberships_pages: finishing file(s) (2, 0.4 KB)
+0025.535 (0) Table yz2sd9X_pmpro_memberships_users: Total expected rows (via COUNT): 135
+0025.536 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.540 (0) Table yz2sd9X_pmpro_memberships_users: Rows added in this batch (next record: 147): 135 (uncompressed bytes in this segment=22185) in 0.01 seconds
+0025.544 (0) Table yz2sd9X_pmpro_memberships_users: finishing file(s) (2, 3 KB)
+0025.551 (0) Table yz2sd9X_pmpro_nbstup_blocks: Total expected rows (via COUNT): 809
+0025.558 (0) Table yz2sd9X_pmpro_nbstup_blocks: Rows added in this batch (next record: 809): 809 (uncompressed bytes in this segment=38731) in 0.01 seconds
+0025.563 (0) Table yz2sd9X_pmpro_nbstup_blocks: finishing file(s) (2, 7.9 KB)
+0025.568 (0) Table yz2sd9X_pmpro_nbstup_districts: Total expected rows (via COUNT): 75
+0025.569 (0) Table is relatively small; fetch_rows will thus be: 100 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.572 (0) Table yz2sd9X_pmpro_nbstup_districts: Rows added in this batch (next record: 75): 75 (uncompressed bytes in this segment=4112) in 0.01 seconds
+0025.577 (0) Table yz2sd9X_pmpro_nbstup_districts: finishing file(s) (2, 1.1 KB)
+0025.581 (0) Table yz2sd9X_pmpro_nbstup_states: Total expected rows (via COUNT): 1
+0025.582 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.584 (0) Table yz2sd9X_pmpro_nbstup_states: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=716) in 0.00 seconds
+0025.587 (0) Table yz2sd9X_pmpro_nbstup_states: finishing file(s) (2, 0.4 KB)
+0025.591 (0) Table yz2sd9X_pmpro_subscriptionmeta: Total expected rows (via COUNT): 0
+0025.593 (0) Table yz2sd9X_pmpro_subscriptionmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=749) in 0.00 seconds
+0025.597 (0) Table yz2sd9X_pmpro_subscriptionmeta: finishing file(s) (2, 0.4 KB)
+0025.602 (0) Table yz2sd9X_pmpro_subscriptions: Total expected rows (via COUNT): 2
+0025.603 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0025.606 (0) Table yz2sd9X_pmpro_subscriptions: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=1935) in 0.01 seconds
+0025.611 (0) Table yz2sd9X_pmpro_subscriptions: finishing file(s) (2, 0.7 KB)
+0025.617 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: Total expected rows (via COUNT): 0
+0025.619 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=747) in 0.00 seconds
+0025.625 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: finishing file(s) (2, 0.4 KB)
+0025.627 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_options.table.tmpr61035.gz (1/40/fopen): adding to final database dump
+0025.638 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_options.table.gz (2/40/fopen): adding to final database dump
+0025.639 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_users.table.tmpr176.gz (3/40/fopen): adding to final database dump
+0025.640 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_users.table.gz (4/40/fopen): adding to final database dump
+0025.641 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_usermeta.table.tmpr6592.gz (5/40/fopen): adding to final database dump
+0025.643 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_usermeta.table.gz (6/40/fopen): adding to final database dump
+0025.644 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_actions.table.tmpr8122.gz (7/40/fopen): adding to final database dump
+0025.648 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_actions.table.gz (8/40/fopen): adding to final database dump
+0025.649 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_claims.table.tmpr0.gz (9/40/fopen): adding to final database dump
+0025.649 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_claims.table.gz (10/40/fopen): adding to final database dump
+0025.650 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_groups.table.tmpr5.gz (11/40/fopen): adding to final database dump
+0025.651 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_groups.table.gz (12/40/fopen): adding to final database dump
+0025.652 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_logs.table.tmpr24154.gz (13/40/fopen): adding to final database dump
+0025.655 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_actionscheduler_logs.table.gz (14/40/fopen): adding to final database dump
+0025.656 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_commentmeta.table.tmpr0.gz (15/40/fopen): adding to final database dump
+0025.657 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_commentmeta.table.gz (16/40/fopen): adding to final database dump
+0025.658 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_comments.table.tmpr956.gz (17/40/fopen): adding to final database dump
+0025.659 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_comments.table.gz (18/40/fopen): adding to final database dump
+0025.660 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_notes.table.tmpr0.gz (19/40/fopen): adding to final database dump
+0025.660 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_notes.table.gz (20/40/fopen): adding to final database dump
+0025.661 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_notes_users_relations.table.tmpr0.gz (21/40/fopen): adding to final database dump
+0025.662 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_notes_users_relations.table.gz (22/40/fopen): adding to final database dump
+0025.663 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_links.table.tmpr0.gz (23/40/fopen): adding to final database dump
+0025.663 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_links.table.gz (24/40/fopen): adding to final database dump
+0025.664 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_postmeta.table.tmpr10437.gz (25/40/fopen): adding to final database dump
+0025.731 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_postmeta.table.gz (26/40/fopen): adding to final database dump
+0025.732 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_posts.table.tmpr968.gz (27/40/fopen): adding to final database dump
+0025.739 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_posts.table.gz (28/40/fopen): adding to final database dump
+0025.740 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_term_relationships.table.tmpr100001.gz (29/40/fopen): adding to final database dump
+0025.741 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_term_relationships.table.gz (30/40/fopen): adding to final database dump
+0025.742 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_term_taxonomy.table.tmpr11.gz (31/40/fopen): adding to final database dump
+0025.743 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_term_taxonomy.table.gz (32/40/fopen): adding to final database dump
+0025.744 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_termmeta.table.tmpr0.gz (33/40/fopen): adding to final database dump
+0025.744 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_termmeta.table.gz (34/40/fopen): adding to final database dump
+0025.745 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_terms.table.tmpr11.gz (35/40/fopen): adding to final database dump
+0025.746 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_terms.table.gz (36/40/fopen): adding to final database dump
+0025.747 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_events.table.tmpr0.gz (37/40/fopen): adding to final database dump
+0025.747 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_events.table.gz (38/40/fopen): adding to final database dump
+0025.748 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions.table.tmpr0.gz (39/40/fopen): adding to final database dump
+0025.749 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions.table.gz (40/40/fopen): adding to final database dump
+0025.750 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions_actions_log.table.tmpr0.gz (41/40/fopen): adding to final database dump
+0025.751 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions_actions_log.table.gz (42/40/fopen): adding to final database dump
+0025.751 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions_values.table.tmpr0.gz (43/40/fopen): adding to final database dump
+0025.752 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_e_submissions_values.table.gz (44/40/fopen): adding to final database dump
+0025.753 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes.table.tmpr0.gz (45/40/fopen): adding to final database dump
+0025.754 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes.table.gz (46/40/fopen): adding to final database dump
+0025.754 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes_levels.table.tmpr1.gz (47/40/fopen): adding to final database dump
+0025.755 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes_levels.table.gz (48/40/fopen): adding to final database dump
+0025.756 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes_uses.table.tmpr0.gz (49/40/fopen): adding to final database dump
+0025.757 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_discount_codes_uses.table.gz (50/40/fopen): adding to final database dump
+0025.757 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_groups.table.tmpr2.gz (51/40/fopen): adding to final database dump
+0025.758 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_groups.table.gz (52/40/fopen): adding to final database dump
+0025.759 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levelmeta.table.tmpr3.gz (53/40/fopen): adding to final database dump
+0025.760 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levelmeta.table.gz (54/40/fopen): adding to final database dump
+0025.760 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levels.table.tmpr2.gz (55/40/fopen): adding to final database dump
+0025.761 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levels.table.gz (56/40/fopen): adding to final database dump
+0025.762 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levels_groups.table.tmpr12.gz (57/40/fopen): adding to final database dump
+0025.763 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_levels_groups.table.gz (58/40/fopen): adding to final database dump
+0025.763 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_ordermeta.table.tmpr0.gz (59/40/fopen): adding to final database dump
+0025.764 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_ordermeta.table.gz (60/40/fopen): adding to final database dump
+0025.765 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_orders.table.tmpr179.gz (61/40/fopen): adding to final database dump
+0025.766 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_membership_orders.table.gz (62/40/fopen): adding to final database dump
+0025.767 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_categories.table.tmpr1.gz (63/40/fopen): adding to final database dump
+0025.767 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_categories.table.gz (64/40/fopen): adding to final database dump
+0025.768 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_pages.table.tmpr1.gz (65/40/fopen): adding to final database dump
+0025.769 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_pages.table.gz (66/40/fopen): adding to final database dump
+0025.770 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_users.table.tmpr148.gz (67/40/fopen): adding to final database dump
+0025.770 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_memberships_users.table.gz (68/40/fopen): adding to final database dump
+0025.771 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_blocks.table.tmpr810.gz (69/40/fopen): adding to final database dump
+0025.772 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_blocks.table.gz (70/40/fopen): adding to final database dump
+0025.773 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_districts.table.tmpr76.gz (71/40/fopen): adding to final database dump
+0025.774 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_districts.table.gz (72/40/fopen): adding to final database dump
+0025.774 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_states.table.tmpr2.gz (73/40/fopen): adding to final database dump
+0025.775 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_nbstup_states.table.gz (74/40/fopen): adding to final database dump
+0025.776 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_subscriptionmeta.table.tmpr0.gz (75/40/fopen): adding to final database dump
+0025.777 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_subscriptionmeta.table.gz (76/40/fopen): adding to final database dump
+0025.777 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_subscriptions.table.tmpr3.gz (77/40/fopen): adding to final database dump
+0025.778 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_pmpro_subscriptions.table.gz (78/40/fopen): adding to final database dump
+0025.779 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_wp_phpmyadmin_extension__errors_log.table.tmpr0.gz (79/40/fopen): adding to final database dump
+0025.780 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db-table-yz2sd9X_wp_phpmyadmin_extension__errors_log.table.gz (80/40/fopen): adding to final database dump
+0025.783 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db.gz: finished writing out complete database file (4034.1 KB)
+0025.828 (0) Total database tables backed up: 40 (backup_2026-03-19-1725_NBSTUP_63174eadd73d-db.gz, size: 4130996, sha1: 52a0d7429c0d58af8e025625c51b2635469f84b7, sha256: a1ec8fc586bfe0aa485c15d668f8475268ec825ee1edac8d5967586785fcf3a4)
+0025.833 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins.zip: plugins: This file has already been successfully processed
+0025.833 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins2.zip: plugins: This file has already been successfully processed
+0025.834 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-plugins3.zip: plugins: This file has already been successfully processed
+0025.835 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-themes.zip: themes: This file has already been successfully processed
+0025.836 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-uploads.zip: uploads: This file has already been successfully processed
+0025.836 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-others.zip: others: This file has already been successfully processed
+0025.837 (0) backup_2026-03-19-1725_NBSTUP_63174eadd73d-db.gz: db: This file has not yet been successfully uploaded: will queue
+0025.838 (0) Saving backup history. Total backup size: 100.9 MB
+0025.840 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0025.842 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0025.843 (0) No remote despatch: user chose no remote backup service
+0025.843 (0) Recording as successfully uploaded: backup_2026-03-19-1725_NBSTUP_63174eadd73d-db.gz
+0025.845 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0025.846 (0) Resume backup (63174eadd73d, 0): finish run
+0025.848 (0) Decremented the semaphore (fd) by 1
+0025.850 (0) Semaphore (fd) unlocked
+0025.852 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0025.855 (0) No email will/can be sent - the user has not configured an email address.
+0025.856 (0) The backup succeeded and is now complete

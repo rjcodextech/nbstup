@@ -29,7 +29,12 @@ class Util{
 		return ( isset( $data_all[ $key ] ) && $data_all[ $key ] != '' ) ? $data_all[ $key ] : $default;
 	}
 
-	public static function save_settings( $new_data = '' ) {
+	public static function save_settings( $new_data = array() ) {
+		// Ensure $new_data is always an array
+		if ( ! is_array( $new_data ) ) {
+			$new_data = array();
+		}
+		
 		$data_old = self::get_option( 'settings', array() );
 		$data     = array_merge( $data_old, $new_data );
 		return self::save_option( 'settings', $data );
@@ -440,7 +445,31 @@ class Util{
 		$modified = str_replace('<style>','<style key="1">',$content);
 		return str_replace('data-elementor-type="wp-post"','data-elementor-type="wp-post" key="2"',$modified);
 	}
+	/**
+	 * Robust detection for Elementor edit/preview contexts.
+	 * Accounts for editor iframe, preview and request query args.
+	 *
+	 * @return bool
+	 */
+	public static function detect_elementor_edit_context() {
+		try {
+			if ( class_exists( '\\Elementor\\Plugin' ) ) {
+				$plugin = \Elementor\Plugin::instance();
+				// Native editor mode
+				if ( isset( $plugin->editor ) && method_exists( $plugin->editor, 'is_edit_mode' ) && $plugin->editor->is_edit_mode() ) {
+					return true;
+				}
+				// Preview frame inside editor
+				if ( isset( $plugin->preview ) && method_exists( $plugin->preview, 'is_preview_mode' ) && $plugin->preview->is_preview_mode() ) {
+					return true;
+				}
+			}
 
+		} catch ( \Throwable $e ) {
+			// Silently ignore, default false.
+		}
+		return false;
+	}
 	public static function render_form_content($form, $widget_id){
 		$rest_url = get_rest_url();
 		$form_unique_name = (is_numeric($form)) ? ($widget_id.'-'.$form) : $widget_id;
@@ -455,7 +484,27 @@ class Util{
 				$site_key = $form_settings['mf_recaptcha_site_key_v3'];
 			} 
 		}
-				
+
+		// Detect Elementor edit context
+		 $is_edit_mode = self::detect_elementor_edit_context();	
+		if (!$is_edit_mode && isset($form_settings['form_scheduling_status']) && (!empty($form_settings['mf_scheduling_submission_starts']) || !empty($form_settings['mf_scheduling_submission_ends']))) {
+            $current_ts = current_time('timestamp');
+            $start_time = $form_settings['mf_scheduling_submission_starts'] ?? '';
+            $end_time   = $form_settings['mf_scheduling_submission_ends'] ?? '';
+
+            $waiting_message = $form_settings['mf_scheduling_form_waiting_message'] 
+                                ?? 'Form submission has not started yet.';
+            $expired_message = $form_settings['mf_scheduling_form_expired_message'] 
+                                ?? 'Form submission is now closed.';
+
+            $start_ts = $start_time ? strtotime(str_replace('T', ' ', $start_time)) : 0;
+            $end_ts   = $end_time   ? strtotime(str_replace('T', ' ', $end_time))   : 0;
+            if ($start_ts && $current_ts < $start_ts) {
+				return '<div class="mf-form-scheduling-message mf-form-waiting">'.esc_html($waiting_message).'</div>';
+            }elseif ($end_ts && $current_ts > $end_ts) {
+				return '<div class="mf-form-scheduling-message mf-form-expired">'.esc_html($expired_message).'</div>';
+            }
+        }		
 		ob_start();
 		?>
 
@@ -817,6 +866,7 @@ class Util{
 			'mf_zoho_data_center',
 			'mf_save_progress',
 			'mf_field_name_show',
+			'mf_enable_entry_file_delete',
 			'mf_google_map_api_key',
 			'met_form_aweber_mail_access_token_key',
 			'mf_google_sheet_client_id',
@@ -1072,4 +1122,126 @@ class Util{
             'zw' => 'Zimbabwe',
         ];
     }
+
+	/**
+	 * Integration settings keys for checking if an integration is already in use.
+	 * Used for grandfathering existing pro users who already use specific integrations.
+	 */
+	private static $integration_settings_keys = array(
+		'mailchimp' => 'mf_mailchimp_api_key',
+		'aweber' => 'met_form_aweber_mail_access_token_key',
+		'activecampaign' => 'mf_active_campaign_api_key',
+		'getresponse' => 'mf_get_response_api_key',
+		'convertkit' => 'mf_ckit_api_key',
+	);
+
+	/**
+	 * Check if a specific integration is already in use (for existing pro user access).
+	 * 
+	 * @param string $integration_key The integration key to check
+	 * @return bool True if the integration is in use, false otherwise.
+	 */
+	public static function is_integration_in_use($integration_key) {
+		if (isset(self::$integration_settings_keys[$integration_key])) {
+			return self::is_using_settings_option(self::$integration_settings_keys[$integration_key]);
+		}
+		return false;
+	}
+
+	/**
+	 * Check if user has access to a specific tier.
+	 * 
+	 * @param string $required_tier - 'free', 'pro', 'mid', 'top'
+	 * @return bool True if user has access to the tier, false otherwise.
+	 */
+	public static function has_tier_access($required_tier) {
+		switch ($required_tier) {
+			case 'free':
+				return true;
+			case 'pro':
+				return class_exists('\MetForm_Pro\Base\Package');
+			case 'mid':
+				return self::is_mid_tier() || self::is_top_tier();
+			case 'top':
+				return self::is_top_tier();
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Check if user should have restricted access to an integration.
+	 * 
+	 * Logic:
+	 * 1. Free tier - always accessible
+	 * 2. Has required tier access - accessible
+	 * 3. For EXISTING features (existing_pro_user_access = true):
+	 *    - Old pro users (before tier system) get access
+	 *    - Pro users already using this integration keep access
+	 * 4. For NEW features (existing_pro_user_access = false):
+	 *    - Only tier check applies
+	 *    - Old pro users and existing users do NOT get automatic access
+	 * 
+	 * @param array $integration - Integration config with 'required_tier' and 'existing_pro_user_access'
+	 * @param string $integration_key - Integration key
+	 * @return bool - true if access should be restricted, false if accessible
+	 */
+	public static function should_restrict_integration_access($integration, $integration_key) {
+		$required_tier = $integration['required_tier'] ?? 'free';
+		$existing_pro_user_access = $integration['existing_pro_user_access'] ?? false;
+		$pro_exists = class_exists('\MetForm_Pro\Base\Package');
+		
+		// Free tier - always accessible
+		if ($required_tier === 'free') {
+			return false;
+		}
+		
+		// Check if user has the required tier access
+		if (self::has_tier_access($required_tier)) {
+			return false;
+		}
+		
+		// For existing features (existing_pro_user_access = true):
+		// - Old pro users get access to all existing pro features
+		// - Existing pro users who were already using this integration keep access
+		// For new features (existing_pro_user_access = false):
+		// - Only tier check applies, no legacy support
+		if ($existing_pro_user_access) {
+			// Old pro users get access to all existing pro features (before tier system was introduced)
+			if ($pro_exists && self::is_old_pro_user()) {
+				return false;
+			}
+			
+			// Allow existing pro users who were already using this integration before tier changes
+			if ($pro_exists && self::is_integration_in_use($integration_key)) {
+				return false;
+			}
+		}
+		
+		// User doesn't have access
+		return true;
+	}
+
+	/**
+	 * Get upgrade tooltip text based on required tier.
+	 * 
+	 * @param string $required_tier - 'pro', 'mid', 'top'
+	 * @return string The tooltip text
+	 */
+	public static function get_upgrade_tooltip($required_tier) {
+		$pro_exists = class_exists('\MetForm_Pro\Base\Package');
+		
+		if (!$pro_exists) {
+			return 'Upgrade for premium access.';
+		}
+		
+		switch ($required_tier) {
+			case 'top':
+				return 'Get access by upgrading to MetForm Agency plan.';
+			case 'mid':
+				return 'Get access by upgrading to MetForm Professional plan.';
+			default:
+				return 'Upgrade for premium access.';
+		}
+	}
 }

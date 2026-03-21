@@ -58,6 +58,7 @@ require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database.php';
 require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database-mysql.php';
 require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database-mysqli.php';
 require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database-sqlite.php';
+require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database-mariadb.php';
 require_once AI1WM_VENDOR_PATH . '/servmask/database/class-ai1wm-database-utility.php';
 
 require_once AI1WM_CONTROLLER_PATH . '/class-ai1wm-backups-controller.php';

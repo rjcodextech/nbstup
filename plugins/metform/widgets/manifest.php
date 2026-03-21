@@ -8,7 +8,7 @@ Class Manifest{
 	public function init() {
 
 		add_action( 'elementor/elements/categories_registered', [ $this, 'add_metform_widget_categories' ]);
-        add_filter('elementor/editor/localize_settings', [$this, 'promote_pro_widgets']);
+        add_filter('elementor/editor/localize_settings', [$this, 'promote_pro_widgets'], 1000);
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
 	}
 

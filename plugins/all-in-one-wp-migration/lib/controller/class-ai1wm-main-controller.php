@@ -299,7 +299,7 @@ class Ai1wm_Main_Controller {
 	public function check_auto_increment() {
 		global $wpdb;
 
-		$db_client = Ai1wm_Database_Utility::create_client();
+		$db_client = Ai1wm_Database_Utility::get_client();
 		if ( ! $db_client->has_auto_increment( $wpdb->options ) ) {
 			if ( is_multisite() ) {
 				return add_action( 'network_admin_notices', array( $this, 'missing_auto_increment' ) );

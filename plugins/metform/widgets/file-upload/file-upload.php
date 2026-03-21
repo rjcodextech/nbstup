@@ -208,8 +208,11 @@ Class MetForm_Input_File_Upload extends Widget_base{
 					'.zip'  => esc_html__( '.zip', 'metform' ),
 					'.csv'  => esc_html__( '.csv', 'metform' ),
 					'.stp'  => esc_html__( '.stp', 'metform' ),
+					'.step'  => esc_html__( '.step', 'metform' ),
 					'.stl'  => esc_html__( '.stl', 'metform' ),
 					'.webp'  => esc_html__( '.webp', 'metform' ),
+					'.iges'  => esc_html__( '.iges', 'metform' ),
+					'.igs'  => esc_html__( '.igs', 'metform' ),
 				],
                 'default' => [ '.jpg', '.jpeg', '.gif', '.png' ],
 			]

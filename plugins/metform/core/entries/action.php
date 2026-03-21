@@ -114,6 +114,28 @@ class Action
 
         $this->response->data['form_data'] = $form_data;
 
+        // Form scheduling: prevent submission after end time
+        if (
+            isset($this->form_settings['form_scheduling_status'])
+            && $this->form_settings['form_scheduling_status'] == '1'
+        ) {
+            $current_ts = current_time('timestamp');
+            $end_time   = $this->form_settings['mf_scheduling_submission_ends'];
+            $end_ts     = $end_time ? strtotime(str_replace('T', ' ', $end_time)) : 0;
+
+            if ($end_ts && $current_ts > $end_ts) {
+                $expired_message = !empty($this->form_settings['mf_scheduling_form_expired_message'])
+                    ? $this->form_settings['mf_scheduling_form_expired_message']
+                    : esc_html__('Form submission is now closed.', 'metform');
+
+                $this->response->status = 0;
+                $this->response->error  = [ $expired_message ];
+                $this->response->data['message'] = $expired_message;
+
+                return $this->response;
+            }
+        }
+
         $email_name = $this->get_input_name_by_widget_type('mf-email')?? [];
 
       
@@ -427,6 +449,36 @@ class Action
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
 	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your Mail Poet integration.', 'metform') ];
+            }
+        }
+
+        /**
+         * MailerLite subscriber integration
+         */
+        if (class_exists('\MetForm_Pro\Core\Integrations\Mailerlite')) {
+            if (
+                isset($this->form_settings['mf_mailerlite']) && $this->form_settings['mf_mailerlite'] == '1'
+                && $this->email_name != null
+                && !empty($form_data[$this->email_name])
+            ) {
+                $ml_api_key = isset($this->form_settings['mf_mailerlite_api_key']) ? $this->form_settings['mf_mailerlite_api_key'] : '';
+
+                if (!empty($ml_api_key)) {
+                    $mailerlite = new \MetForm_Pro\Core\Integrations\Mailerlite($ml_api_key);
+                    $ml_response = $mailerlite->process_form_submission(
+                        $form_id,
+                        $form_data,
+                        $form_data[$this->email_name]
+                    );
+
+                    $this->response->status = isset($ml_response['status']) ? $ml_response['status'] : 0;
+                    if ($this->response->status == 0) {
+                        $this->response->error = [
+                            esc_html__('Problem with your MailerLite integration.', 'metform')
+                            . (!empty($ml_response['message']) ? ' ' . $ml_response['message'] : '')
+                        ];
+                    }
+                }
             }
         }
 
@@ -751,7 +803,8 @@ class Action
                 $filtered_file_upload_info = isset($this->file_upload_info['mf-file-upload']) ? 
                     ['mf-file-upload' => $this->file_upload_info['mf-file-upload']] : [];
                 
-                if (!empty($filtered_file_upload_info) && !empty($google_drive_folder_list_id)) {
+                    // Proceed only if there are files from mf-file-upload widget
+                    if (!empty($filtered_file_upload_info) && !empty($google_drive_folder_list_id)) {
                     $drive = \MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive::instance()->insert_file(
                         $this->form_id, 
                         $this->title, 
@@ -1054,7 +1107,16 @@ class Action
                 ];
 
                 if(in_array($key, $quiz_data_keys)){
-                    $this->form_data[$key] = $value;
+                    // Sanitize quiz data based on the field type
+                    if($key === 'quiz-marks' || $key === 'total-question'){
+                        // These should be numeric values
+                        $this->form_data[$key] = floatval($value);
+                    } else {
+                        // 'wrong-answer' and 'right-answer' are comma-separated field names
+                        // Sanitize each field name in the list
+                        $sanitized_values = array_map('sanitize_text_field', explode(',', $value));
+                        $this->form_data[$key] = implode(',', array_filter($sanitized_values));
+                    }
                 }
             }
         }
@@ -1083,6 +1145,23 @@ class Action
 
 
     
+    /**
+     * Allow additional MIME types for wp_handle_upload().
+     * WordPress does not include .iges / .igs in its default list,
+     * so without this filter those files are rejected at the wp layer.
+     */
+    public function allow_extra_upload_mimes($mimes)
+    {
+        // finfo detects .iges/.igs, .stp/.step files as 'text/plain' (plain-text ISO formats).
+        // The registered MIME must match the finfo result so wp_check_filetype_and_ext()
+        // and wp_handle_upload() accept the file.
+        $mimes['iges'] = 'text/plain';
+        $mimes['igs']  = 'text/plain';
+        $mimes['stp']  = 'text/plain';
+        $mimes['step'] = 'text/plain';
+        return $mimes;
+    }
+
     private function handle_file($file_data, $input_name)
     { 
          
@@ -1094,6 +1173,8 @@ class Action
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
 
+        // Allow extra MIME types (e.g. .iges, .igs, .stp, .step) that WordPress does not permit by default. 
+        add_filter('upload_mimes', [$this, 'allow_extra_upload_mimes']);
 
          
          // Filter to modify upload directory

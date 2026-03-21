@@ -526,8 +526,9 @@ class DUP_Package
             $delResult = $wpdb->query($wpdb->prepare("DELETE FROM `{$tblName}` WHERE id = %d", $this->ID));
 
             if ($delResult != 0) {
-                $tmpPath = DUP_Settings::getSsdirTmpPath();
-                $ssdPath =  DUP_Settings::getSsdirPath();
+                $tmpPath  = DUP_Settings::getSsdirTmpPath();
+                $ssdPath  = DUP_Settings::getSsdirPath();
+                $logsPath = DUP_Settings::getSsdirLogsPath();
 
                 $archiveFile  = $this->getArchiveFilename();
                 $wpConfigFile = "{$this->NameHash}_wp-config.txt";
@@ -546,7 +547,9 @@ class DUP_Package
                 @chmod($ssdPath . "/{$nameHash}_scan.json", 0644);
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
                 @chmod($ssdPath . "/{$wpConfigFile}", 0644);
+                // In older version, log files were stored in main storage area. The below line is for backward compatibility
                 @chmod($ssdPath . "/{$nameHash}.log", 0644);
+                @chmod($logsPath . "/{$nameHash}.log", 0644);
                 //Remove
                 @unlink($tmpPath . "/{$archiveFile}");
                 @unlink($tmpPath . "/{$nameHash}_database.sql");
@@ -561,7 +564,9 @@ class DUP_Package
                 @unlink($ssdPath . "/{$nameHash}_scan.json");
                 // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
                 @unlink($ssdPath . "/{$wpConfigFile}");
+                // In older version, log files were stored in main storage area. The below line is for backward compatibility
                 @unlink($ssdPath . "/{$nameHash}.log");
+                @unlink($logsPath . "/{$nameHash}.log");
             }
         }
     }
@@ -1062,7 +1067,11 @@ class DUP_Package
             $file_name = $this->getLogFilename();
         }
 
-        $file_path = DUP_Settings::getSsdirLogsPath() . "/$file_name";
+        if ($file_type == DUP_PackageFileType::Log) {
+            $file_path = DUP_Settings::getSsdirLogsPath() . "/$file_name";
+        } else {
+            $file_path = DUP_Settings::getSsdirPath() . "/$file_name";
+        }
         DUP_Log::Trace("File path $file_path");
 
         if (file_exists($file_path)) {

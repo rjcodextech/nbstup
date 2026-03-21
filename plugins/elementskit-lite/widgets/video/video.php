@@ -16,7 +16,7 @@ class ElementsKit_Widget_Video extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		return ['wp-mediaelement'];
+		return ['wp-mediaelement', 'magnific-popup'];
 	}
 
 	public function get_name() {

@@ -202,7 +202,56 @@
                                     'badge' => 'Pro',
                                 ]); ?>
                             <?php endif; ?>
+                            <?php if(class_exists('MetForm_Pro\Base\Package') ): ?>
+                            <div class="mf-input-group mf-box-style">
+                                <label class="attr-input-label">
+                                    <input type="checkbox" value="1" name="form_scheduling_status" class="mf-admin-control-input mf-form-modalinput-form_scheduling_status">
+                                    <span><?php esc_html_e('Form Scheduling:', 'metform'); ?></span>
+                                </label>
+                                <span class='mf-input-help'><?php esc_html_e('Start end time scheduling for form availability.', 'metform'); ?></span>
 
+                                <div style="display: none;" id="mf-form-scheduling-fields">
+                                    <div class="mf-input-group mf-input-group-inline mf-form-bottom-spacing">
+                                        <label class="attr-input-label">
+                                            <span><?php esc_html_e('Submission Starts', 'metform'); ?></span>
+                                        </label>
+                                        <div class="mf-input" id='submission_starts'>
+                                            <input type="datetime-local" name="mf_scheduling_submission_starts" class="mf-form-modalinput-submission_starts attr-form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mf-input-group mf-input-group-inline mf-form-bottom-spacing">
+                                        <label class="attr-input-label">
+                                            <span><?php esc_html_e('Submission Ends', 'metform'); ?></span>
+                                        </label>
+                                        <div class="mf-input" id='submission_ends'>
+                                            <input type="datetime-local" name="mf_scheduling_submission_ends" class="mf-form-modalinput-submission_ends attr-form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mf-input-group mf-input-group-inline mf-form-bottom-spacing">
+                                        <label class="attr-input-label">
+                                            <span><?php esc_html_e('Form Waiting Message', 'metform'); ?></span>
+                                        </label>
+                                        <div class="mf-input" id='form_waiting_message'>
+                                            <input type="text" name="mf_scheduling_form_waiting_message" class="mf-form-modalinput-form_waiting_message attr-form-control" placeholder="<?php esc_html_e('This form is not available yet.', 'metform'); ?>" data-default-value="<?php esc_html_e('Form submission is not started yet.', 'metform'); ?>">
+                                        </div>
+                                    </div>
+                                    <div class="mf-input-group mf-input-group-inline mf-form-bottom-spacing">
+                                        <label class="attr-input-label">
+                                            <span><?php esc_html_e('Expired  Message', 'metform'); ?></span>
+                                        </label>
+                                        <div class="mf-input" id='form_expired_message'>
+                                            <input type="text" name="mf_scheduling_form_expired_message" class="mf-form-modalinput-form_expired_message attr-form-control" placeholder="<?php esc_html_e('This form is not available yet.', 'metform'); ?>" data-default-value="<?php esc_html_e('Form submission is now closed.', 'metform'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Form scheduling',
+                                    'help' => 'Start end time scheduling for form availability.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
                             <?php if(\MetForm\Utils\Util::is_using_feature('count_views') || class_exists('MetForm_Pro\Base\Package')): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
@@ -264,13 +313,13 @@
                                 </label>
                                 <span class='mf-input-help'>
                                     <?php esc_html_e('Want to send a submission copy to user by email? Active this one. ', 'metform'); ?>
-                                    <strong><?php esc_html_e('The form must have at least one Email widget and it should be required.', 'metform'); ?></strong>
+                                    <strong><?php esc_html_e('This form must include at least one required Email field.', 'metform'); ?></strong>
                                 </span>
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
                                     'label' => 'Confirmation mail to user',
-                                    'help' => 'Want to send a submission copy to user by email? Active this one. The form must have at least one Email widget and it should be required.',
+                                    'help' => 'Want to send a submission copy to user by email? Active this one. This form must include at least one required Email field.',
                                     'badge' => 'Pro',
                                 ]); ?>
                             <?php endif; ?>
@@ -320,7 +369,7 @@
                             <?php if ( ! class_exists('MetForm_Pro\Base\Package') ) : 
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('Email verification:', 'metform'),
-                                    'help' => esc_html__('Want to send an email verification mail to the user by email? Active this one.The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Want to send an email verification mail to the user by email? Active this one. This form must include at least one required Email field.', 'metform'),
                                     'badge' => 'Pro',
                                 ]);
                             endif; ?>
@@ -403,6 +452,54 @@
                                 </label>
                             </div>
 
+                            <!-- MailerLite Integration with tier check -->
+                            <?php if (class_exists('MetForm_Pro\Core\Integrations\Mailerlite') && (\MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) : ?>
+                            <div class="mf-box-style">
+                                <div class="mf-input-group">
+                                    <label class="attr-input-label">
+                                        <input type="checkbox" value="1" name="mf_mailerlite" class="mf-admin-control-input mf-form-modalinput-mailerlite">
+                                        <span><?php esc_html_e('MailerLite:', 'metform'); ?></span>
+                                    </label>
+                                    <span class='mf-input-help'>
+                                        <?php esc_html_e('Connect this form to MailerLite. ', 'metform'); ?>
+                                        <strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
+                                            <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
+                                                <?php esc_html_e('Configure MailerLite.', 'metform'); ?>
+                                            </a>
+                                        </strong>
+                                    </span>
+                                </div>
+
+                                <div class="mf-input-group mf-mailerlite mf-form-top-spacing" style="margin-bottom: 4px;">
+                                    <label for="attr-input-label" class="attr-input-label">
+                                        <span><?php esc_html_e('MailerLite Group:', 'metform'); ?></span>
+                                        <span class="refresh-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none" class="metfrom-btn-refresh-mailerlite-list">
+                                                <?php \MetForm\Utils\Util::metform_content_renderer( $refresh_icon_path); ?>
+                                            </svg>
+                                        </span>
+                                    </label>
+
+                                    <select class="attr-form-control mf-mailerlite-list-select">
+                                        <option value=""><?php esc_html_e('Select a Group', 'metform'); ?></option>
+                                    </select>
+                                    <input type="hidden" name="mf_mailerlite_list_id" class="mf-mailerlite-list-id attr-form-control">
+                                    <span class='mf-input-help'><?php esc_html_e('Select the MailerLite Group you would like to add your contacts to.', 'metform'); ?></span>
+                                </div>
+
+                                <div class="mf-input-group mf-mailerlite mf-mailerlite-fields-section mf-form-top-spacing">
+                                    <div id="mf-mailerlite-fields-container">
+                                    </div>
+                                </div>
+                            </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => esc_html__('MailerLite:', 'metform'),
+                                    'help' => esc_html__('Integrate MailerLite with this form. This form must include at least one required Email field.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]); ?>
+                            <?php endif; ?>
+
                             <?php if ( class_exists('MetForm_Pro\Base\Package') || \MetForm\Utils\Util::is_using_settings_option('mf_mailchimp_api_key')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
@@ -410,7 +507,7 @@
                                             <input type="checkbox" value="1" name="mf_mail_chimp" class="mf-admin-control-input mf-form-modalinput-mail_chimp">
                                             <span><?php esc_html_e('Mail Chimp:', 'metform'); ?></span>
                                         </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate mailchimp with this form. ', 'metform'); ?><strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>"><?php esc_html_e('Configure Mail Chimp.', 'metform'); ?></a></strong></span>
+                                        <span class='mf-input-help'><?php esc_html_e('Integrate mailchimp with this form. ', 'metform'); ?><strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>"><?php esc_html_e('Configure Mail Chimp.', 'metform'); ?></a></strong></span>
                                     </div>
 
                                     <div class="mf-input-group mf-mailchimp mf-form-top-spacing" style="margin-bottom: 4px;">
@@ -432,7 +529,7 @@
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
                                     'label' => 'Mail Chimp:',
-                                    'help' => 'Integrate mailchimp with this form. The form must have at least one Email widget and it should be required.',
+                                    'help' => 'Integrate mailchimp with this form. This form must include at least one required Email field.',
                                     'badge' => 'Pro',
                                 ]); ?>
                             <?php endif; ?>
@@ -618,7 +715,7 @@
                                             </label>
                                             <span class='mf-input-help'>
                                                 <?php esc_html_e('Integrate MailPoet with this form.', 'metform'); ?>
-                                                <strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?>
+                                                <strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
                                                     <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
                                                         <?php esc_html_e('Configure MailPoet.', 'metform'); ?>
                                                     </a>
@@ -650,7 +747,7 @@
                                         </label>
                                         <span class='mf-input-help'>
                                             <?php esc_html_e('Integrate aweber with this form. ', 'metform'); ?>
-                                            <strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?>
+                                            <strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
                                                 <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
                                                     <?php esc_html_e('Configure aweber.', 'metform'); ?>
                                                 </a>
@@ -682,7 +779,7 @@
                                         </label>
                                         <span class='mf-input-help'>
                                             <?php esc_html_e('Integrate convertKit with this form. ', 'metform'); ?>
-                                            <strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?>
+                                            <strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
                                                 <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
                                                     <?php esc_html_e('Configure ConvertKit.', 'metform'); ?>
                                                 </a>
@@ -705,7 +802,7 @@
                             <?php else:
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('MailPoet:', 'metform'),
-                                    'help' => esc_html__('Integrate MailPoet with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate MailPoet with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                                 mf_dummy_switch_input([
@@ -728,7 +825,7 @@
                             <?php if (!((class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_mail_aweber'))) :
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('Aweber:', 'metform'),
-                                    'help' => esc_html__('Integrate aweber with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate aweber with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                             endif; ?>
@@ -737,7 +834,7 @@
                             <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Convert_Kit') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_ckit_api_key'))) :
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('ConvertKit:', 'metform'),
-                                    'help' => esc_html__('Integrate convertKit with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate convertKit with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                             endif; ?>
@@ -746,7 +843,7 @@
                             <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Email\Getresponse\Get_Response') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_get_response_api_key'))) :
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('GetResponse:', 'metform'),
-                                    'help' => esc_html__('Integrate GetResponse with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate GetResponse with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                             endif; ?>
@@ -755,7 +852,7 @@
                             <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Zapier') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_zapier'))) :
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('Zapier:', 'metform'),
-                                    'help' => esc_html__('Integrate zapier with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate zapier with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                             endif; ?>
@@ -769,7 +866,7 @@
                                         </label>
                                         <span class='mf-input-help'>
                                             <?php esc_html_e('Integrate GetResponse with this form. ', 'metform'); ?>
-                                            <strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?>
+                                            <strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
                                                 <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
                                                     <?php esc_html_e('Configure GetResponse.', 'metform'); ?>
                                                 </a>
@@ -808,7 +905,7 @@
                                         <span class='mf-input-help'>
                                             <?php esc_html_e('Integrate ActiveCampaign with this form.', 'metform'); ?>
                                             <strong>
-                                                <?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?>
+                                                <?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?>
                                                 <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>">
                                                     <?php esc_html_e('Configure ActiveCampaign.', 'metform'); ?>
                                                 </a>
@@ -857,7 +954,7 @@
                             <?php else: 
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('ActiveCampaign:', 'metform'),
-                                    'help' => esc_html__('Integrate ActiveCampaign with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'help' => esc_html__('Integrate ActiveCampaign with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' =>'Pro'
                                 ]);
                             endif; ?>
@@ -872,7 +969,7 @@
                                                     <input type="checkbox" value="1" name="mf_mailster" class="mf-admin-control-input mf-form-modalinput-mailster">
                                                     <span><?php esc_html_e('Mailster:', 'metform'); ?></span>
                                                 </label>
-                                                <span class='mf-input-help'><?php esc_html_e('Integrate Mailster with this form.', 'metform'); ?><strong><?php esc_html_e('The form must have at least one Email widget and it should be required. ', 'metform'); ?></strong></span>
+                                                <span class='mf-input-help'><?php esc_html_e('Integrate Mailster with this form.', 'metform'); ?><strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?></strong></span>
                                             </div>
 
                                             <div class="mf-input-group mf-mailster-forms">
@@ -906,7 +1003,7 @@
                                             <input type="checkbox" value="1" name="mf_zapier" class="mf-admin-control-input mf-form-modalinput-zapier">
                                             <span><?php esc_html_e('Zapier:', 'metform'); ?></span>
                                         </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate zapier with this form. ', 'metform'); ?><strong><?php esc_html_e('The form must have at least one Email widget and it should be required.', 'metform'); ?></strong></span>
+                                        <span class='mf-input-help'><?php esc_html_e('Integrate zapier with this form. ', 'metform'); ?><strong><?php esc_html_e('This form must include at least one required Email field.', 'metform'); ?></strong></span>
                                     </div>
 
                                     <div class="mf-input-group mf-zapier mf-form-top-spacing">
@@ -1129,7 +1226,7 @@
                                 ]);
                                 mf_dummy_switch_input([
                                     'label' => 'Fluent:',
-                                    'help' => 'Integrate fluent with this form.The form must have at least one Email widget and it should be required.',
+                                    'help' => 'Integrate fluent with this form.This form must include at least one required Email field.',
                                 ]);
                             endif; 
                             ?>

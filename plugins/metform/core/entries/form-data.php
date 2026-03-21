@@ -91,8 +91,8 @@ class Form_Data
                         
                         if(isset($form_settings['form_type']) && $form_settings['form_type'] === 'quiz-form' && isset($form_data['wrong-answer']) && isset($form_data['right-answer'])){
                             
-                            $wrong_answers = explode(",", $form_data['wrong-answer']);
-                            $right_answers = explode(",", $form_data['right-answer']);
+                            $wrong_answers = array_map('sanitize_text_field', explode(",", $form_data['wrong-answer']));
+                            $right_answers = array_map('sanitize_text_field', explode(",", $form_data['right-answer']));
 
                             // Find thefield if it exists in the right answers array
                             if(in_array($map_data[$key]['mf_input_name'], $right_answers)){

@@ -163,6 +163,149 @@ class Api extends \MetForm\Base\Api
         return get_option('wpmet_get_mailchimp_list_' . $post_id, $mailChimp_list);
     }
 
+    /**
+     * Get MailerLite groups list (fetch from API and cache)
+     */
+    public function get_store_mailerlite_groups()
+    {
+        $nonce = $this->request->get_header('X-WP-Nonce');
+
+        if(!current_user_can('manage_options')) {
+            return;
+        }
+
+        if(!wp_verify_nonce($nonce, 'wp_rest')) {
+            return [
+                'status'    => 'fail',
+                'message'   => [__('Nonce mismatch.', 'metform')],
+            ];
+        }
+
+        if (!class_exists('\MetForm_Pro\Core\Integrations\Mailerlite')) {
+            return [
+                'status'  => 'fail',
+                'message' => [__('MailerLite integration is not available.', 'metform')],
+            ];
+        }
+
+        // Get the API key from global settings
+        $global_settings = \MetForm\Core\Admin\Base::instance()->get_settings_option();
+        $api_key = isset($global_settings['mf_mailerlite_api_key']) ? $global_settings['mf_mailerlite_api_key'] : '';
+
+        if (empty($api_key)) {
+            return [
+                'status'  => 'fail',
+                'message' => [__('MailerLite API key is not configured. Please configure it in MetForm Settings.', 'metform')],
+            ];
+        }
+
+        $mailerlite = new \MetForm_Pro\Core\Integrations\Mailerlite($api_key);
+        $groups = $mailerlite->get_groups();
+
+        if ($groups === false) {
+            return [
+                'status'  => 'fail',
+                'message' => [$mailerlite->get_last_error()],
+            ];
+        }
+
+        $formatted_groups = array();
+        foreach ($groups as $group) {
+            $formatted_groups[] = array(
+                'id'   => $group['id'],
+                'name' => $group['name'],
+            );
+        }
+
+        return [
+            'status' => 'success',
+            'groups' => $formatted_groups,
+        ];
+    }
+
+    /**
+     * Get MailerLite fields list for mapping
+     */
+    public function get_mailerlite_fields()
+    {
+        $nonce = $this->request->get_header('X-WP-Nonce');
+
+        if(!current_user_can('manage_options')) {
+            return;
+        }
+
+        if(!wp_verify_nonce($nonce, 'wp_rest')) {
+            return [
+                'status'    => 'fail',
+                'message'   => [__('Nonce mismatch.', 'metform')],
+            ];
+        }
+
+        if (!class_exists('\MetForm_Pro\Core\Integrations\Mailerlite')) {
+            return [
+                'status'  => 'fail',
+                'message' => [__('MailerLite integration is not available.', 'metform')],
+            ];
+        }
+
+        // Get the API key from global settings
+        $global_settings = \MetForm\Core\Admin\Base::instance()->get_settings_option();
+        $api_key = isset($global_settings['mf_mailerlite_api_key']) ? $global_settings['mf_mailerlite_api_key'] : '';
+
+        if (empty($api_key)) {
+            return [
+                'status'  => 'fail',
+                'message' => [__('MailerLite API key is not configured.', 'metform')],
+            ];
+        }
+
+        $post_id = $this->request['id'];
+        $group_id = isset($this->request['group_id']) ? sanitize_text_field($this->request['group_id']) : '';
+
+        $mailerlite = new \MetForm_Pro\Core\Integrations\Mailerlite($api_key);
+
+        // Fetch MailerLite subscriber fields (these are account-wide in MailerLite)
+        $fields = $mailerlite->get_fields_for_mapping();
+
+        if (empty($fields) && $mailerlite->get_last_error()) {
+            return [
+                'status'  => 'fail',
+                'message' => [$mailerlite->get_last_error()],
+            ];
+        }
+
+        // Get form fields for mapping
+        $form_fields = array();
+        $map_data = \MetForm\Core\Entries\Action::instance()->get_fields($post_id);
+        if (!empty($map_data)) {
+            foreach ($map_data as $key => $field) {
+                // $field can be stdClass (from Elementor JSON) or array
+                if (is_object($field)) {
+                    $name  = isset($field->mf_input_name) ? $field->mf_input_name : $key;
+                    $label = isset($field->mf_input_label) ? $field->mf_input_label : $key;
+                } else {
+                    $name  = isset($field['mf_input_name']) ? $field['mf_input_name'] : $key;
+                    $label = isset($field['mf_input_label']) ? $field['mf_input_label'] : $key;
+                }
+                $form_fields[] = array(
+                    'name'  => $name,
+                    'label' => $label,
+                );
+            }
+        }
+
+        // Get saved field mapping if exists
+        $saved_mapping = get_option('mf_mailerlite_field_mapping_' . $post_id, array());
+
+        return [
+            'status'            => 'success',
+            'group_id'          => $group_id,
+            'mailerlite_fields' => $fields,
+            'form_fields'       => $form_fields,
+            'saved_mapping'     => $saved_mapping,
+        ];
+    }
+
     public function get_google_spreadsheet_list()
     {
         if(!current_user_can('manage_options')) {

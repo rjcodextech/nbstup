@@ -6,27 +6,25 @@ include __DIR__ . "/icons.php";
 
 $pro_exists = class_exists('\MetForm_Pro\Base\Package');
 
-// Helper function to check if an integration is already in use
-$is_integration_in_use = function($integration_key) {
-	$integration_keys = array(
-		'mailchimp' => 'mf_mailchimp_api_key',
-		'aweber' => 'met_form_aweber_mail_access_token_key',
-		'activecampaign' => 'mf_active_campaign_api_key',
-		'getresponse' => 'mf_get_response_api_key',
-		'convertkit' => 'mf_ckit_api_key',
-	);
-	
-	if (isset($integration_keys[$integration_key])) {
-		return \MetForm\Utils\Util::is_using_settings_option($integration_keys[$integration_key]);
-	}
-	
-	return false;
-};
-
 $aweber_btn_text = $code ? 'Re Connect Aweber' : 'Connect Aweber';
 $aweber_connect_url = "https://api.wpmet.com/public/aweber-auth/auth.php?redirect_url=". get_admin_url() . "admin.php?page=metform-menu-settings&state=" . wp_create_nonce() . "&section_id=mf-newsletter_integration";
 
 $news_letter_integrations = array(
+	/**
+	 * Integration Configuration Guide:
+	 * 
+	 * required_tier: 'free' | 'pro' | 'mid' | 'top'
+	 *   - 'free': Available to all users
+	 *   - 'pro': Requires any pro version
+	 *   - 'mid': Requires Professional tier or higher
+	 *   - 'top': Requires Agency tier only
+	 * 
+	 * existing_pro_user_access: true | false
+	 *   - true: Existing pro users who already use this integration keep access (for features moved to higher tier)
+	 *   - false: New features - only tier check, no legacy support needed
+	 * 
+	 * Note: Old pro users (before tier system) automatically get access to ALL pro features regardless of tier.
+	 */
 	'mailchimp' => array(
 		'label' => 'MailChimp',
 		'description' => 'Integrate MetForm with Mailchimp to establish seamless email marketing with automation.',
@@ -34,6 +32,8 @@ $news_letter_integrations = array(
 		'icon' => $icons['mailchimp'],
 		'button_text' => 'Save',
 		'status' => 'pro',
+		'required_tier' => 'pro',           // Requires pro
+		'existing_pro_user_access' => true,  // Was free before, allow existing users who already use it
 		'form_fields' => array(
 			array(
 				'name' => 'mf_mailchimp_api_key',
@@ -49,7 +49,9 @@ $news_letter_integrations = array(
 		'description' => 'Streamline your customer relationship with automated email marketing by linking AWeber with MetForm.',
 		'doc_url' => 'https://wpmet.com/doc/aweber-integration/',
 		'icon' => $icons['aweber'],
-		'status'        => 'pro',
+		'status' => 'pro',
+		'required_tier' => 'mid',            // Requires Professional tier or higher
+		'existing_pro_user_access' => true,  // Was pro before, allow existing pro users who use it
 		'redirect_url' => 'https://www.aweber.com/',
 		'button_text' => $aweber_btn_text,
 		'button_url' => $aweber_connect_url,
@@ -61,6 +63,8 @@ $news_letter_integrations = array(
 		'icon' => $icons['activecampaign'],
 		'button_text' => 'Save',
 		'status' => 'pro',
+		'required_tier' => 'top',            // Requires Agency tier only
+		'existing_pro_user_access' => true,  // Was pro before, allow existing pro users who use it
 		'form_fields' => array(
 			array(
 				'name' => 'mf_active_campaign_url',
@@ -85,6 +89,8 @@ $news_letter_integrations = array(
 		'icon' => $icons['getresponse'],
 		'button_text' => 'Save',
 		'status' => 'pro',
+		'required_tier' => 'mid',            // Requires Professional tier or higher
+		'existing_pro_user_access' => true,  // Was pro before, allow existing pro users who use it
 		'form_fields' => array(
 			array(
 				'name' => 'mf_get_reponse_api_key',
@@ -100,6 +106,8 @@ $news_letter_integrations = array(
 		'icon' => $icons['convertkit'],
 		'button_text' => 'Save',
 		'status' => 'pro',
+		'required_tier' => 'mid',            // Requires Professional tier or higher
+		'existing_pro_user_access' => true,  // Was pro before, allow existing pro users who use it
 		'form_fields' => array(
 			array(
 				'name' => 'mf_ckit_api_key',
@@ -118,13 +126,35 @@ $news_letter_integrations = array(
 			),
 		),
 	),
+	'mailerlite' => array(
+		'label' => 'MailerLite',
+		'description' => 'Connect MetForm with MailerLite to create stunning email campaigns and grow your subscriber list.',
+		'doc_url' => 'https://wpmet.com/doc/mailerlite-integration/',
+		'icon' => $icons['mailerlite'],
+		'button_text' => 'Save',
+		'status' => 'pro',
+		'required_tier' => 'mid',             // Requires Professional tier or higher
+		'existing_pro_user_access' => false,  // New integration - no legacy support needed
+		'form_fields' => array(
+			array(
+				'name' => 'mf_mailerlite_api_key',
+				'label' => 'API Key:',
+				'placeholder' => 'MailerLite API key',
+				'help_text' => 'Enter here your MailerLite API key.',
+				'help_url' => 'https://dashboard.mailerlite.com/integrations/api',
+			),
+		),
+	),
 );
 
 ?>
 
-<?php $news_letter_integration_function = function ($settings) use ($news_letter_integrations, $pro_exists, $is_integration_in_use) {
+<?php $news_letter_integration_function = function ($settings) use ($news_letter_integrations, $pro_exists) {
 
-	foreach ($news_letter_integrations as $integration_key => $integration) : ?>
+	foreach ($news_letter_integrations as $integration_key => $integration) : 
+		// Use the Util class method to check if access should be restricted
+		$is_restricted = \MetForm\Utils\Util::should_restrict_integration_access($integration, $integration_key);
+	?>
 		<div class="mf-dashboard__settings-api">
 			<div class="mf-dashboard__settings-api__header">
 				<div class="mf-dashboard__settings-api__header-title">
@@ -132,11 +162,7 @@ $news_letter_integrations = array(
 						<span>
 							<?php \MetForm\Utils\Util::metform_content_renderer($integration['icon']); ?>
 						</span>
-						<div class="mf-dashboard__settings-api__header-action-button <?php 
-							$is_old_pro_user = $pro_exists && \MetForm\Utils\Util::is_old_pro_user();
-							$should_disable = !$is_old_pro_user && ((! $pro_exists && $integration['status'] == 'pro' && !($integration_key == 'mailchimp' && $is_integration_in_use($integration_key))) || ($integration_key == 'activecampaign'  && !\MetForm\Utils\Util::is_top_tier() && !($pro_exists && $is_integration_in_use($integration_key))) || (($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit') && (!\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier()) && !($pro_exists && $is_integration_in_use($integration_key))));
-							echo esc_attr( $should_disable ? 'disable' : '' ); 
-						?>">
+						<div class="mf-dashboard__settings-api__header-action-button <?php echo esc_attr( $is_restricted ? 'disable' : '' ); ?>">
 							<button class="manage-btn mf-modal-<?php echo esc_attr($integration_key); ?>-integration">
 								<span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
 										<path d="M7.63674 8.90702C8.68995 8.90702 9.54374 8.05323 9.54374 7.00002C9.54374 5.94681 8.68995 5.09302 7.63674 5.09302C6.58353 5.09302 5.72974 5.94681 5.72974 7.00002C5.72974 8.05323 6.58353 8.90702 7.63674 8.90702Z" stroke="#181A26" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -154,23 +180,10 @@ $news_letter_integrations = array(
 			<div class="mf-dashboard__settings-api__footer">
 				<div class="mf-dashboard__settings-api__footer-switch">
 					<?php
-					$is_old_pro_user = $pro_exists && \MetForm\Utils\Util::is_old_pro_user();
-					$should_show_upgrade = !$is_old_pro_user && (( !$pro_exists && $integration['status'] == 'pro' && !($integration_key == 'mailchimp' && $is_integration_in_use($integration_key))) || ($integration_key == 'activecampaign'  && !\MetForm\Utils\Util::is_top_tier() && !($pro_exists && $is_integration_in_use($integration_key))) || (($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit') && (!\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier()) && !($pro_exists && $is_integration_in_use($integration_key))));
-					
-					if ( $should_show_upgrade ) {
-						 
-							$tooltip_text = 'Upgrade for premium access.';
-
-							if($pro_exists){
-								if( !\MetForm\Utils\Util::is_top_tier() && $integration_key == 'activecampaign'){
-									$tooltip_text = 'Get access by upgrading to MetForm Agency plan.';
-								}
-
-								if( !\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier() && ($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit')){
-									$tooltip_text = 'Get access by upgrading to MetForm Professional plan.';
-								}
-							}
-						 ?>
+					if ( $is_restricted ) {
+						$required_tier = $integration['required_tier'] ?? 'pro';
+						$tooltip_text = \MetForm\Utils\Util::get_upgrade_tooltip($required_tier);
+					?>
 						<div class="mf-entry-pro mf-svg-container mf-pro-badge-wrapper mf-tooltip-wrapper" data-tooltip="<?php echo esc_attr($tooltip_text); ?>">
 							<div class="mf-svg-inner mf-upgrade-btn">
 								<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#E81454" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>

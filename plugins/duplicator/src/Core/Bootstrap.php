@@ -312,6 +312,17 @@ class Bootstrap
             ),
             array(
                 'parent_slug'            => 'duplicator',
+                'page_title'             => __('Staging', 'duplicator'),
+                'menu_title'             => __('Staging', 'duplicator'),
+                'capability'             => 'export',
+                'menu_slug'              => ControllersManager::STAGING_SUBMENU_SLUG,
+                'callback'               => function () {
+                    TplMng::getInstance()->render('mocks/staging/staging');
+                },
+                'enqueue_style_callback' => array(__CLASS__, 'mocksStyles')
+            ),
+            array(
+                'parent_slug'            => 'duplicator',
                 'page_title'             => __('Tools', 'duplicator'),
                 'menu_title'             => __('Tools', 'duplicator'),
                 'capability'             => 'manage_options',

@@ -1,10 +1,10 @@
 === Duplicator - Backups & Migration Plugin - Cloud Backups, Scheduled Backups, & More  ===
 Contributors: seedprod, smub, andreamk
-Tags: backup, database backup, wordpress backup, cloud backup, migration
+Tags: backup, database backup, wordpress backup, cloud backup, migration, staging site
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.15
+Stable tag: 1.5.16
 License: GPLv2
 
 The best WordPress backup and migration plugin. Quickly and easily backup ,migrate, copy, move, or clone your site from one location to another. Simplify backups & migrations without limits.
@@ -87,9 +87,15 @@ Migrating WordPress sites has never been easier with Duplicator’s [drag & drop
 Duplicator [clones your entire WordPress website](https://duplicator.com/clone-wordpress-plugin/?utm_source=wprepo&utm_medium=link&utm_content=clone_wordpress_website&utm_campaign=duplicator_lite) with 1-click, no code needed. Perfect for staging sites, sandbox, or site migration.
 
 
+= WordPress Staging Site =
+
+Duplicator Pro lets you [create a WordPress staging site](https://duplicator.com/wordpress-staging-site/?utm_source=wprepo&utm_medium=link&utm_content=wordpress_staging_site&utm_campaign=duplicator_lite) directly from your WordPress dashboard. Safely test plugin updates, theme changes, and new features on a staging environment before pushing changes to your live site. No manual setup, no separate hosting, and no risk to your production site.
+
+
 = Duplicator Pro Features =
 Duplicator Pro takes Duplicator to the next level with features you'll love, such as:
 
+* WordPress staging sites - create a staging copy of your site to safely test changes before going live
 * Drag and Drop installs - just drag the backup file to the destination site!
 * Scheduled backups
 * Cloud Storage to Dropbox Backups, Google Drive Backups, Microsoft OneDrive Backups, Amazon S3 Backups and FTP/SFTP Backups

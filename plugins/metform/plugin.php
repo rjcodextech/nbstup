@@ -30,7 +30,7 @@ final class Plugin {
 
     public function version()
     {
-        return '4.1.2';
+        return '4.1.3';
     }
 
     public function package_type()
@@ -385,7 +385,7 @@ final class Plugin {
     }
 
     function metform_editor_script(){
-	    	wp_enqueue_script('editor-panel-script', $this->public_url() . '/assets/js/editor-panel.js', ['jquery'], $this->version(), true);
+	    	wp_enqueue_script('metform-editor-panel-script', $this->public_url() . '/assets/js/editor-panel.js', ['jquery'], $this->version(), true);
     }
 
     function js_css_public()

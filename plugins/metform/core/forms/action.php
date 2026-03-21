@@ -190,7 +190,13 @@ Class Action {
 
 		$settings = (is_array($settings) ? $settings : []);
 		$settings['entry_title'] = (!isset($settings['entry_title']) ? 'Entry # [mf_id]' : $settings['entry_title']);
-
+		
+        $settings['mf_scheduling_submission_starts'] = !empty($settings['mf_scheduling_submission_starts']) ? $settings['mf_scheduling_submission_starts'] : '';
+		$settings['mf_scheduling_submission_ends'] = !empty($settings['mf_scheduling_submission_ends']) ? $settings['mf_scheduling_submission_ends'] : '';
+        // scheduling submission message waiting and expired
+        $settings['mf_scheduling_form_waiting_message'] = !empty($settings['mf_scheduling_form_waiting_message']) ? $settings['mf_scheduling_form_waiting_message'] : '';
+        $settings['mf_scheduling_form_expired_message'] = !empty($settings['mf_scheduling_form_expired_message']) ? $settings['mf_scheduling_form_expired_message'] : '';
+		
 		$global_settings = \MetForm\Core\Admin\Base::instance()->get_settings_option();
 		$global_settings = (is_array($global_settings) ? $global_settings : []);
 

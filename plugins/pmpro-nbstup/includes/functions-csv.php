@@ -524,24 +524,21 @@ function pmpronbstup_build_member_vcard_entry($user)
             return trim($value);
         };
 
-    $display_name_base = $full_name !== '' ? $full_name : ('NBSTUP Member ' . $user_id);
-    $fn_parts = array( $display_name_base );
-    if ( $district !== '' ) {
-        $fn_parts[] = $district;
-    }
-    if ( $block !== '' ) {
+    $display_name_base = $full_name !== '' ? $full_name : ('Member ' . $user_id);
+    $fn_parts = array('NBST', $display_name_base);
+    if ($block !== '') {
         $fn_parts[] = $block;
     }
-    if ( $unique_id !== '' ) {
-        $fn_parts[] = $unique_id;
+    if ($district !== '') {
+        $fn_parts[] = $district;
     }
-    $fn = implode( ' - ', $fn_parts );
+    $fn = implode(' ', $fn_parts);
 
     $vcard = array(
         'BEGIN:VCARD',
         'VERSION:3.0',
         'FN:' . $escape($fn),
-        'N:' . $escape($last_name) . ';' . $escape($first_name) . ';;;',
+        'N:;' . $escape($fn) . ';;;',
     );
 
     if ($mobile !== '') {

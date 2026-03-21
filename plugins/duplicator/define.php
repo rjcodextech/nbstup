@@ -11,7 +11,7 @@ define(
 );
 
 if (function_exists('plugin_dir_url')) {
-    define('DUPLICATOR_VERSION', '1.5.15');
+    define('DUPLICATOR_VERSION', '1.5.16');
     define('DUPLICATOR_PLUGIN_URL', plugin_dir_url(__FILE__));
     define('DUPLICATOR_SITE_URL', get_site_url());
 

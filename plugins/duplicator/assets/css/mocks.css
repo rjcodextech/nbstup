@@ -325,20 +325,24 @@ div#dpro-pro-import-available-packages {
 /* SCHEDULES MOCK STYLE */
 
 table.schedule-tbl tr:nth-child(odd),
-table.storage-tbl tr:nth-child(odd) {
+table.storage-tbl tr:nth-child(odd),
+table.staging-tbl tr:nth-child(odd) {
     background-color: #f6f7f7;
 }
 
-table.schedule-tbl td {
-    height: 45px
+table.schedule-tbl td,
+table.staging-tbl td {
+    height: 45px;
 }
 
-table.schedule-tbl a.name {
-    font-weight: bold
+table.schedule-tbl a.name,
+table.staging-tbl a.name {
+    font-weight: bold;
 }
 
-table.schedule-tbl input[type='checkbox'] {
-    margin-left: 5px
+table.schedule-tbl input[type='checkbox'],
+table.staging-tbl input[type='checkbox'] {
+    margin-left: 5px;
 }
 
 table.schedule-tbl div.sub-menu {

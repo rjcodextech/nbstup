@@ -4,12 +4,12 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-The most popular Elementor forms builder to create WP forms like contact forms, booking forms, survey forms, application forms and other custom forms.
+The most popular Elementor forms builder to create WordPress forms like contact forms, booking forms, feedback form, survey forms, application forms and other custom forms.
 
 == Description ==
 
@@ -19,9 +19,9 @@ It enables the fastest and most secure experience for managing and customizing m
 
 https://www.youtube.com/watch?v=Z4MuFOfx6JY
 
-## The Best Elementor Contact Form Builder Plugin for WordPress Website - Empowering 600,000+ Active Users.
+## The Best Elementor Contact Form Builder Plugin Website - Empowering 600,000+ WordPress Users.
 
-MetForm extends Elementor's power to help you create a wide range of custom forms, such as volunteer applications, event forms, loan applications, restaurant reservations, calculation forms, admission forms, newsletter signups, data erasure requests, product orders, WooCommerce checkouts, subscription forms, patient forms, suggestion forms, and survey or post-survey forms.
+MetForm extends WordPress's capability to help you create a wide range of custom forms, such as volunteer applications, event forms, loan applications, restaurant reservations, calculation forms, admission forms, newsletter signups, data erasure requests, product orders, WooCommerce checkouts, subscription forms, patient forms, suggestion forms, and survey or post-survey forms.
 
 ## USEFUL LINKS
 
@@ -37,7 +37,7 @@ A standout feature of MetFom is the option to create custom field groups and reu
 
 You’ll also get demos for multi-step, conditional, feedback, event, job application, booking, custom social signup, and product registration forms—making it ideal for beginners.
 
-## Mobile-Friendly and Responsive Form Builder
+## Mobile-friendly and Responsive Form Builder
 
 Metform works with Elementor without any issue and responsiveness can be controlled by the Elementor page builder. With this custom form builder, your smart order form or any online form will look great on all resolutions and devices: mobile, tablet, and desktop.
 
@@ -59,7 +59,7 @@ Divide long and lengthy forms into a step-by-step process to improve the user ex
 
 Want your users to upload files from your online form? No worries we have a file upload option with our Elementor form builder MetForm. You can upload files from your local storage or share **Dropbox** and **Google Drive** links directly.
 
-## Export Form Entries as CSV
+## Export Contact Form Entries as CSV
 
 Want to Export form entries as CSV? Yes, you can do that too with the Metform Elementor form builder addon.
 
@@ -251,6 +251,17 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.1.3 // 2026-03-03
+Added: Option to delete associated files when deleting form entries.
+Added: Newsletter Signup Form is now available in the Free version.
+Added: Subscribe Form 1 is now available in the Free version.
+Added: Subscribe Form 2 is now available in the Free version.
+Improved: New form creation modal UI.
+Improved: Added support for .iges, .igs, .step, and .stp file types in the File Upload widget.
+Fixed: Compatibility issue with Royal Elementor Addons.
+Fixed: Editor panel script compatibility issue.
+Fixed: Global settings UI issue.
+
 Version: 4.1.2 // 2026-01-14
 Fixed: Google drive integration issue.
 

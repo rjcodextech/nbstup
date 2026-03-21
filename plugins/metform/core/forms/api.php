@@ -96,6 +96,19 @@ class Api extends \MetForm\Base\Api
             update_option('mf_mailster_form_data_' . $form_id, $fields);
         }
 
+        /**
+         * MailerLite field mapping save
+         */
+        if ( isset( $form_setting['mf_mailerlite'] ) && isset( $form_setting['mf_mailerlite_field_map'] ) ) {
+            $field_mapping = array();
+            foreach ( $form_setting['mf_mailerlite_field_map'] as $ml_field => $form_field ) {
+                if ( ! empty( $form_field ) ) {
+                    $field_mapping[ sanitize_text_field( $ml_field ) ] = sanitize_text_field( $form_field );
+                }
+            }
+            update_option( 'mf_mailerlite_field_mapping_' . $form_id, $field_mapping );
+        }
+
 
         /**
          * Auth / Registration settings save

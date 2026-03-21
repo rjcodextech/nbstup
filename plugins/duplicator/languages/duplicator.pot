@@ -1,4 +1,4 @@
-# Copyright (C) 2025 Duplicator
+# Copyright (C) 2026 Duplicator
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-13T20:06:57+00:00\n"
+"POT-Creation-Date: 2026-03-18T17:01:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: duplicator\n"
@@ -333,11 +333,11 @@ msgstr ""
 msgid "Archive "
 msgstr ""
 
-#: classes/package/class.pack.database.php:602
+#: classes/package/class.pack.database.php:644
 msgid "Shell mysql dump error. Change SQL Mode to the \"PHP Code\" in the Duplicator > Settings > Backups."
 msgstr ""
 
-#: classes/package/class.pack.database.php:757
+#: classes/package/class.pack.database.php:799
 msgid "Please contact your DataBase administrator to fix the error."
 msgstr ""
 
@@ -354,22 +354,22 @@ msgid "Zip archive %1s not present."
 msgstr ""
 
 #: classes/package/class.pack.installer.php:834
-#: classes/package/class.pack.php:1015
+#: classes/package/class.pack.php:1020
 msgid "ERROR: Cannot open created archive. Error code = %1$s"
 msgstr ""
 
 #: classes/package/class.pack.installer.php:838
-#: classes/package/class.pack.php:1020
+#: classes/package/class.pack.php:1025
 msgid "ERROR: Archive is not valid zip archive."
 msgstr ""
 
 #: classes/package/class.pack.installer.php:841
-#: classes/package/class.pack.php:1024
+#: classes/package/class.pack.php:1029
 msgid "ERROR: Archive doesn't pass consistency check."
 msgstr ""
 
 #: classes/package/class.pack.installer.php:844
-#: classes/package/class.pack.php:1029
+#: classes/package/class.pack.php:1034
 msgid "ERROR: Archive checksum is bad."
 msgstr ""
 
@@ -405,19 +405,19 @@ msgstr ""
 msgid "MySQL Server Port: <b>%1$s</b> isn't a valid port"
 msgstr ""
 
-#: classes/package/class.pack.php:945
+#: classes/package/class.pack.php:950
 msgid "Can't find Scanfile %s. Please ensure there no non-English characters in the Backup or schedule name."
 msgstr ""
 
-#: classes/package/class.pack.php:966
+#: classes/package/class.pack.php:971
 msgid "EXPECTED FILE/DIRECTORY COUNT: %1$s"
 msgstr ""
 
-#: classes/package/class.pack.php:967
+#: classes/package/class.pack.php:972
 msgid "ACTUAL FILE/DIRECTORY COUNT: %1$s"
 msgstr ""
 
-#: classes/package/class.pack.php:1039
+#: classes/package/class.pack.php:1044
 msgid "ARCHIVE CONSISTENCY TEST: Pass"
 msgstr ""
 
@@ -849,7 +849,7 @@ msgid "Welcome to Duplicator"
 msgstr ""
 
 #: src/Core/Bootstrap.php:269
-#: src/Core/Bootstrap.php:544
+#: src/Core/Bootstrap.php:555
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -887,80 +887,86 @@ msgstr ""
 
 #: src/Core/Bootstrap.php:315
 #: src/Core/Bootstrap.php:316
+#: template/mocks/staging/staging.php:16
+msgid "Staging"
+msgstr ""
+
+#: src/Core/Bootstrap.php:326
+#: src/Core/Bootstrap.php:327
 msgid "Tools"
 msgstr ""
 
-#: src/Core/Bootstrap.php:329
-#: src/Core/Bootstrap.php:330
+#: src/Core/Bootstrap.php:340
+#: src/Core/Bootstrap.php:341
 #: template/admin_pages/settings/general/general.php:91
 #: template/mocks/storage/storage.php:87
 #: views/settings/controller.php:23
 msgid "Settings"
 msgstr ""
 
-#: src/Core/Bootstrap.php:339
+#: src/Core/Bootstrap.php:350
 msgid "About Duplicator"
 msgstr ""
 
-#: src/Core/Bootstrap.php:340
+#: src/Core/Bootstrap.php:351
 #: template/admin_pages/about_us/tabs.php:17
 msgid "About Us"
 msgstr ""
 
-#: src/Core/Bootstrap.php:383
+#: src/Core/Bootstrap.php:394
 #: template/parts/Education/subscribe-form.php:26
 msgid "Subscribe"
 msgstr ""
 
-#: src/Core/Bootstrap.php:384
+#: src/Core/Bootstrap.php:395
 msgid "Subscribed &#10003"
 msgstr ""
 
-#: src/Core/Bootstrap.php:385
+#: src/Core/Bootstrap.php:396
 msgid "Subscribing..."
 msgstr ""
 
-#: src/Core/Bootstrap.php:386
+#: src/Core/Bootstrap.php:397
 msgid "Failed &#10007"
 msgstr ""
 
-#: src/Core/Bootstrap.php:387
+#: src/Core/Bootstrap.php:398
 msgid "Email subscription failed with message: "
 msgstr ""
 
-#: src/Core/Bootstrap.php:398
+#: src/Core/Bootstrap.php:409
 msgid "Failed to connect to Duplicator Pro."
 msgstr ""
 
-#: src/Core/Bootstrap.php:399
+#: src/Core/Bootstrap.php:410
 msgid "Message: "
 msgstr ""
 
-#: src/Core/Bootstrap.php:400
+#: src/Core/Bootstrap.php:411
 msgid "Please try again or contact support if the issue persists."
 msgstr ""
 
-#: src/Core/Bootstrap.php:409
+#: src/Core/Bootstrap.php:420
 msgid "Failed to load help content!"
 msgstr ""
 
-#: src/Core/Bootstrap.php:418
+#: src/Core/Bootstrap.php:429
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/Core/Bootstrap.php:419
+#: src/Core/Bootstrap.php:430
 msgid "copied to clipboard"
 msgstr ""
 
-#: src/Core/Bootstrap.php:420
+#: src/Core/Bootstrap.php:431
 msgid "Unable to copy"
 msgstr ""
 
-#: src/Core/Bootstrap.php:564
+#: src/Core/Bootstrap.php:575
 msgid "Manage Backups"
 msgstr ""
 
-#: src/Core/Bootstrap.php:565
+#: src/Core/Bootstrap.php:576
 msgid "Manage"
 msgstr ""
 
@@ -2418,6 +2424,22 @@ msgstr ""
 
 #: template/mocks/settings/access/content-popup.php:15
 msgid "Elevate your backup capabilities with advanced permissions, allowing for precise control over the creation, exportation, restoration, and management of control settings. Enjoy granular access control to ensure only authorized users can perform these critical functions."
+msgstr ""
+
+#: template/mocks/staging/content-popup.php:14
+msgid "Staging sites let you create a full copy of your WordPress site to safely test updates, new plugins, theme changes and other modifications without affecting your live site."
+msgstr ""
+
+#: template/mocks/staging/content-popup.php:23
+msgid "Duplicator Pro creates an isolated staging site from a backup so you can freely test changes without any risk to your live site."
+msgstr ""
+
+#: template/mocks/staging/staging.php:123
+msgid "Create staging sites to safely test changes!"
+msgstr ""
+
+#: template/mocks/staging/staging.php:124
+msgid "Staging sites are not available in Duplicator Lite!"
 msgstr ""
 
 #: template/mocks/storage/popup.php:17

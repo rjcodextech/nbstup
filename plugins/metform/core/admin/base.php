@@ -54,7 +54,7 @@ class Base {
         //get existing settings
         $settings = get_option($this->key_settings_option, []);
 
-        $checkboxes = array('mf_save_progress', 'mf_field_name_show', 'mf_paypal_sandbox', 'mf_stripe_sandbox');
+        $checkboxes = array('mf_save_progress', 'mf_field_name_show', 'mf_enable_entry_file_delete', 'mf_paypal_sandbox', 'mf_stripe_sandbox');
 
         //if checkbox is not set, unset it from settings that was set previously.
         foreach ($checkboxes as $key) {
@@ -172,6 +172,17 @@ class Base {
                             <?php
                         }
                     }
+                }
+                if(!empty($_REQUEST['mf_google_disconnect'])) {
+                    delete_option('wf_google_access_token');
+                    delete_transient('mf_google_sheet_token');
+                    
+                    ?>
+                    <script type="text/javascript">
+                        // redirect to google sheet integration section
+                        location.href = '<?php echo esc_url(admin_url('admin.php?page=metform-menu-settings#mf-google_sheet_integration')); ?>';
+                    </script>
+                    <?php
                 }
                 if( !empty($_REQUEST['code']) && empty($_REQUEST['state']) ) {
                     $google = new \MetForm_Pro\Core\Integrations\Google_Sheet\Google_Access_Token;

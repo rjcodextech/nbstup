@@ -2,9 +2,9 @@
 Contributors: Roxnor, Ataurr, aion11
 Tags: Elementor addons, mega menu builder,  header footer builder, elementor addon, elementor widgets
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.8.0
+Stable tag: 3.8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,11 +12,14 @@ Join millions who empower their websites with ElementsKit Elementor Addons. Get 
 
 == Description ==
 
-**[ElementsKit Elementor addons](https://wpmet.com/plugin/elementskit/?utm_source=org&utm_medium=readme)** is an ultimate and all-in-one addons for Elementor Page Builder. It brings a nice comprehensive solution with **90+** Elementor widgets, **20+** modules, and **1000+** pre-designed Elementor templates.
+**[ELEMENTSKIT, ALL-IN-ONE ELEMENTOR ADDON](https://wpmet.com/plugin/elementskit/?utm_source=org&utm_medium=readme), EMPOWERING 2 MILLION+ ELEMENTOR USERS WITH 110+ POWERFUL ELEMENTS & 1000+ TEMPLATES.**
 
-Within this popular Elementor addon, everything is accessible through an easy drag-and-drop interface, including features like **header-footer builder, mega menu builder, custom widget builder**, etc to expand your Elementor capabilities.
+The ultimate addons for Elementor, ElementsKit is a nice, comprehensive page builder solution with **90+** Elementor Widgets, **20+** modules, & ever-growing Elementor template library.
 
-Beside exclusive design elements & templates, ElementsKit offers copy-paste across domains and control content visibility with multiple conditions. It’s a versatile design toolkit packed with advanced widgets for content, forms, posts, charts, WooCoomerce, all dedicated to building any Elementor site.
+This popular Elementor addons expands your capabilities with an easy drag-and-drop interface, featuring a **header-footer builder, mega menu builder**, and **custom widget builder**.
+
+Besides exclusive design elements & templates, ElementsKit offers copy-paste across domains and control content visibility with multiple conditions. It’s a versatile design toolkit packed with advanced widgets for content, forms, posts, charts, WooCommerce, all dedicated to building any Elementor site.
+
 
 🏆 Great **Elementor Addon**! Check [**ElementsKit demos**](https://wpmet.com/plugin/elementskit/elements/?utm_source=org&utm_medium=readme) for new website-building possibilities.
 
@@ -32,7 +35,7 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ## KEY FEATURES
 
-🔥 All time downloads of ElementsKit : **44 million+**
+🔥 All time downloads of ElementsKit : **46 million+**
 
 ⭐ **90+** Free and Premium Elementor Widgets
 
@@ -62,17 +65,19 @@ https://www.youtube.com/watch?v=VhBl3dHT5SY
 
 ⭐ Packed with **attractive animation** effects
 
+
 ### Extensive ElementsKit Templates for Elementor
 
 ElementsKit is a popular Elementor addon among millions of users that eliminates the need to design from scratch. It ships with over **1000+** pre-made section blocks and **40+** [ready-made Elementor templates](https://wpmet.com/plugin/elementskit/templates/) for designing a full website, including Elementor header-footer templates & Elementor mega menu templates. Whatever niche or industry, you’re working with, ElementsKit page builder addon layout library includes unique Elementor templates designed with royalty-free images.
 
-### Modular based and Lightweight
+**### Build Fast & Stylish Elementor Sites:**
 
-This modular-based page builder plugin, you only enable widgets or modules you need to ensure no additional bloat in website performance.
+**Modular-Based & Lightweight:**  To ensure no additional bloat on website performance, enable only needed widgets or modules with this modular-based page builder plugin.
 
-### Completely Customizable & Dynamic Website Builder Functionality
+**Completely Customizable:** Widgets & modules come with powerful styling controls to customize every pixel of Elementor sites.
 
-ElementsKit widgets & modules come with powerful styling controls to customize every pixel of your Elementor sites and support dynamic conditions to show content by role, device, time and different headers.
+**Dynamic Website Builder Functionality:** Set dynamic conditions to show content by role, device, time, headers.
+
 
 ### 50+ FREE ELEMENTOR WIDGETS
 
@@ -151,9 +156,10 @@ Display and organize your blog posts in flexible blog layout options like grid, 
 🔶 [**Blog Posts**](https://wpmet.com/plugin/elementskit/blog/?utm_source=org&utm_medium=readme) 🔶 [**Post Tab**](https://wpmet.com/plugin/elementskit/post-tab/?utm_source=org&utm_medium=readme) 🔶 [**Post List**](https://wpmet.com/plugin/elementskit/post-list/?utm_source=org&utm_medium=readme') 🔶 [**Post Grid**](https://wpmet.com/plugin/elementskit/post-grid/?utm_source=org&utm_medium=readme) 🔶 [**Category List**](https://wpmet.com/plugin/elementskit/category-list/?utm_source=org&utm_medium=readme)🔶
 
 ### Free Elementor Addon for Third-Party Form Styling
-If you're using a popular form builder plugin on your website, chances are the ElementsKit Elementor addon includes a dedicated form style widget for it. With a flexible, Elementor-like interface, you can easily customize various form types, including contact forms, suggestion forms, and newsletters.
 
-Whether you choose from pre-designed layouts or build a form from scratch, ElementsKit provides extensive customization options to match your design needs effortlessly.
+Name any popular form builder plugin, and there's a dedicated  **form styler widget**  in the ElementsKit Elementor addon. A flexible Elementor-like interface allows you to easily customize a variety of forms, including contact forms, suggestion forms, newsletters.
+
+Whether using templates or building from scratch, ElementsKit provides extensive customization options to match your form design needs effortlessly.
 
 **<strong>Free Elementor Widgets for Form Styling</strong><br/>🔶 [Caldera Forms](https://wpmet.com/plugin/elementskit/caldera-form/?utm_source=org&utm_medium=readme) 🔶 [Contact Form 7](https://wpmet.com/plugin/elementskit/contact/?utm_source=org&utm_medium=readme) 🔶 [Ninja Forms](https://wpmet.com/plugin/elementskit/ninja-forms/?utm_source=org&utm_medium=readme) 🔶[WP Forms](https://wpmet.com/plugin/elementskit/wp-forms/?utm_source=org&utm_medium=readme)  🔶  [weForms](https://wpmet.com/plugin/elementskit/we-forms/?utm_source=org&utm_medium=readme)  🔶  [Fluent Forms](https://wpmet.com/plugin/elementskit/fluent-forms/?utm_source=org&utm_medium=readme) 🔶 [MailChimp](https://wpmet.com/plugin/elementskit/mail-chimp/?utm_source=org&utm_medium=readme) 🔶**
 
@@ -334,6 +340,14 @@ ElementsKit is brought to you by Wpmet, a name **trusted by 10,00,000 satisfied 
 Visit  [wpmet](https://wpmet.com/?utm_source=org&utm_medium=readme)  for essential WordPress [Tutorials, Tips & Tricks](https://wpmet.com/blog)!
 
 == Changelog ==
+
+= ElementsKit Elementor Addons Version: 3.8.2 (2026-03-12) =
+* Fixed: Nav menu styling issue on single pages in certain cases
+
+= ElementsKit Elementor Addons Version: 3.8.1 (2026-03-01) =
+* Fixed: Hamburger menu showing in desktop
+* Fixed: Magnific popup script dependency in video widget
+* Fixed: Remove promotional footer from admin pages
 
 = ElementsKit Elementor Addons Version: 3.8.0 (2026-02-23) =
 * Fixed: Image width selector in the blog post widget
@@ -1036,6 +1050,9 @@ This well-coded Elementor addons caches API-related widget data to avoid calling
 
 = Does ElementsKit cause conflicts with other plugins or themes? =
 No, you can work seamlessly with this Elementor addons.
+
+= Does ElementsKit require the Elementor pro version? =
+No, you don't need to have the pro version of Elementor to run the ElementsKit Elementor addon.
 
 = Do I need to know professional level coding & design knoledge to build websites with ElementsKit? =
 No, ElementsKit has pre-built template kits that launch websites in minutes, no coding and design knowledge required.

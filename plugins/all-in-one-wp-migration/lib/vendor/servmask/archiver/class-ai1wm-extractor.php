@@ -269,6 +269,11 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 						}
 					}
 
+					// Validate file name and file path for directory traversal
+					if ( path_is_absolute( $file_name ) || validate_file( $file_name ) !== 0 ) {
+						$should_exclude_file = true;
+					}
+
 					// Do we have a match?
 					if ( $should_exclude_file === false ) {
 
@@ -409,6 +414,11 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 							$should_include_file = false;
 							break;
 						}
+					}
+
+					// Validate file name and file path for directory traversal
+					if ( path_is_absolute( $file_name ) || validate_file( $file_name ) !== 0 ) {
+						$should_include_file = false;
 					}
 
 					// Do we have a match?

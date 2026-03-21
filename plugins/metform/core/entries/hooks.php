@@ -15,6 +15,17 @@ class Hooks
         add_filter('parse_query', [$this, 'query_filter']);
         add_filter('wp_mail_from_name', [$this, 'wp_mail_from']);
         add_filter('upload_mimes', [$this, 'metfom_additional_upload_mimes']);
+        
+
+        // Check if file deletion is enabled in settings
+        $settings = get_option('metform_option__settings');
+        
+       if (isset($settings['mf_enable_entry_file_delete']) && $settings['mf_enable_entry_file_delete'] == '1') {
+            // Add hooks to delete uploaded files when entries are deleted
+            add_action('before_delete_post', [$this, 'delete_entry_files'], 10, 2);
+        }
+       
+        
     }
 
     public function set_columns($columns)
@@ -156,5 +167,67 @@ class Hooks
         $mimes['stp'] = 'text/plain; charset=us-ascii';
 
         return $mimes;
+    }
+
+    /**
+     * Delete uploaded files when entry is deleted
+     * 
+     * @since 4.1.3
+     * @param int $post_id
+     * @param object $post
+     */
+    public function delete_entry_files($post_id, $post)
+    {
+        // Only process metform entries
+        if (!isset($post->post_type) || $post->post_type !== 'metform-entry') {
+            return;
+        }
+
+        // Check if entry has any uploaded files first
+        $has_files = get_post_meta($post_id, 'metform_entries__file_upload_new', true) || get_post_meta($post_id, 'metform_entries__file_upload', true);
+        
+        if (empty($has_files)) {
+            return; // No files uploaded in this entry, skip deletion
+        }
+
+        // Get upload directory info
+        $upload_dir = wp_upload_dir();
+        
+        // Process both old and new file metadata formats
+        $file_metas = [
+            get_post_meta($post_id, 'metform_entries__file_upload_new', true),
+            get_post_meta($post_id, 'metform_entries__file_upload', true)
+        ];
+
+        foreach ($file_metas as $file_meta) {
+            if (!is_array($file_meta)) continue;
+            
+            foreach ($file_meta as $files) {
+                if (!is_array($files)) {
+                    $files = [$files]; // Handle single file
+                }
+                
+                foreach ($files as $file) {
+                    if (!is_array($file)) continue;
+                    
+                    // Try stored path first
+                    $file_path = isset($file['file']) ? wp_normalize_path($file['file']) : false;
+                    
+                    // Reconstruct from URL if path doesn't exist
+                    if ((!$file_path || !file_exists($file_path)) && isset($file['url'])) {
+                        $file_path = str_replace(
+                            wp_normalize_path($upload_dir['baseurl']),
+                            wp_normalize_path($upload_dir['basedir']),
+                            wp_normalize_path($file['url'])
+                        );
+                    }
+                    
+                    // Delete file if exists
+                    if ($file_path && file_exists($file_path)) {
+                        @unlink($file_path);
+                    }
+                }
+            }
+        }
     }
 }

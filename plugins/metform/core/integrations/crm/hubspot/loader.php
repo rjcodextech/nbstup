@@ -68,12 +68,14 @@ class Integration
 
 	public function sub_tab()
 	{
-		Render::sub_tab($this->sub_tab_title, $this->sub_tab_id, 'active');
+		$active_tab    = isset( $_GET['mf_crm_tab'] ) ? sanitize_key( $_GET['mf_crm_tab'] ) : '';
+		$is_hub_active = ( $active_tab === 'hub' ) ? 'active' : null;
+		Render::sub_tab($this->sub_tab_title, $this->sub_tab_id, $is_hub_active);
 
 		// Check if MetForm Pro is not installed and show dummy content for pro awareness
 		if (!class_exists('\MetForm_Pro\Base\Package')) {
 			Render::sub_tab('Zoho', 'zoho');
-			Render::sub_tab('HelpScout', 'helpscout');
+			Render::sub_tab('HelpScout', 'helpscout', ( ! $active_tab || $active_tab === 'helpscout' ) ? 'active' : null);
 		}
 	}
 
@@ -196,7 +198,7 @@ class Integration
 
 				echo '
                         <script type="text/javascript">
-                            window.location.href = "' . esc_js($current_page) . '#mf_crm"
+                            window.location.href = "' . esc_js($current_page) . '&mf_crm_tab=hub#mf_crm"
                         </script>
                     ';
 			}
@@ -264,12 +266,14 @@ class Integration
 
 	public function sub_tab_content()
 	{
-		Render::sub_tab_content($this->sub_tab_id, [$this, 'contents'], 'active');
+		$active_tab    = isset( $_GET['mf_crm_tab'] ) ? sanitize_key( $_GET['mf_crm_tab'] ) : '';
+		$is_hub_active = ( $active_tab === 'hub' ) ? 'active' : '';
+		Render::sub_tab_content($this->sub_tab_id, [$this, 'contents'], $is_hub_active);
 
 		// Check if MetForm Pro is not installed and show dummy content for pro awareness
 		if (!class_exists('\MetForm_Pro\Base\Package')) {
 			Render::sub_tab_content('zoho', [$this, 'zoho_contents']);
-			Render::sub_tab_content('helpscout', [$this, 'helpscout_contents']);
+			Render::sub_tab_content('helpscout', [$this, 'helpscout_contents'], ( ! $active_tab || $active_tab === 'helpscout' ) ? 'active' : '');
 		}
 	}
 

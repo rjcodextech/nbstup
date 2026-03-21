@@ -62,6 +62,21 @@ class Cpt extends \MetForm\Base\Cpt
             'limit_total_entries' => [
                 'name' => 'limit_total_entries',
             ],
+            'form_scheduling_status' => [
+                'name' => 'form_scheduling_status',
+            ],
+            'mf_scheduling_submission_starts' => [
+                'name' => 'mf_scheduling_submission_starts',
+            ],
+            'mf_scheduling_submission_ends' => [
+                'name' => 'mf_scheduling_submission_ends'
+            ],
+            'mf_scheduling_form_waiting_message' => [
+                'name' => 'mf_scheduling_form_waiting_message',
+            ],
+            'mf_scheduling_form_expired_message' => [
+                'name' => 'mf_scheduling_form_expired_message',
+            ],
             'count_views' => [
                 'name' => 'count_views',
             ],
@@ -232,6 +247,9 @@ class Cpt extends \MetForm\Base\Cpt
             'mf_field_name_show' => [
                 'name' => 'mf_field_name_show',
             ],
+            'mf_enable_entry_file_delete' => [
+                'name' => 'mf_enable_entry_file_delete',
+            ],
             'mf_recaptcha' => [
                 'name' => 'mf_recaptcha',
             ],
@@ -264,6 +282,16 @@ class Cpt extends \MetForm\Base\Cpt
                 'name' => 'mf_ckit_sec_key',
             ],
 
+            'mf_mailerlite' => [
+                'name' => 'mf_mailerlite',
+            ],
+
+            'mf_mailerlite_api_key' => [
+                'name' => 'mf_mailerlite_api_key',
+            ],
+            'mf_mailerlite_list_id' => [
+                'name' => 'mf_mailerlite_list_id',
+            ],
             'mf_aweber_dev_api_key' => [
                 'name' => 'mf_aweber_dev_api_key',
             ],
