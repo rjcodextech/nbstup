@@ -682,7 +682,7 @@ function pmpro_add_address_fields()
 								aria-required="true" <?php echo pmpronbstup_checkout_input_aria_invalid('declaration_accept'); ?>
 								required
 								<?php checked($declaration_accept, 1); ?> />
-							<?php esc_html_e('घोषणा – मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूँ / रही हूँ। यदि मैं नियम विरुद्ध कृत्य करता हूँ / करती हूँ तो मैं यह मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा।', 'pmpro-nbstup'); ?>
+							<?php esc_html_e('घोषणा – मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूँ / रही हूँ। यदि मैं नियम विरुद्ध कृत्य करता हूँ / करती हूँ तो मैं या मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा।', 'pmpro-nbstup'); ?>
 						</label>
 					</div>
 
@@ -892,7 +892,7 @@ function pmpro_nbstup_validate_checkout_fields($continue)
 		'dob' => __('Date of Birth', 'pmpro-nbstup'),
 		'gender' => __('Gender', 'pmpro-nbstup'),
 		'Occupation' => __('Occupation', 'pmpro-nbstup'),
-		'declaration_accept' => __('घोषणा – मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूँ / रही हूँ। यदि मैं नियम विरुद्ध कृत्य करता हूँ / करती हूँ तो मैं यह मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा।', 'pmpro-nbstup'),
+		'declaration_accept' => __('घोषणा – मैंने NBST की नियमावली को पढ़ ब समझ लिया है तथा उससे सहमत होकर स्वेच्छा से सदस्यता ले रहा हूँ / रही हूँ। यदि मैं नियम विरुद्ध कृत्य करता हूँ / करती हूँ तो मैं या मेरे नॉमिनी को किसी भी प्रकार का दावा करने का अधिकार नहीं होगा।', 'pmpro-nbstup'),
 		'member_password' => __('Password', 'pmpro-nbstup'),
 		'user_state' => __('State', 'pmpro-nbstup'),
 		'user_district' => __('District', 'pmpro-nbstup'),
