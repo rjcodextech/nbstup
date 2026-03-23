@@ -1,0 +1,249 @@
+0000.001 (0) Opened log file at time: Sun, 22 Mar 2026 10:57:43 +0000 on https://nbstup.com
+0000.002 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.26.2 WP: 6.9.4 PHP: 8.3.25 (fpm-fcgi, Linux server.hostxify.com 4.18.0-553.89.1.el8_10.x86_64 #1 SMP Mon Dec 8 03:53:08 EST 2025 x86_64) MySQL: 10.11.15-MariaDB (max packet size=268435456) WPLANG: en_US Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 77.7M | 79M) multisite: N openssl: OpenSSL 1.1.1k  FIPS 25 Mar 2021 mcrypt: N LANG:  WP Proxy: disabled ZipArchive::addFile: Y
+0000.003 (0) Free space on disk containing Updraft's temporary directory: Unknown
+0000.005 (0) Tasks: Backup files: 1 (schedule: twicedaily) Backup DB:  (schedule: twicedaily)
+0000.006 (0) Processed schedules. Combining jobs from identical schedules. Tasks now: Backup files: 1 Backup DB: 1
+0000.009 (0) Requesting semaphore lock (fd) (apparently via scheduler: last_scheduled_action_called_at=1774132142, seconds_ago=44921)
+0000.012 (0) Set semaphore last lock (fd) time to 2026-03-22 10:57:43
+0000.013 (0) Semaphore lock (fd) complete
+0000.016 (0) Backup run: resumption=0, nonce=977214c5335b, file_nonce=977214c5335b begun at=1774177063 (0s ago), job type=backup
+0000.017 (0) Scheduling a resumption (1) after 300 seconds (1774177363) in case this run gets aborted
+0000.030 (0) Checking if we have a zip executable available
+0000.031 (0) Creation of backups of directories: beginning
+0000.034 (0) No backup of plugins: excluded by user's options
+0000.035 (0) No backup of themes: excluded by user's options
+0000.036 (0) No backup of uploads: excluded by user's options
+0000.036 (0) No backup of mu-plugins: excluded by user's options
+0000.037 (0) No backup of others: excluded by user's options
+0000.041 (0) Saving backup status to database (elements: 0)
+0000.044 (0) Beginning creation of database dump (WordPress DB)
+0000.045 (0) SQL compatibility mode is: ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+0000.053 (0) Table yz2sd9X_options: Total expected rows (via COUNT): 462
+0000.054 (0) Table is relatively small; fetch_rows will thus be: 500 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0000.100 (0) Table yz2sd9X_options: Rows added in this batch (next record: 63923): 458 (uncompressed bytes in this segment=1551313) in 0.05 seconds
+0000.108 (0) Table yz2sd9X_options: finishing file(s) (2, 220.7 KB)
+0000.112 (0) Table yz2sd9X_users: Total expected rows (via COUNT): 140
+0000.112 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0000.117 (0) Table yz2sd9X_users: Rows added in this batch (next record: 185): 140 (uncompressed bytes in this segment=27077) in 0.01 seconds
+0000.120 (0) Table yz2sd9X_users: finishing file(s) (2, 11.4 KB)
+0000.126 (0) Table yz2sd9X_usermeta: Total expected rows (approximate): 5152
+0000.160 (0) Table yz2sd9X_usermeta: Rows added in this batch (next record: 6994): 5462 (uncompressed bytes in this segment=363609) in 0.04 seconds
+0000.165 (0) Table yz2sd9X_usermeta: finishing file(s) (2, 69.9 KB)
+0000.231 (0) Table yz2sd9X_actionscheduler_actions: Total expected rows (via COUNT): 5574
+0000.341 (0) Table yz2sd9X_actionscheduler_actions: Rows added in this batch (next record: 8730): 5574 (uncompressed bytes in this segment=3640220) in 0.17 seconds
+0000.346 (0) Table yz2sd9X_actionscheduler_actions: finishing file(s) (2, 149.6 KB)
+0000.349 (0) Table yz2sd9X_actionscheduler_claims: Total expected rows (via COUNT): 0
+0000.350 (0) Table yz2sd9X_actionscheduler_claims: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=657) in 0.00 seconds
+0000.354 (0) Table yz2sd9X_actionscheduler_claims: finishing file(s) (2, 0.4 KB)
+0000.357 (0) Table yz2sd9X_actionscheduler_groups: Total expected rows (via COUNT): 4
+0000.358 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0000.359 (0) Table yz2sd9X_actionscheduler_groups: Rows added in this batch (next record: 4): 4 (uncompressed bytes in this segment=771) in 0.00 seconds
+0000.362 (0) Table yz2sd9X_actionscheduler_groups: finishing file(s) (2, 0.4 KB)
+0000.365 (0) Table yz2sd9X_actionscheduler_logs: Total expected rows (approximate): 1962
+0000.526 (0) Table yz2sd9X_actionscheduler_logs: Rows added in this batch (next record: 25969): 16700 (uncompressed bytes in this segment=1478465) in 0.16 seconds
+0000.530 (0) Table yz2sd9X_actionscheduler_logs: finishing file(s) (2, 119.6 KB)
+0000.539 (0) Table yz2sd9X_commentmeta: Total expected rows (via COUNT): 0
+0000.543 (0) Table yz2sd9X_commentmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=664) in 0.01 seconds
+0000.550 (0) Table yz2sd9X_commentmeta: finishing file(s) (2, 0.4 KB)
+0000.556 (0) Table yz2sd9X_comments: Total expected rows (via COUNT): 1021
+0000.578 (0) Table yz2sd9X_comments: Rows added in this batch (next record: 1021): 1021 (uncompressed bytes in this segment=177735) in 0.02 seconds
+0000.581 (0) Table yz2sd9X_comments: finishing file(s) (2, 19.2 KB)
+0000.587 (0) Table yz2sd9X_e_notes: Total expected rows (via COUNT): 0
+0000.588 (0) Table yz2sd9X_e_notes: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1915) in 0.00 seconds
+0000.592 (0) Table yz2sd9X_e_notes: finishing file(s) (2, 0.7 KB)
+0000.597 (0) Table yz2sd9X_e_notes_users_relations: Total expected rows (via COUNT): 0
+0000.598 (0) Table yz2sd9X_e_notes_users_relations: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=882) in 0.00 seconds
+0000.601 (0) Table yz2sd9X_e_notes_users_relations: finishing file(s) (2, 0.4 KB)
+0000.606 (0) Table yz2sd9X_links: Total expected rows (via COUNT): 0
+0000.607 (0) Table yz2sd9X_links: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1057) in 0.00 seconds
+0000.610 (0) Table yz2sd9X_links: finishing file(s) (2, 0.5 KB)
+0001.393 (0) Table yz2sd9X_postmeta: Total expected rows (approximate): 3514
+0002.091 (0) Table yz2sd9X_postmeta: Rows added in this batch (next record: 10729): 6817 (uncompressed bytes in this segment=32897407) in 1.48 seconds
+0002.098 (0) Table yz2sd9X_postmeta: finishing file(s) (2, 2918.8 KB)
+0002.389 (0) Table yz2sd9X_posts: Total expected rows (via COUNT): 882
+0002.536 (0) Table yz2sd9X_posts: Rows added in this batch (next record: 982): 882 (uncompressed bytes in this segment=8826152) in 0.44 seconds
+0002.541 (0) Table yz2sd9X_posts: finishing file(s) (2, 322.7 KB)
+0002.544 (0) Table yz2sd9X_term_relationships: Total expected rows (approximate): 40
+0002.547 (0) Table yz2sd9X_term_relationships: Rows added in this batch (next record: 100000): 34 (uncompressed bytes in this segment=1185) in 0.00 seconds
+0002.550 (0) Table yz2sd9X_term_relationships: finishing file(s) (2, 0.5 KB)
+0002.554 (0) Table yz2sd9X_term_taxonomy: Total expected rows (via COUNT): 10
+0002.555 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.557 (0) Table yz2sd9X_term_taxonomy: Rows added in this batch (next record: 10): 10 (uncompressed bytes in this segment=1275) in 0.01 seconds
+0002.561 (0) Table yz2sd9X_term_taxonomy: finishing file(s) (2, 0.6 KB)
+0002.566 (0) Table yz2sd9X_termmeta: Total expected rows (via COUNT): 0
+0002.568 (0) Table yz2sd9X_termmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=637) in 0.00 seconds
+0002.572 (0) Table yz2sd9X_termmeta: finishing file(s) (2, 0.4 KB)
+0002.575 (0) Table yz2sd9X_terms: Total expected rows (via COUNT): 10
+0002.576 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.578 (0) Table yz2sd9X_terms: Rows added in this batch (next record: 10): 10 (uncompressed bytes in this segment=1015) in 0.00 seconds
+0002.582 (0) Table yz2sd9X_terms: finishing file(s) (2, 0.5 KB)
+0002.588 (0) Table yz2sd9X_e_events: Total expected rows (via COUNT): 0
+0002.590 (0) Table yz2sd9X_e_events: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=541) in 0.00 seconds
+0002.593 (0) Table yz2sd9X_e_events: finishing file(s) (2, 0.4 KB)
+0002.598 (0) Table yz2sd9X_e_submissions: Total expected rows (via COUNT): 0
+0002.599 (0) Table yz2sd9X_e_submissions: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=2009) in 0.00 seconds
+0002.603 (0) Table yz2sd9X_e_submissions: finishing file(s) (2, 0.7 KB)
+0002.607 (0) Table yz2sd9X_e_submissions_actions_log: Total expected rows (via COUNT): 0
+0002.608 (0) Table yz2sd9X_e_submissions_actions_log: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=1170) in 0.00 seconds
+0002.611 (0) Table yz2sd9X_e_submissions_actions_log: finishing file(s) (2, 0.5 KB)
+0002.616 (0) Table yz2sd9X_e_submissions_values: Total expected rows (via COUNT): 0
+0002.617 (0) Table yz2sd9X_e_submissions_values: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=703) in 0.00 seconds
+0002.622 (0) Table yz2sd9X_e_submissions_values: finishing file(s) (2, 0.4 KB)
+0002.626 (0) Table yz2sd9X_pmpro_discount_codes: Total expected rows (via COUNT): 0
+0002.627 (0) Table yz2sd9X_pmpro_discount_codes: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=753) in 0.00 seconds
+0002.630 (0) Table yz2sd9X_pmpro_discount_codes: finishing file(s) (2, 0.4 KB)
+0002.634 (0) Table yz2sd9X_pmpro_discount_codes_levels: Total expected rows (approximate): 0
+0002.635 (0) Table yz2sd9X_pmpro_discount_codes_levels: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=1139) in 0.00 seconds
+0002.638 (0) Table yz2sd9X_pmpro_discount_codes_levels: finishing file(s) (2, 0.5 KB)
+0002.643 (0) Table yz2sd9X_pmpro_discount_codes_uses: Total expected rows (via COUNT): 0
+0002.644 (0) Table yz2sd9X_pmpro_discount_codes_uses: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=815) in 0.00 seconds
+0002.648 (0) Table yz2sd9X_pmpro_discount_codes_uses: finishing file(s) (2, 0.4 KB)
+0002.652 (0) Table yz2sd9X_pmpro_groups: Total expected rows (via COUNT): 1
+0002.653 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.655 (0) Table yz2sd9X_pmpro_groups: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=698) in 0.00 seconds
+0002.658 (0) Table yz2sd9X_pmpro_groups: finishing file(s) (2, 0.4 KB)
+0002.663 (0) Table yz2sd9X_pmpro_membership_levelmeta: Total expected rows (via COUNT): 2
+0002.664 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.665 (0) Table yz2sd9X_pmpro_membership_levelmeta: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=985) in 0.00 seconds
+0002.669 (0) Table yz2sd9X_pmpro_membership_levelmeta: finishing file(s) (2, 0.5 KB)
+0002.674 (0) Table yz2sd9X_pmpro_membership_levels: Total expected rows (via COUNT): 1
+0002.675 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.676 (0) Table yz2sd9X_pmpro_membership_levels: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=2233) in 0.00 seconds
+0002.680 (0) Table yz2sd9X_pmpro_membership_levels: finishing file(s) (2, 1 KB)
+0002.684 (0) Table yz2sd9X_pmpro_membership_levels_groups: Total expected rows (via COUNT): 1
+0002.685 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.686 (0) Table yz2sd9X_pmpro_membership_levels_groups: Rows added in this batch (next record: 11): 1 (uncompressed bytes in this segment=796) in 0.00 seconds
+0002.689 (0) Table yz2sd9X_pmpro_membership_levels_groups: finishing file(s) (2, 0.4 KB)
+0002.695 (0) Table yz2sd9X_pmpro_membership_ordermeta: Total expected rows (via COUNT): 0
+0002.697 (0) Table yz2sd9X_pmpro_membership_ordermeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=785) in 0.00 seconds
+0002.701 (0) Table yz2sd9X_pmpro_membership_ordermeta: finishing file(s) (2, 0.4 KB)
+0002.705 (0) Table yz2sd9X_pmpro_membership_orders: Total expected rows (via COUNT): 190
+0002.706 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.715 (0) Table yz2sd9X_pmpro_membership_orders: Rows added in this batch (next record: 190): 190 (uncompressed bytes in this segment=53818) in 0.01 seconds
+0002.718 (0) Table yz2sd9X_pmpro_membership_orders: finishing file(s) (2, 14.1 KB)
+0002.722 (0) Table yz2sd9X_pmpro_memberships_categories: Total expected rows (approximate): 0
+0002.724 (0) Table yz2sd9X_pmpro_memberships_categories: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=775) in 0.00 seconds
+0002.727 (0) Table yz2sd9X_pmpro_memberships_categories: finishing file(s) (2, 0.4 KB)
+0002.730 (0) Table yz2sd9X_pmpro_memberships_pages: Total expected rows (approximate): 0
+0002.731 (0) Table yz2sd9X_pmpro_memberships_pages: Rows added in this batch (next record: 0): 0 (uncompressed bytes in this segment=729) in 0.00 seconds
+0002.734 (0) Table yz2sd9X_pmpro_memberships_pages: finishing file(s) (2, 0.4 KB)
+0002.738 (0) Table yz2sd9X_pmpro_memberships_users: Total expected rows (via COUNT): 141
+0002.739 (0) Table is relatively small; fetch_rows will thus be: 250 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.743 (0) Table yz2sd9X_pmpro_memberships_users: Rows added in this batch (next record: 158): 141 (uncompressed bytes in this segment=23119) in 0.01 seconds
+0002.747 (0) Table yz2sd9X_pmpro_memberships_users: finishing file(s) (2, 3 KB)
+0002.752 (0) Table yz2sd9X_pmpro_nbstup_blocks: Total expected rows (via COUNT): 809
+0002.759 (0) Table yz2sd9X_pmpro_nbstup_blocks: Rows added in this batch (next record: 809): 809 (uncompressed bytes in this segment=38731) in 0.01 seconds
+0002.762 (0) Table yz2sd9X_pmpro_nbstup_blocks: finishing file(s) (2, 7.9 KB)
+0002.767 (0) Table yz2sd9X_pmpro_nbstup_districts: Total expected rows (via COUNT): 75
+0002.767 (0) Table is relatively small; fetch_rows will thus be: 100 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.770 (0) Table yz2sd9X_pmpro_nbstup_districts: Rows added in this batch (next record: 75): 75 (uncompressed bytes in this segment=4112) in 0.01 seconds
+0002.773 (0) Table yz2sd9X_pmpro_nbstup_districts: finishing file(s) (2, 1.1 KB)
+0002.777 (0) Table yz2sd9X_pmpro_nbstup_states: Total expected rows (via COUNT): 1
+0002.777 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.779 (0) Table yz2sd9X_pmpro_nbstup_states: Rows added in this batch (next record: 1): 1 (uncompressed bytes in this segment=716) in 0.00 seconds
+0002.783 (0) Table yz2sd9X_pmpro_nbstup_states: finishing file(s) (2, 0.4 KB)
+0002.787 (0) Table yz2sd9X_pmpro_subscriptionmeta: Total expected rows (via COUNT): 0
+0002.789 (0) Table yz2sd9X_pmpro_subscriptionmeta: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=749) in 0.00 seconds
+0002.793 (0) Table yz2sd9X_pmpro_subscriptionmeta: finishing file(s) (2, 0.4 KB)
+0002.797 (0) Table yz2sd9X_pmpro_subscriptions: Total expected rows (via COUNT): 2
+0002.798 (0) Table is relatively small; fetch_rows will thus be: 20 (allow_further_reductions=1, is_first_fetch=1, known_bigger_than_table=1)
+0002.801 (0) Table yz2sd9X_pmpro_subscriptions: Rows added in this batch (next record: 2): 2 (uncompressed bytes in this segment=1935) in 0.00 seconds
+0002.804 (0) Table yz2sd9X_pmpro_subscriptions: finishing file(s) (2, 0.7 KB)
+0002.810 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: Total expected rows (via COUNT): 0
+0002.812 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: Rows added in this batch (next record: -1): 0 (uncompressed bytes in this segment=747) in 0.00 seconds
+0002.816 (0) Table yz2sd9X_wp_phpmyadmin_extension__errors_log: finishing file(s) (2, 0.4 KB)
+0002.818 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_options.table.tmpr63924.gz (1/40/fopen): adding to final database dump
+0002.825 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_options.table.gz (2/40/fopen): adding to final database dump
+0002.826 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_users.table.tmpr186.gz (3/40/fopen): adding to final database dump
+0002.827 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_users.table.gz (4/40/fopen): adding to final database dump
+0002.827 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_usermeta.table.tmpr6995.gz (5/40/fopen): adding to final database dump
+0002.830 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_usermeta.table.gz (6/40/fopen): adding to final database dump
+0002.831 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_actions.table.tmpr8731.gz (7/40/fopen): adding to final database dump
+0002.835 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_actions.table.gz (8/40/fopen): adding to final database dump
+0002.836 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_claims.table.tmpr0.gz (9/40/fopen): adding to final database dump
+0002.837 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_claims.table.gz (10/40/fopen): adding to final database dump
+0002.838 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_groups.table.tmpr5.gz (11/40/fopen): adding to final database dump
+0002.838 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_groups.table.gz (12/40/fopen): adding to final database dump
+0002.839 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_logs.table.tmpr25970.gz (13/40/fopen): adding to final database dump
+0002.843 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_actionscheduler_logs.table.gz (14/40/fopen): adding to final database dump
+0002.844 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_commentmeta.table.tmpr0.gz (15/40/fopen): adding to final database dump
+0002.845 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_commentmeta.table.gz (16/40/fopen): adding to final database dump
+0002.846 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_comments.table.tmpr1022.gz (17/40/fopen): adding to final database dump
+0002.847 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_comments.table.gz (18/40/fopen): adding to final database dump
+0002.848 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_notes.table.tmpr0.gz (19/40/fopen): adding to final database dump
+0002.849 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_notes.table.gz (20/40/fopen): adding to final database dump
+0002.850 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_notes_users_relations.table.tmpr0.gz (21/40/fopen): adding to final database dump
+0002.850 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_notes_users_relations.table.gz (22/40/fopen): adding to final database dump
+0002.851 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_links.table.tmpr0.gz (23/40/fopen): adding to final database dump
+0002.852 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_links.table.gz (24/40/fopen): adding to final database dump
+0002.853 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_postmeta.table.tmpr10730.gz (25/40/fopen): adding to final database dump
+0002.925 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_postmeta.table.gz (26/40/fopen): adding to final database dump
+0002.926 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_posts.table.tmpr983.gz (27/40/fopen): adding to final database dump
+0002.934 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_posts.table.gz (28/40/fopen): adding to final database dump
+0002.935 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_term_relationships.table.tmpr100001.gz (29/40/fopen): adding to final database dump
+0002.936 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_term_relationships.table.gz (30/40/fopen): adding to final database dump
+0002.937 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_term_taxonomy.table.tmpr11.gz (31/40/fopen): adding to final database dump
+0002.938 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_term_taxonomy.table.gz (32/40/fopen): adding to final database dump
+0002.939 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_termmeta.table.tmpr0.gz (33/40/fopen): adding to final database dump
+0002.940 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_termmeta.table.gz (34/40/fopen): adding to final database dump
+0002.941 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_terms.table.tmpr11.gz (35/40/fopen): adding to final database dump
+0002.942 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_terms.table.gz (36/40/fopen): adding to final database dump
+0002.942 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_events.table.tmpr0.gz (37/40/fopen): adding to final database dump
+0002.943 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_events.table.gz (38/40/fopen): adding to final database dump
+0002.944 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions.table.tmpr0.gz (39/40/fopen): adding to final database dump
+0002.945 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions.table.gz (40/40/fopen): adding to final database dump
+0002.946 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions_actions_log.table.tmpr0.gz (41/40/fopen): adding to final database dump
+0002.947 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions_actions_log.table.gz (42/40/fopen): adding to final database dump
+0002.947 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions_values.table.tmpr0.gz (43/40/fopen): adding to final database dump
+0002.948 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_e_submissions_values.table.gz (44/40/fopen): adding to final database dump
+0002.949 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes.table.tmpr0.gz (45/40/fopen): adding to final database dump
+0002.950 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes.table.gz (46/40/fopen): adding to final database dump
+0002.951 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes_levels.table.tmpr1.gz (47/40/fopen): adding to final database dump
+0002.951 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes_levels.table.gz (48/40/fopen): adding to final database dump
+0002.952 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes_uses.table.tmpr0.gz (49/40/fopen): adding to final database dump
+0002.953 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_discount_codes_uses.table.gz (50/40/fopen): adding to final database dump
+0002.954 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_groups.table.tmpr2.gz (51/40/fopen): adding to final database dump
+0002.955 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_groups.table.gz (52/40/fopen): adding to final database dump
+0002.956 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levelmeta.table.tmpr3.gz (53/40/fopen): adding to final database dump
+0002.957 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levelmeta.table.gz (54/40/fopen): adding to final database dump
+0002.958 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levels.table.tmpr2.gz (55/40/fopen): adding to final database dump
+0002.958 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levels.table.gz (56/40/fopen): adding to final database dump
+0002.959 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levels_groups.table.tmpr12.gz (57/40/fopen): adding to final database dump
+0002.960 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_levels_groups.table.gz (58/40/fopen): adding to final database dump
+0002.961 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_ordermeta.table.tmpr0.gz (59/40/fopen): adding to final database dump
+0002.962 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_ordermeta.table.gz (60/40/fopen): adding to final database dump
+0002.962 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_orders.table.tmpr191.gz (61/40/fopen): adding to final database dump
+0002.964 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_membership_orders.table.gz (62/40/fopen): adding to final database dump
+0002.965 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_categories.table.tmpr1.gz (63/40/fopen): adding to final database dump
+0002.965 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_categories.table.gz (64/40/fopen): adding to final database dump
+0002.966 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_pages.table.tmpr1.gz (65/40/fopen): adding to final database dump
+0002.967 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_pages.table.gz (66/40/fopen): adding to final database dump
+0002.968 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_users.table.tmpr159.gz (67/40/fopen): adding to final database dump
+0002.969 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_memberships_users.table.gz (68/40/fopen): adding to final database dump
+0002.970 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_blocks.table.tmpr810.gz (69/40/fopen): adding to final database dump
+0002.971 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_blocks.table.gz (70/40/fopen): adding to final database dump
+0002.972 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_districts.table.tmpr76.gz (71/40/fopen): adding to final database dump
+0002.972 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_districts.table.gz (72/40/fopen): adding to final database dump
+0002.973 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_states.table.tmpr2.gz (73/40/fopen): adding to final database dump
+0002.974 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_nbstup_states.table.gz (74/40/fopen): adding to final database dump
+0002.975 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_subscriptionmeta.table.tmpr0.gz (75/40/fopen): adding to final database dump
+0002.976 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_subscriptionmeta.table.gz (76/40/fopen): adding to final database dump
+0002.977 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_subscriptions.table.tmpr3.gz (77/40/fopen): adding to final database dump
+0002.978 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_pmpro_subscriptions.table.gz (78/40/fopen): adding to final database dump
+0002.979 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_wp_phpmyadmin_extension__errors_log.table.tmpr0.gz (79/40/fopen): adding to final database dump
+0002.980 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db-table-yz2sd9X_wp_phpmyadmin_extension__errors_log.table.gz (80/40/fopen): adding to final database dump
+0002.984 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db.gz: finished writing out complete database file (3871.3 KB)
+0003.026 (0) Total database tables backed up: 40 (backup_2026-03-22-1627_NBSTUP_977214c5335b-db.gz, size: 3964359, sha1: 281b37df292592f2f29c511e26307eae13602565, sha256: b2c31462eedb1ca67de93e6e251a5047c2fc87c5d604a35291cb7639414cc955)
+0003.031 (0) backup_2026-03-22-1627_NBSTUP_977214c5335b-db.gz: db: This file has not yet been successfully uploaded: will queue
+0003.032 (0) Saving backup history. Total backup size: 3.8 MB
+0003.035 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0003.037 (0) Cloud backup selection (1/1): none with instance (1/1) (last)
+0003.038 (0) No remote despatch: user chose no remote backup service
+0003.039 (0) Recording as successfully uploaded: backup_2026-03-22-1627_NBSTUP_977214c5335b-db.gz
+0003.041 (0) Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups
+0003.042 (0) Resume backup (977214c5335b, 0): finish run
+0003.049 (0) Decremented the semaphore (fd) by 1
+0003.054 (0) Semaphore (fd) unlocked
+0003.055 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0003.061 (0) No email will/can be sent - the user has not configured an email address.
+0003.061 (0) The backup succeeded and is now complete
