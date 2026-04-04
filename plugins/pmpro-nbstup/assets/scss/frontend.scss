@@ -1093,3 +1093,14 @@ fieldset#pmpro_user_fields {
 div#declaration_accept_wrap label {
   line-height: 1.8;
 }
+
+.pmpro-checkout {
+  &.logged-in {
+    fieldset#pmpro_user_fields {
+      display: block;
+    }
+    .pmpro_form_submit {
+      display: none;
+    }
+  }
+}

@@ -174,6 +174,11 @@ function pmpro_add_member_details_fields()
 		'Advocate' => __('Advocate', 'pmpro-nbstup'),
 		'Other' => __('Other', 'pmpro-nbstup'),
 	);
+
+
+	if(is_user_logged_in()):
+		return;
+	endif;
 ?>
 	<fieldset id="pmpro_form_fieldset-member-details" class="pmpro_form_fieldset">
 		<div class="pmpro_card">
@@ -401,6 +406,10 @@ function pmpro_add_nominee_details_fields()
 			$values[$key] = sanitize_text_field(wp_unslash($_REQUEST[$key]));
 		}
 	}
+
+	if(is_user_logged_in()):
+		return;
+	endif;
 ?>
 	<fieldset id="pmpro_form_fieldset-nominee-details" class="pmpro_form_fieldset">
 		<div class="pmpro_card">
@@ -569,6 +578,10 @@ function pmpro_add_address_fields()
 	} elseif (isset($_REQUEST['declaration_accept'])) {
 		$declaration_accept = (int) sanitize_text_field(wp_unslash($_REQUEST['declaration_accept']));
 	}
+
+	if(is_user_logged_in()):
+		return;
+	endif;
 ?>
 	<fieldset id="pmpro_form_fieldset-address" class="pmpro_form_fieldset">
 		<div class="pmpro_card">
