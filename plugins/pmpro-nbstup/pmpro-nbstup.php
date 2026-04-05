@@ -4,7 +4,7 @@
  * Plugin Name: PMPro NBSTUP Addon
  * Description: Custom addon for Paid Memberships Pro to control subscriber activation via bank CSV import and handle deceased members.
  * Author: WebWallah
- * Version: 1.0.6
+ * Version: 1.0.7
  * Text Domain: pmpro-nbstup
  * Domain Path: /languages
  * License: GPL v2 or later
@@ -28,7 +28,7 @@
  * - User listing shortcode with search and pagination
  *
  * @package PMProNBSTUP
- * @version 1.0.6
+ * @version 1.0.7
  */
 
 if (! defined('ABSPATH')) {
@@ -36,14 +36,14 @@ if (! defined('ABSPATH')) {
 }
 
 // Define plugin constants for easy reference throughout the codebase.
-define('PMPRONBSTUP_VERSION', '1.0.6');
+define('PMPRONBSTUP_VERSION', '1.0.7');
 define('PMPRONBSTUP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PMPRONBSTUP_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PMPRONBSTUP_INCLUDES_DIR', PMPRONBSTUP_PLUGIN_DIR . 'includes/');
 
 // Check if Paid Memberships Pro is active
 if (!defined('PMPRO_VERSION')) {
-    add_action('admin_notices', function() {
+    add_action('admin_notices', function () {
         echo '<div class="error"><p>PMPro NBSTUP Addon requires Paid Memberships Pro to be installed and active.</p></div>';
     });
     return;
@@ -86,7 +86,7 @@ function pmpronbstup_activate()
 {
     // Add rewrite rules first before flushing
     pmpronbstup_add_rewrite_rules();
-    
+
     // Flush rewrite rules after adding new ones
     flush_rewrite_rules();
 
@@ -114,7 +114,7 @@ function pmpronbstup_deactivate()
     // Unschedule daily events
     wp_clear_scheduled_hook('wp_scheduled_event_pmpronbstup_check_expiry');
     wp_clear_scheduled_hook('wp_scheduled_event_pmpronbstup_check_contribution');
-    
+
     // Flush rewrite rules
     flush_rewrite_rules();
 }
@@ -245,15 +245,15 @@ function pmpronbstup_redirect_default_login()
     // itself needs to handle an action such as logout.  Without this check the
     // logout link (which hits wp-login.php?action=logout) is immediately
     // redirected and the user never actually gets logged out.
-    if ( strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false ) {
+    if (strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false) {
         // Allow the logout action to proceed to core.  We also passthrough for
         // other actions like "lostpassword" or "resetpass" just in case but the
         // primary problem reported by the user was inability to log out.
-        if ( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], array( 'logout', 'lostpassword', 'resetpass', 'rp', 'retrievepassword' ), true ) ) {
+        if (isset($_REQUEST['action']) && in_array($_REQUEST['action'], array('logout', 'lostpassword', 'resetpass', 'rp', 'retrievepassword'), true)) {
             return;
         }
 
-        wp_redirect( home_url() );
+        wp_redirect(home_url());
         exit;
     }
 }
@@ -266,9 +266,10 @@ add_action('login_init', 'pmpronbstup_redirect_default_login');
  */
 function pmpronbstup_load_admin_login_template()
 {
-    ?>
+?>
     <!DOCTYPE html>
     <html <?php language_attributes(); ?>>
+
     <head>
         <meta charset="<?php bloginfo('charset'); ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -284,7 +285,8 @@ function pmpronbstup_load_admin_login_template()
                 box-sizing: border-box;
             }
 
-            html, body {
+            html,
+            body {
                 height: 100%;
                 width: 100%;
             }
@@ -521,6 +523,7 @@ function pmpronbstup_load_admin_login_template()
                     opacity: 0;
                     transform: translateY(-10px);
                 }
+
                 to {
                     opacity: 1;
                     transform: translateY(0);
@@ -633,10 +636,13 @@ function pmpronbstup_load_admin_login_template()
             }
 
             @keyframes spin {
-                to { transform: rotate(360deg); }
+                to {
+                    transform: rotate(360deg);
+                }
             }
         </style>
     </head>
+
     <body>
         <div class="pmpro-nbstup-admin-login-wrapper">
             <div class="pmpro-nbstup-admin-login-container">
@@ -656,7 +662,7 @@ function pmpronbstup_load_admin_login_template()
                         <?php echo do_shortcode('[pmpro_nbstup_admin_login redirect="' . esc_url(admin_url()) . '"]'); ?>
 
                         <div class="admin-login-footer-text">
-                            <?php esc_html_e('Don\'t have an account?', 'pmpro-nbstup'); ?> 
+                            <?php esc_html_e('Don\'t have an account?', 'pmpro-nbstup'); ?>
                             <a href="<?php echo esc_url(home_url('/registration')); ?>"><?php esc_html_e('Sign Up', 'pmpro-nbstup'); ?></a>
                         </div>
                     </div>
@@ -668,8 +674,7 @@ function pmpronbstup_load_admin_login_template()
         </div>
         <?php wp_footer(); ?>
     </body>
+
     </html>
-    <?php
+<?php
 }
-
-
