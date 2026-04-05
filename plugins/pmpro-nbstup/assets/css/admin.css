@@ -115,3 +115,196 @@
     width: 100%;
   }
 }
+
+/* ── Members List ─────────────────────────────── */
+
+.pmpro-nbstup-members-list-wrap {
+  max-width: 1400px;
+}
+
+.pmpro-nbstup-members-list-filters {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin: 16px 0;
+  padding: 16px;
+}
+
+.pmpro-nbstup-members-list-filters-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pmpro-nbstup-members-list-filter-select {
+  min-height: 32px;
+}
+
+.pmpro-nbstup-members-list-filter-search {
+  min-height: 32px;
+  min-width: 280px;
+}
+
+.pmpro-nbstup-members-list-count {
+  color: #50575e;
+  margin: 8px 0 0;
+}
+
+.pmpro-nbstup-member-status {
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pmpro-nbstup-member-status--active {
+  background: #edfaef;
+  color: #00a32a;
+}
+
+.pmpro-nbstup-member-status--inactive {
+  background: #fef0f0;
+  color: #d63638;
+}
+
+.pmpro-nbstup-member-status--deceased {
+  background: #f0f0f1;
+  color: #50575e;
+}
+
+.pmpro-nbstup-members-list-wrap .wp-list-table td,
+.pmpro-nbstup-members-list-wrap .wp-list-table th {
+  vertical-align: middle;
+}
+
+.pmpro-nbstup-members-list-wrap .column-id {
+  width: 40px;
+}
+
+.pmpro-nbstup-members-list-wrap .column-unique-id {
+  width: 90px;
+}
+
+.pmpro-nbstup-members-list-wrap .column-status {
+  width: 90px;
+}
+
+.pmpro-nbstup-members-list-wrap .column-actions {
+  width: 70px;
+}
+
+/* ── Pagination ───────────────────────────────── */
+
+.pmpro-nbstup-pagination {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 16px 0;
+  padding: 12px 16px;
+}
+
+.pmpro-nbstup-pagination__total {
+  color: #50575e;
+  font-size: 13px;
+}
+
+.pmpro-nbstup-pagination__links {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.pmpro-nbstup-pagination__btn {
+  align-items: center;
+  background: #f0f0f1;
+  border: 1px solid #dcdcde;
+  border-radius: 4px;
+  color: #2271b1;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  justify-content: center;
+  min-width: 32px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.pmpro-nbstup-pagination__btn:hover {
+  background: #2271b1;
+  border-color: #2271b1;
+  color: #fff;
+}
+
+.pmpro-nbstup-pagination__btn:focus {
+  box-shadow: 0 0 0 2px #2271b1;
+  outline: none;
+}
+
+.pmpro-nbstup-pagination__btn.is-disabled {
+  background: #f6f7f7;
+  border-color: #dcdcde;
+  color: #a7aaad;
+  cursor: default;
+  pointer-events: none;
+}
+
+.pmpro-nbstup-pagination__indicator {
+  align-items: center;
+  color: #50575e;
+  display: inline-flex;
+  font-size: 13px;
+  gap: 6px;
+  padding: 0 4px;
+}
+
+.pmpro-nbstup-pagination__jump-form {
+  display: inline;
+  margin: 0;
+}
+
+.pmpro-nbstup-pagination__input {
+  border: 1px solid #8c8f94;
+  border-radius: 4px;
+  font-size: 13px;
+  height: 30px;
+  line-height: 1;
+  padding: 0 4px;
+  text-align: center;
+  width: 52px;
+}
+
+.pmpro-nbstup-pagination__input:focus {
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
+  outline: none;
+}
+
+@media (max-width: 782px) {
+  .pmpro-nbstup-members-list-filter-search {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .pmpro-nbstup-members-list-wrap .wp-list-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .pmpro-nbstup-pagination {
+    justify-content: center;
+  }
+}

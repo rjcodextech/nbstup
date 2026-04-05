@@ -4,7 +4,7 @@
  * Plugin Name: PMPro NBSTUP Addon
  * Description: Custom addon for Paid Memberships Pro to control subscriber activation via bank CSV import and handle deceased members.
  * Author: WebWallah
- * Version: 1.0.7
+ * Version: 1.0.8
  * Text Domain: pmpro-nbstup
  * Domain Path: /languages
  * License: GPL v2 or later
@@ -28,7 +28,7 @@
  * - User listing shortcode with search and pagination
  *
  * @package PMProNBSTUP
- * @version 1.0.7
+ * @version 1.0.8
  */
 
 if (! defined('ABSPATH')) {
@@ -36,7 +36,7 @@ if (! defined('ABSPATH')) {
 }
 
 // Define plugin constants for easy reference throughout the codebase.
-define('PMPRONBSTUP_VERSION', '1.0.7');
+define('PMPRONBSTUP_VERSION', '1.0.8');
 define('PMPRONBSTUP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PMPRONBSTUP_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PMPRONBSTUP_INCLUDES_DIR', PMPRONBSTUP_PLUGIN_DIR . 'includes/');
@@ -173,6 +173,9 @@ function pmpronbstup_load_files()
 
     // Location management (States, Districts, Blocks).
     require_once $includes_dir . 'functions-location.php';
+
+    // Members List admin page.
+    require_once $includes_dir . 'functions-members-list.php';
 
     // Email settings page and template management.
     require_once $includes_dir . 'functions-email-settings.php';

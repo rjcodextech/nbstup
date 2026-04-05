@@ -41,6 +41,16 @@ function pmpronbstup_admin_menu()
         'pmpronbstup_render_admin_page'      // Callback
     );
 
+    // Add Members List submenu
+    add_submenu_page(
+        $parent_slug,
+        __('Members List', 'pmpro-nbstup'),
+        __('Members List', 'pmpro-nbstup'),
+        $capability,
+        'pmpro-nbstup-members-list',
+        'pmpronbstup_render_members_list_page'
+    );
+
     // Add Location Management submenu
     add_submenu_page(
         $parent_slug,
@@ -144,11 +154,11 @@ function pmpronbstup_render_vcard_export_notice()
     if ($message === '') {
         return;
     }
-    ?>
+?>
     <div class="notice notice-error is-dismissible">
         <p><?php echo esc_html($message); ?></p>
     </div>
-    <?php
+<?php
 }
 add_action('admin_notices', 'pmpronbstup_render_vcard_export_notice');
 
@@ -170,7 +180,7 @@ function pmpronbstup_add_memberslist_vcard_export_button()
     $registered_from = isset($_GET['pmpronbstup_registered_from']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_from'])) : '';
     $registered_to   = isset($_GET['pmpronbstup_registered_to']) ? sanitize_text_field(wp_unslash($_GET['pmpronbstup_registered_to'])) : '';
     $export_nonce    = wp_create_nonce('pmpronbstup_export_members_vcards');
-    ?>
+?>
     <script>
         (function() {
             function addVcardExportModalButton() {
@@ -323,7 +333,7 @@ function pmpronbstup_add_memberslist_vcard_export_button()
             }
         })();
     </script>
-    <?php
+<?php
 }
 add_action('admin_footer', 'pmpronbstup_add_memberslist_vcard_export_button', 20);
 
@@ -537,19 +547,19 @@ function pmpronbstup_render_states_tab()
                 <?php else : ?>
                     <input type="hidden" name="action" value="add_state" />
                 <?php endif; ?>
-                
+
                 <table class="form-table">
                     <tr>
                         <th><label for="state_name"><?php esc_html_e('State Name', 'pmpro-nbstup'); ?></label></th>
                         <td>
-                            <input type="text" id="state_name" name="state_name" class="regular-text" 
-                                   value="<?php echo $edit_state ? esc_attr($edit_state->name) : ''; ?>" required />
+                            <input type="text" id="state_name" name="state_name" class="regular-text"
+                                value="<?php echo $edit_state ? esc_attr($edit_state->name) : ''; ?>" required />
                         </td>
                     </tr>
                 </table>
-                
+
                 <?php submit_button($edit_state ? __('Update State', 'pmpro-nbstup') : __('Add State', 'pmpro-nbstup')); ?>
-                
+
                 <?php if ($edit_state) : ?>
                     <a href="?page=pmpro-nbstup-location-management&loc_tab=states" class="button">
                         <?php esc_html_e('Cancel', 'pmpro-nbstup'); ?>
@@ -582,8 +592,8 @@ function pmpronbstup_render_states_tab()
                                         <?php esc_html_e('Edit', 'pmpro-nbstup'); ?>
                                     </a>
                                     |
-                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=states&delete_state=<?php echo esc_attr($state->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_state_' . $state->id); ?>" 
-                                       onclick="return confirm('<?php esc_attr_e('Are you sure? This will delete all districts and blocks under this state.', 'pmpro-nbstup'); ?>');">
+                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=states&delete_state=<?php echo esc_attr($state->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_state_' . $state->id); ?>"
+                                        onclick="return confirm('<?php esc_attr_e('Are you sure? This will delete all districts and blocks under this state.', 'pmpro-nbstup'); ?>');">
                                         <?php esc_html_e('Delete', 'pmpro-nbstup'); ?>
                                     </a>
                                 </td>
@@ -660,7 +670,7 @@ function pmpronbstup_render_districts_tab()
                 <?php else : ?>
                     <input type="hidden" name="action" value="add_district" />
                 <?php endif; ?>
-                
+
                 <table class="form-table">
                     <tr>
                         <th><label for="district_state"><?php esc_html_e('State', 'pmpro-nbstup'); ?></label></th>
@@ -668,8 +678,8 @@ function pmpronbstup_render_districts_tab()
                             <select id="district_state" name="district_state" required>
                                 <option value=""><?php esc_html_e('Select State', 'pmpro-nbstup'); ?></option>
                                 <?php foreach ($states as $state) : ?>
-                                    <option value="<?php echo esc_attr($state->id); ?>" 
-                                            <?php echo ($edit_district && $edit_district->state_id == $state->id) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo esc_attr($state->id); ?>"
+                                        <?php echo ($edit_district && $edit_district->state_id == $state->id) ? 'selected' : ''; ?>>
                                         <?php echo esc_html($state->name); ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -679,14 +689,14 @@ function pmpronbstup_render_districts_tab()
                     <tr>
                         <th><label for="district_name"><?php esc_html_e('District Name', 'pmpro-nbstup'); ?></label></th>
                         <td>
-                            <input type="text" id="district_name" name="district_name" class="regular-text" 
-                                   value="<?php echo $edit_district ? esc_attr($edit_district->name) : ''; ?>" required />
+                            <input type="text" id="district_name" name="district_name" class="regular-text"
+                                value="<?php echo $edit_district ? esc_attr($edit_district->name) : ''; ?>" required />
                         </td>
                     </tr>
                 </table>
-                
+
                 <?php submit_button($edit_district ? __('Update District', 'pmpro-nbstup') : __('Add District', 'pmpro-nbstup')); ?>
-                
+
                 <?php if ($edit_district) : ?>
                     <a href="?page=pmpro-nbstup-location-management&loc_tab=districts" class="button">
                         <?php esc_html_e('Cancel', 'pmpro-nbstup'); ?>
@@ -721,8 +731,8 @@ function pmpronbstup_render_districts_tab()
                                         <?php esc_html_e('Edit', 'pmpro-nbstup'); ?>
                                     </a>
                                     |
-                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=districts&delete_district=<?php echo esc_attr($district->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_district_' . $district->id); ?>" 
-                                       onclick="return confirm('<?php esc_attr_e('Are you sure? This will delete all blocks under this district.', 'pmpro-nbstup'); ?>');">
+                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=districts&delete_district=<?php echo esc_attr($district->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_district_' . $district->id); ?>"
+                                        onclick="return confirm('<?php esc_attr_e('Are you sure? This will delete all blocks under this district.', 'pmpro-nbstup'); ?>');">
                                         <?php esc_html_e('Delete', 'pmpro-nbstup'); ?>
                                     </a>
                                 </td>
@@ -761,7 +771,7 @@ function pmpronbstup_render_blocks_tab()
                 <?php else : ?>
                     <input type="hidden" name="action" value="add_block" />
                 <?php endif; ?>
-                
+
                 <table class="form-table">
                     <tr>
                         <th><label for="block_district"><?php esc_html_e('District', 'pmpro-nbstup'); ?></label></th>
@@ -769,8 +779,8 @@ function pmpronbstup_render_blocks_tab()
                             <select id="block_district" name="block_district" required>
                                 <option value=""><?php esc_html_e('Select District', 'pmpro-nbstup'); ?></option>
                                 <?php foreach ($districts as $district) : ?>
-                                    <option value="<?php echo esc_attr($district->id); ?>" 
-                                            <?php echo ($edit_block && $edit_block->district_id == $district->id) ? 'selected' : ''; ?>>
+                                    <option value="<?php echo esc_attr($district->id); ?>"
+                                        <?php echo ($edit_block && $edit_block->district_id == $district->id) ? 'selected' : ''; ?>>
                                         <?php echo esc_html($district->name); ?> (<?php echo esc_html(pmpro_nbstup_get_state_name($district->state_id)); ?>)
                                     </option>
                                 <?php endforeach; ?>
@@ -780,14 +790,14 @@ function pmpronbstup_render_blocks_tab()
                     <tr>
                         <th><label for="block_name"><?php esc_html_e('Block Name', 'pmpro-nbstup'); ?></label></th>
                         <td>
-                            <input type="text" id="block_name" name="block_name" class="regular-text" 
-                                   value="<?php echo $edit_block ? esc_attr($edit_block->name) : ''; ?>" required />
+                            <input type="text" id="block_name" name="block_name" class="regular-text"
+                                value="<?php echo $edit_block ? esc_attr($edit_block->name) : ''; ?>" required />
                         </td>
                     </tr>
                 </table>
-                
+
                 <?php submit_button($edit_block ? __('Update Block', 'pmpro-nbstup') : __('Add Block', 'pmpro-nbstup')); ?>
-                
+
                 <?php if ($edit_block) : ?>
                     <a href="?page=pmpro-nbstup-location-management&loc_tab=blocks" class="button">
                         <?php esc_html_e('Cancel', 'pmpro-nbstup'); ?>
@@ -814,7 +824,7 @@ function pmpronbstup_render_blocks_tab()
                     </thead>
                     <tbody>
                         <?php foreach ($blocks as $block) : ?>
-                            <?php 
+                            <?php
                             $district = pmpro_nbstup_get_district($block->district_id);
                             $state_id = $district ? $district->state_id : 0;
                             ?>
@@ -828,8 +838,8 @@ function pmpronbstup_render_blocks_tab()
                                         <?php esc_html_e('Edit', 'pmpro-nbstup'); ?>
                                     </a>
                                     |
-                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=blocks&delete_block=<?php echo esc_attr($block->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_block_' . $block->id); ?>" 
-                                       onclick="return confirm('<?php esc_attr_e('Are you sure?', 'pmpro-nbstup'); ?>');">
+                                    <a href="?page=pmpro-nbstup-location-management&loc_tab=blocks&delete_block=<?php echo esc_attr($block->id); ?>&_wpnonce=<?php echo wp_create_nonce('delete_block_' . $block->id); ?>"
+                                        onclick="return confirm('<?php esc_attr_e('Are you sure?', 'pmpro-nbstup'); ?>');">
                                         <?php esc_html_e('Delete', 'pmpro-nbstup'); ?>
                                     </a>
                                 </td>
@@ -907,7 +917,7 @@ function pmpronbstup_handle_location_forms()
         }
 
         $state_name = isset($_POST['state_name']) ? sanitize_text_field($_POST['state_name']) : '';
-        
+
         if (empty($state_name)) {
             add_settings_error('pmpro-nbstup-location', 'empty_name', __('State name is required.', 'pmpro-nbstup'), 'error');
             return;
@@ -938,7 +948,7 @@ function pmpronbstup_handle_location_forms()
 
         $district_name = isset($_POST['district_name']) ? sanitize_text_field($_POST['district_name']) : '';
         $state_id = isset($_POST['district_state']) ? intval($_POST['district_state']) : 0;
-        
+
         if (empty($district_name) || empty($state_id)) {
             add_settings_error('pmpro-nbstup-location', 'empty_name', __('District name and state are required.', 'pmpro-nbstup'), 'error');
             return;
@@ -969,7 +979,7 @@ function pmpronbstup_handle_location_forms()
 
         $block_name = isset($_POST['block_name']) ? sanitize_text_field($_POST['block_name']) : '';
         $district_id = isset($_POST['block_district']) ? intval($_POST['block_district']) : 0;
-        
+
         if (empty($block_name) || empty($district_id)) {
             add_settings_error('pmpro-nbstup-location', 'empty_name', __('Block name and district are required.', 'pmpro-nbstup'), 'error');
             return;
@@ -1178,4 +1188,3 @@ function pmpronbstup_import_district_block_csv($csv_path, $state_id)
 
     return $stats;
 }
-
